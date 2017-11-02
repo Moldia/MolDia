@@ -1,0 +1,497 @@
+---
+title: "<center>__MolDia__</center><center>Single cell In-Situ RCA data analysis</center>"
+author: <center>*Mats Nilsson*</center><center>Department of Biochemistry and Biophysics</center><center>Stockholm
+  University, Sweden</center>
+date: '<center> Date: *`r Sys.Date()`*</center><center>__*Version: 1.0.0*__</center>'
+output:
+  BiocStyle::html_document:
+    number_sections: yes
+    toc: yes
+    toc_depth: 6
+  BiocStyle::pdf_document:
+    number_sections: yes
+    toc: yes
+    toc_depth: 6
+bibliography: bibliography.bib
+vignette: |
+  %\VignetteIndexEntry{<center>__MolDia__</center><center>Single cell In-Situ RCA data analysis</center>}   %\VignetteEngine{knitr::rmarkdown}   %\VignetteEncoding{UTF-8}   %\usepackage[utf8x]{inputenc}
+---
+
+#Introduction
+This is a complete package to analyze single cell in-sutu RCA data analysis.
+
+#Package outline
+<div style="width:800px; height=600px ; margin-left: auto; margin-right: auto;>
+![Venn-pie plot](images\outline_1.png)</div>
+
+#Data structure
+##Raw data
+The raw data obtained from image analysis pipeline. The generic data structure for RCA in-situ is as follows in xlsx or csv formated file
+
+```{r, echo=FALSE}
+library(MolDia)
+ex_data <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),
+                  cellid = "CellId", centX = "centroid_x", centY = "centroid_y")
+mm<-cbind(head(ex_data@data)[,10:15],head(ex_data@location))
+CellId<- rownames(mm)
+rownames(mm)<- NULL
+dd<- cbind(CellId,mm)
+dd
+```
+#Reading data and vizualization
+##Read RCA data
+The raw RCA data can be read by function `readRCA`. To get help on the function write `help(readRCA)`. The data read by function `readRCA` will be in class `RCA_class`. For more help on this class, write `help(RCA_class)`.
+
+```r
+library(MolDia)
+ex_data <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),
+                  cellid = "CellId", centX = "centroid_x", centY = "centroid_y")
+ex_data
+```
+```{r, echo=FALSE}
+ex_data
+```
+##Vizualization and summary of RCA data
+###Plot RCA data 
+RCA data can be ploted by `plot` function. To plot all cell on the tissue, one has to use `what = "cell"` parameter. If interactive graphics is expected then `live = TRUE`. For details help `help(plot.RCA_class)`
+```r
+RCA_map(data =ex_data, what = "cell", main = "Left Hippocampus")
+```
+<div style="width:800px; height=600px ; margin-left: auto; margin-right: auto;>
+![Venn-pie plot](images\cell_image_1.png)</div>
+
+###Summary of RCA data
+Now we have got the raw RCA data in R. Now we can observed some basic summary statistics about our data which will provide some insight about the data. And based on thses summary we can apply prespective of different analysis.  
+
+ 
+The function `readsSummary` will be used to get the summary of data. Number of reads per cell is a importent feature of the data. So what will be the minimum number of reads per cell to be consider is an important issue. By using parameter `readlimit` in the function `readsSummary`, we can observe the effect.  
+
+```r
+ex_data_summary   <- readsSummary(data = ex_data, readlimit = 10, text.size = 6, 
+                                  intervel.dep = c(5,20,40,60))
+```
+<div style="width:800px; height=600px ; margin-left: auto; margin-right: auto;>
+![Venn-pie plot](images\summary_1.png)</div>
+<div style="width:800px; height=600px ; margin-left: auto; margin-right: auto;>
+![Venn-pie plot](images\summary_2.png)</div>
+
+# Gene co expression analysis
+## WGCNA
+##Venn-pieagram single cell vizualization
+The ven-pie plot is a visual representaion of RCA data, based on genes of interest. As example, we want to know proportional dependency of SST-interneuronal genes enrich cells. For details about the function see `help(RCA_pieplot)`
+
+```r
+data(marker_gene)
+sst <- marker_gene[[5]]
+```
+```{r, echo=FALSE}
+data(marker_gene)
+sst <- marker_gene[[5]]
+sst
+```
+```r
+res <- RCA_pieplot (data = ex_data, gene = sst)
+```
+<div style="width:500px; height=400px ; margin-left: auto; margin-right: auto;>
+![Venn-pie plot](images\ven_pie.png)</div>
+
+
+#Custom criteria based cell selection
+There are several way to filter out data/cell. The following are the some are way to filter out cells
+
+1. Filter cells by outlier detection
+2. Filter cells by gene criteria
+
+##Filter cells by outlier detection
+Distribution of cells by total numbe of reads, shows exponential pattern. Thats means, there are lot of cells with very low (1 reads/cell) number of reads and very few cells this high number of reads. So we need to filter those few cells with high number of reads, which can significantly influence our data at processing (In data scaling, centering and normalization) step.
+
+###Probability based data filtering: Poisson Distibution
+[Note: Not working good rignt now. Need to do more optimization]
+
+To filter extreme data, `RCA_filter` function will be used. This function estimate the probabity of number of reads per cell in a specific range with desired mean (Rate or number or reads per cell) by Poisson distibution. By default current fuction calculate the mean from data and return number of reads percell between a range with probability. Output of this function is dataset in class `RCA_class`.
+```{r}
+ex_data_1    <- RCA_filter(data = ex_data)
+```
+In the above output data, cell with reads 2 to 31 will only remain in the resulting data set. But sometime, 1 reads per cell is biologically important. In this case we can define our own expected reads/cell with `data_mean` parameter.
+```{r}
+ex_data_2    <- RCA_filter(data = ex_data, data_mean = 7)
+```
+In the above figure, the red curve is the actual distribution, and the black curve is the theoritical distrubution with our supplied mean. And finally we got 4775 cell with  minium 1 and maximum 27 reads per cell.
+
+##Filter cells by gene criteria
+###Define gene group
+Based on different criteria or condition, on can filter data with the function `RCA_barplot` For detail about the function write `help(RCA_barplot)`. This function will have output in class `RCA_class`. 
+
+```{r}
+## Load data
+RCA_data    <- ex_data
+```
+
+The loaded data is from mouse brain left hipoampus. Genes present in that data is 
+```{r}
+marker_gene_1 <- RCA_data@gene
+marker_gene_1
+```
+According to our pre knowlidge, we can classify those genes in borad category as follows
+
+```{r}
+## This data set has provided with the package as sample informatio. 
+data(marker_gene)
+```
+
+```{r, echo=FALSE}
+marker_gene
+```
+
+Now we can re-classify marker genes in broad category "General", "Neoronal" and "Non-neuronal" for our further analysis requirement 
+```{r}
+## Re-calssify  per-dfine marker gene group in "General", "Neoronal" and "Non-neuronal"
+marker_gene <- list(genral = marker_gene$genr, neuron = c(marker_gene$genr_neuro,
+                                                          marker_gene$genr_neuro_pyra1,
+                                                          marker_gene$genr_neuro_pyra2,
+                                                          marker_gene$genr_neuro_inter1,
+                                                          marker_gene$genr_neuro_inter2,
+                                                          marker_gene$genr_neuro_inter3,
+                                                          marker_gene$genr_neuro_inter4,
+                                                          marker_gene$genr_neuro_inter5,
+                                                          marker_gene$genr_neuro_inter6),
+                    nonneuron = marker_gene$genr_nonneuro)
+marker_gene
+```
+###Apply criteria based filtering
+Now `RCA_barplot` function will be applied on the data based on required selection criteria.
+
+Without any selection criteria
+```{r}
+## Without any selection criteria
+neuron_group <- RCA_barplot(data = RCA_data,gene = marker_gene)
+```
+
+As an example , our cell selection criteria is 
+
+ 1. Select cells with at least 1 neuronal genes
+ 2. For neuronal genes, minimum 1 reads/cell
+ 3. For rest of the genes, minimum 2 reads/cell
+ 4. Subset data : Only consider Neuronal genes 
+
+```{r}
+## Parameter explanation
+# gene.target = 2           - Select 2nd list from marker_gene, which is a list of neuronal gene
+# target.min.count.cell = 2 - For Neuronal genes, minimum 2 reads/cell
+# rest.min.count.cell = 2   - For rest of the genes, minimum 2 reads/cell
+# at.least.gene = 1         - Cell will have at least 1 neuronal genes
+# gene.show = 2             - Only consider Neuronal genes to subset data
+
+neuron_group <- RCA_barplot(data = RCA_data, gene = marker_gene, gene.target = 2,
+                            target.min.count.cell = 2, rest.min.count.cell = 2,
+                            at.least.gene = 1, gene.show = 2, main = " Neuron gene group")
+```
+
+#Pre-processing of RCA data
+Before further analysis of RCA data, the data needs pre-processing like data scaling, centering , normlization.
+
+##Data normalization, scaling and centering 
+Normalization, scaling and centering will apply on RCA data by the function `RCA_preprocess`. Data normalization is nessary for data analysis, specially for compute PCA to reduce dimentionality. Scaled and centered data is necessary to vizualize data. [Need more focus]
+```{r}
+neuron_group <- RCA_preprocess(data = neuron_group, normalization.method = "LogNormalize", 
+                               do.scale = TRUE, do.center = TRUE)
+```
+Setting `do.center` to TRUE will center the expression for each gene by subtracting the average expression for that gene. Setting `do.scale` to TRUE will scale the expression level for each gene by dividing the centered gene expression levels by their standard deviations if `do.center` is TRUE and by their root mean square otherwise. [Need more focus and need to test on the reference] [@vandenBerg2006]
+
+
+#Data clustering and analysis
+##Data cluster and re-cluster
+###Data clustering
+#### Data clustering by SEURAT
+In the previous section we have select cells based on different selection criteria on gene of interest. The dataset is as follows
+```{r}
+neuron_group
+```
+
+Now we can cluster cells by different pipeline of interest by using the function `RCA_cluster`. Available pipeline is SEURAT, BACKSPIN, MONOCLE. For details see `help(RCA_cluster)`. Output result of function `RCA_cluster` is in class `RCA_class` 
+
+```r
+neuron_group_cluster  <- RCA_cluster (data = neuron_group, method = "seurat", 
+                                      pc = 0.9, resolution = 0.2)
+neuron_group_cluster
+```
+```{r, message=FALSE, warning=FALSE, include=FALSE}
+neuron_group_cluster  <- RCA_cluster (data = neuron_group, method = "seurat", 
+                                      pc = 0.9, resolution = 0.2)
+```
+
+```{r, echo=FALSE}
+neuron_group_cluster
+```
+Now we can plot cells and cluster information on actual tissue to observe those results. To plot cells the following command can be used
+```r
+RCA_map(neuron_group_cluster, what = "cell" , main = "Plot cells on tissue")
+```
+<div style="width:800px; height=600px ; margin-left: auto; margin-right: auto;>
+![Venn-pie plot](images\cell_image_2.png)</div>
+
+To plot cluster following command can be used
+```{r}
+RCA_map(neuron_group_cluster, what = "cluster" , main = "Plot cell clusters on tissue")
+```
+
+####Data clustering : Dimention reduction by tSNE
+To apply tSNE, we can use following command
+
+```{r, include=FALSE}
+neuron_group_cluster <- RCA_tsne(data = neuron_group_cluster, do.label = TRUE, 
+                                 pc= 0.9, perplexity= 100)
+```
+```r
+neuron_group_cluster <- RCA_tsne(data = neuron_group_cluster, do.label = TRUE, 
+                                 pc= 0.9, perplexity= 100)
+```
+To plot tSNE with SEURAT cluster, the following command can be used
+
+```{r}
+RCA_map(neuron_group_cluster, what = "tsne" , main = "tSNE plot with cluster by SEURAT")
+```
+
+###Define cluster marker
+
+Now to find the genes those are marker or differentially expressed in individual cluster, can be identified. `RCA_marker` function can be used for this purpose. 
+
+```{r, include=FALSE}
+neuron_group_cluster_marker <- RCA_marker(data=neuron_group_cluster, topgene = 5 , 
+                                          test.use="bimod", only.pos = TRUE, 
+                                          main = "Neuronal gene group")
+```
+```r
+neuron_group_cluster_marker <- RCA_marker(data=neuron_group_cluster, topgene = 5 , 
+                                          test.use="bimod", only.pos = TRUE, 
+                                          main = "Neuronal gene group")
+```
+```{r}
+neuron_group_cluster_marker
+neuron_group_cluster_marker@cluster.marker
+
+```
+Now to vizualize cluster marker
+
+```{r, echo=FALSE}
+neuron_group_cluster_marker <- RCA_marker(data=neuron_group_cluster, topgene = 5 , 
+                                          test.use="bimod", only.pos = TRUE, 
+                                          main = "Neuronal gene group")
+
+```
+
+###Labeling cells with cluster marker
+In the previous we have identified the marker for the specific cluster. Now we can label correspondong cluster with marker gene according to their significance order.
+
+####Labeling cells on tissue by marker genes
+##### Marker genes by cluster 
+
+```{r out.width = '100%'}
+RCA_map(neuron_group_cluster_marker, what = "cluster" , 
+        main = "Plot cell clusters on tissue", label.topgene = 3)
+```
+
+##### Top marker genes by cluster by considering expression
+To plot only gene "Enpp2" to see their cluster distribution baed on expression level
+```{r out.width = '100%'}
+RCA_map(neuron_group_cluster_marker, what = "cluster" , 
+        main = "Enpp2 expressed cell only", gene = c("Enpp2"), label.topgene = 3)
+```
+
+####Labeling cells on tSNE cluster by marker genes
+##### Marker genes by cluster
+
+```{r out.width = '100%'}
+RCA_map(neuron_group_cluster_marker, what = "tsne" , 
+        main = "Plot cell clusters on tSNE", label.topgene = 3)
+```
+
+##### Top marker genes by cluster by considering expression
+To plot only gene "Enpp2" to see their cluster distribution baed on expression level
+```{r out.width = '100%'}
+RCA_map(neuron_group_cluster_marker, what = "tsne" , 
+        main = "Enpp2 expressed cell only", gene = c("Enpp2"), label.topgene = 3)
+```
+
+###Re-cluster a cluster
+With the `resolution` parameter one can control the sige of the cluster. Its diserable to make bigger cluster first and then re-cluster any selected cluster. In the previous clustred data, cluster 0 has 505 cells.
+```{r}
+neuron_group_cluster
+```
+Now we can select cluster 0 to recluster it again. 
+
+```{r, message=FALSE, warning=FALSE, include=FALSE}
+neuron_group_cluster_0  <- RCA_cluster (data = neuron_group_cluster, method = "seurat",cluster_id = 0, 
+                                      pc = 0.9, resolution = 0.1)
+```
+```r
+neuron_group_cluster_0  <- RCA_cluster (data = neuron_group_cluster, method = "seurat",cluster_id = 0, 
+                                      pc = 0.9, resolution = 0.1)
+```
+```{r}
+neuron_group_cluster_0
+```
+
+Now to plot cells
+```{r out.width = '100%'}
+RCA_map(neuron_group_cluster_0, what = "cell" , main = "Re-cluster cluster 0 and map cells")
+```
+
+To plot cluster
+```{r out.width = '100%'}
+RCA_map(neuron_group_cluster_0, what = "cluster" , main = "Re-cluster cluster 0 and map cluster")
+```
+
+To define cluster marker
+```{r}
+neuron_group_cluster_0_marker <- RCA_marker(data=neuron_group_cluster_0, topgene = 5, 
+                                          test.use="bimod", only.pos = TRUE, 
+                                          main = "Neuronal gene group: Cluster 0")
+neuron_group_cluster_0_marker
+```
+
+To label cell cluster with marker gene
+```{r out.width = '100%'}
+RCA_map(neuron_group_cluster_0_marker, what = "cluster" , 
+        main = "Plot cell clusters on tissue", label.topgene = 2)
+```
+
+To label tSNE cluster with marker gene
+```{r out.width = '100%'}
+RCA_map(neuron_group_cluster_0_marker, what = "tsne" , 
+        main = "Plot cell clusters on tSNE", label.topgene = 2)
+```
+
+##Cluster compare and validation : An example
+
+```{r include=FALSE}
+## Read data: Left and right HC
+hc_left  <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),
+                   cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
+hc_right <- readRCA(file = system.file("extdata", "Hypocampus_right.csv", package="MolDia"),
+                   cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
+```
+
+```r
+## Read data: Left and right HC
+hc_left  <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),
+                   cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
+hc_right <- readRCA(file = system.file("extdata", "Hypocampus_right.csv", package="MolDia"),
+                   cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
+```
+
+
+```{r include=FALSE}
+## Arrange marker gene
+data(marker_gene)
+marker_gene <- marker_gene
+mark_gene <- list(genr = marker_gene$genr, neuron = c(marker_gene$genr_neuro,
+                                                       marker_gene$genr_neuro_pyra1,
+                                                       marker_gene$genr_neuro_pyra2,
+                                                       marker_gene$genr_neuro_inter1,
+                                                       marker_gene$genr_neuro_inter2,
+                                                       marker_gene$genr_neuro_inter3,
+                                                       marker_gene$genr_neuro_inter4,
+                                                       marker_gene$genr_neuro_inter5,
+                                                       marker_gene$genr_neuro_inter6),
+                                             nonneuron = marker_gene$genr_nonneuro)
+```
+
+```r
+## Arrange marker gene
+data(marker_gene)
+marker_gene <- marker_gene
+mark_gene <- list(genr = marker_gene$genr, neuron = c(marker_gene$genr_neuro,
+                                                       marker_gene$genr_neuro_pyra1,
+                                                       marker_gene$genr_neuro_pyra2,
+                                                       marker_gene$genr_neuro_inter1,
+                                                       marker_gene$genr_neuro_inter2,
+                                                       marker_gene$genr_neuro_inter3,
+                                                       marker_gene$genr_neuro_inter4,
+                                                       marker_gene$genr_neuro_inter5,
+                                                       marker_gene$genr_neuro_inter6),
+                                             nonneuron = marker_gene$genr_nonneuro)
+```
+
+```{r include=FALSE}
+## Select cell : Barplot of Neuronal marker gene and extract those cells only
+hc_left  <- RCA_barplot(data = hc_left, gene = mark_gene, gene.target = 2,
+                             at.least.gene = 2, gene.show = 2)
+hc_right <- RCA_barplot(data = hc_right, gene = mark_gene, gene.target = 2,
+                             at.least.gene = 2, gene.show = 2)
+
+```
+
+```r
+## Select cell : Barplot of Neuronal marker gene and extract those cells only
+hc_left  <- RCA_barplot(data = hc_left, gene = mark_gene, gene.target = 2,
+                             at.least.gene = 2, gene.show = 2)
+hc_right <- RCA_barplot(data = hc_right, gene = mark_gene, gene.target = 2,
+                             at.least.gene = 2, gene.show = 2)
+```
+
+```{r include=FALSE}
+## Data preprocessing
+hc_left  <- RCA_preprocess(data = hc_left, normalization.method = "LogNormalize",
+                                do.scale = TRUE, do.center = TRUE)
+hc_right <- RCA_preprocess(data = hc_right, normalization.method = "LogNormalize",
+                                do.scale = TRUE, do.center = TRUE)
+```
+
+```r
+## Data preprocessing
+hc_left  <- RCA_preprocess(data = hc_left, normalization.method = "LogNormalize",
+                                do.scale = TRUE, do.center = TRUE)
+hc_right <- RCA_preprocess(data = hc_right, normalization.method = "LogNormalize",
+                                do.scale = TRUE, do.center = TRUE)
+```
+
+```{r include=FALSE}
+## Cluster data based on SEURAT pipeline
+hc_left   <- RCA_cluster(data =  hc_left, pc = 0.9, resolution = 0.3, method = "seurat")
+hc_right  <- RCA_cluster(data = hc_right, pc = 0.9, resolution = 0.3, method = "seurat")
+```
+
+```r
+## Cluster data based on SEURAT pipeline
+hc_left   <- RCA_cluster(data =  hc_left, pc = 0.9, resolution = 0.3, method = "seurat")
+hc_right  <- RCA_cluster(data = hc_right, pc = 0.9, resolution = 0.4, method = "seurat")
+```
+```{r include=FALSE}
+## Dimention reduction by tSNE on clustered data
+hc_left   <- RCA_tsne(data = hc_left, do.label = TRUE, pc= 0.9, perplexity= 100)
+hc_right  <- RCA_tsne(data = hc_right, do.label = TRUE, pc= 0.9, perplexity= 100)
+```
+```r
+## Dimention reduction by tSNE on clustered data
+hc_left   <- RCA_tsne(data = hc_left, do.label = TRUE, pc= 0.9, perplexity= 100)
+hc_right  <- RCA_tsne(data = hc_right, do.label = TRUE, pc= 0.9, perplexity= 100)
+```
+
+```{r}
+## Get cluster marker
+hc_left  <- RCA_marker(data = hc_left, topgene =5, test.use="bimod",
+                       main = "hc_left")
+hc_right <- RCA_marker(data = hc_right, topgene =5, test.use="bimod",
+                       main = "hc_right")
+
+```
+
+```{r}
+RCA_map (data = hc_left, what = "tsne",  label.topgene =2, main = "hc_left")
+RCA_map (data = hc_right, what = "tsne", label.topgene =2, main = "hc_right")
+```
+
+```{r}
+## Cluster compare
+my_comapre_1 <- RCA_clustcompare(preditorData = hc_left, prediction = hc_right)
+my_comapre_2 <- RCA_clustcompare(preditorData = hc_right, prediction = hc_left)
+```
+
+
+# Citation
+```{r echo=FALSE}
+citation(package = "MolDia")
+```
+
+# Reference 

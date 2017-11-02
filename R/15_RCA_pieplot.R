@@ -1,0 +1,132 @@
+"RCA_pieplot"
+#' Venn-pie chart on RCA data based on genes of interest
+#'
+#' @param data Input data in class RCA_class. Output of \link[MolDia]{readRCA}.
+#' @param gene Gene of interest. Default is NULL.
+#' @param gene_with Consider cells only with these genes. Default is NULL.
+#' @param gene_without Consider cells without these genes. Default is NULL.
+#'
+#' @return The Venn-pie plot.
+#'
+#'         Result in class \link[MolDia]{readRCA}.
+#' @author Mohammad Tanvir Ahamed
+#'
+#' @examples
+#'########## Reading data
+#' data_1      <- readRCA(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
+#'                        cellid = "CellID")
+#'
+#' ## Define marker gene group
+#' marker_gene <- data_1@gene
+#' c_rna <- marker_gene[grepl(".C",marker_gene)] # Circular RNA
+#' l_rna <- setdiff(marker_gene,c_rna)           # Linear RNA
+#'
+#' ## Neuronal marker
+#' Pyramidal   <- c("Nrn1.L","Pcp4.L")
+#' Interneuron <- c("Sst.L","Pvalb.L","Ndnf.L","Vip.L","Sncg.L","Cck.L")
+#' Other       <- c("Map2.L")
+#' Neuron      <- c(Pyramidal,Interneuron,Other)
+#'
+#' ## Non-Neuronal marker
+#' Oligodendrocyte <- c("Plp1.L","Enpp2.L")
+#' Astrocytes  <- c("Gfap.L","Mfge8.L","Aldh1l1.L","S100b.L")
+#' Nonneuron   <- c(Oligodendrocyte,Astrocytes)
+#' marker_gene1 <- list(Neuron = Neuron,
+#'                      Nonneuron = Nonneuron,
+#'                      Cir_rna = c_rna,
+#'                      Lin_rna = c(setdiff(setdiff(l_rna,Neuron),Nonneuron)))
+#'
+#' ####  Select cell with at least 3 neuronal genes
+#' mydata <- RCA_barplot(data = data_1, gene = marker_gene1, gene.target = 1,
+#'                       at.least.gene = 3, show.same.gene = FALSE)
+#'
+#' #####  Pie chart of all Circular mRNA in cell with at least 3 neuronal genes.
+#' genes <- marker_gene1[[1]]
+#' res   <- RCA_pieplot (data = mydata, gene = genes)
+#'
+#' #####  All circular mRNA with at least 3 neuronal genes with either "Plp1.L" and "Map2.L"
+#' withgene <- c("Plp1.L","Map2.L")
+#' res   <- RCA_pieplot (data = mydata, gene = genes, gene_with = withgene)
+#'
+#' #####  All circular mRNA with at least 3 neuronal genes without both "Plp1.L" and "Map2.L"
+#' withoutgene <- c("Plp1.L","Map2.L")
+#' res   <- RCA_pieplot (data = mydata, gene = genes, gene_without = withoutgene)
+#'
+#' @export
+RCA_pieplot <- function(data, gene = NULL, gene_with = NULL, gene_without = NULL)
+  {
+  ## Data select
+  main_data_1 <- data
+  main_data_2 <- data@data
+  data        <- main_data_2
+
+  ## Select gene names
+  if(length(gene_with) > 0 )    data <- data[rowSums(data[,gene_with, drop = FALSE]) > 0,]
+  if(length(gene_without) > 0 ) data <- data[rowSums(data[,gene_without, drop = FALSE]) == 0,]
+
+  ## Check gene names in main data
+  if(all(gene %in%colnames(data))==FALSE) stop("Check gene name are same and equel length in both input ", call. = FALSE)
+
+  ## Gene selection
+  if (length(gene)==0 ) data <- data
+  else {
+    data <- data[,gene]}
+
+  ## Delete cell with no gene
+  data <- data[rowSums(data) > 0,]
+  data <- data[,colSums(data) > 0]
+
+  ## Save data to return
+  newdata<- data
+
+  ## Gene name
+  gname <-colnames(data)
+
+  ## Get combinition of gene name (Gene count > 0) for each cell and count frequency of gene combinition
+  data <- apply(data,1,function(i)
+    {
+     pp<- paste0(colnames(data)[i>0],collapse = "-")
+    })
+  data <- data.frame(table(unlist(data)))
+  colnames(data) <- c("Gene","Count")
+  data <- data[order(data$Count, decreasing = T),]
+
+  ## Sort gene name in each gene name accorging their high to low occurance in gene combinition
+  tot_comb  <- as.vector(data$Gene)
+  tot_comb1 <- strsplit(tot_comb,"-")
+  tot_comb2 <- unique(unlist(tot_comb1))
+
+  g  <- rep(seq_along(tot_comb1), sapply(tot_comb1, length))
+  m  <- lapply(tot_comb2, function(x) g[which(unlist(tot_comb1) %in% x)])
+  names(m) <- tot_comb2
+  m1 <- sort(unlist(lapply(m,function(i) sum(data$Count[i]))), decreasing = TRUE)
+  m2 <- names(m1)
+
+  ll <- lapply (tot_comb1, function(i) { m2[sort(match(i,m2))] })
+  ll1 <- unlist (lapply(ll, paste0, collapse= "-"))
+
+  data$Gene <- ll1
+
+  ## Apply Venn-pie plot
+  if(length(gene) == 0 )
+  {
+  set.seed(100000009)  ## This random seed will keep the constant color reproduce
+  res <- sunburstR::sunburst(data, count = T)
+  } else {
+    cols <- as.list(randomcoloR::distinctColorPalette(length(gene)))
+    names(cols) <- NULL
+
+    set.seed(100000009)  ## This random seed will keep the constant color reproduce
+    res <- sunburstR::sunburst(data, count = T,
+                               colors = list(range  = cols,
+                                             domain = gene))
+    }
+   print(res)
+
+   ## return RCA object
+   myres <- methods::new("RCA_class",
+                         data     = newdata,
+                         location = main_data_1@location[rownames(newdata),],
+                         gene = colnames(newdata))
+   return(myres)
+}
