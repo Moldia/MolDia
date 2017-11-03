@@ -40,7 +40,7 @@
 #'
 #' @export
 
-readRCA <- function(file, cellid = "CellID", centX = "centroidX", centY = "centroidY",
+readRCA <- function(file, cellid = "CellID", centX = NULL, centY = NULL,
                     rpc = 1, rpg = 1, gene = NULL, nogene = NULL)
 {
   if(class(file)=="character")
@@ -102,19 +102,36 @@ readRCA <- function(file, cellid = "CellID", centX = "centroidX", centY = "centr
       cell_id <- paste0("cellid_",as.vector(my_file[,cellid]))
       my_file[,cellid] <- NULL
       my_file <- data.frame(as.matrix(my_file))
+      
+      
+      if(length(centX)== 1 )
+        { 
+        ## Data of Reads count
+        data_reads <- my_file[,!(names(my_file) %in% c(centX,centY))]
+        
+        ## Data of location information
+        data_loca <- my_file[, (names(my_file) %in% c(centX,centY))]
+        data_loca <- data.frame(data_loca)
+        colnames(data_loca) <- c("centroid_x", "centroid_y")
+       }
+      if(length(centX)== 0 )
+      {
+        data_reads <- my_file
+        data_loca  <- data.frame(matrix(, nrow = 0, ncol = 0))
+      }
 
       ## Filter by reads per cell (rpc) and reads per gene (rpg)
-      my_file <- my_file[rowSums(my_file) >= rpc,]
-      my_file <- my_file[,colSums(my_file) >= rpg]
+      data_reads <- data_reads[rowSums(data_reads) >= rpc,]
+      data_reads <- data_reads[,colSums(data_reads) >= rpg]
 
       ## return RCA object
       res <- methods::new("RCA_class",
-                          data     = my_file,
+                          data     = data_reads,
                           norm.data = matrix(, nrow = 0, ncol = 0),
                           scale.data = matrix(, nrow = 0, ncol = 0),
                           gene = colnames(my_file),
                           cluster = factor(matrix(, nrow = 0, ncol = 0)),
-                          location = data.frame(matrix(, nrow = 0, ncol = 0)),
+                          location = data_loca,
                           cluster.marker = list(),
                           tsne.data = data.frame(matrix(, nrow = 0, ncol = 0)))
      }

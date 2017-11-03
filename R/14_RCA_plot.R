@@ -5,11 +5,12 @@
 "RCA_map"
 #' Plot function for RCA_class data.
 #'
-#' @description Map RCA data based on cell, cluster or tSNE,
+#' @description Map RCA data based on cell, cluster or tSNE
 #' @param data Input data in class RCA_class. Output of \link[MolDia]{readRCA}.
 #' @param what What to plot. Values can be "cell", "cluster", "tsne". Default is "cell".
 #' @param xlab Label of x-axis
 #' @param ylab Label of y-axis
+#' @param ptsize Point size
 #' @param main Main title
 #' @param image Plot image. Default is TRUE.
 #' @param live Plot interactive image. Default is FALSE.
@@ -19,7 +20,7 @@
 #'
 #'
 #' @export
-RCA_map <- function(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y", main = "Main plot",
+RCA_map <- function(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y", main = "Main plot", ptsize = 1,
                     image = TRUE, live = FALSE, label.topgene = NULL, gene = NULL)
 {
   ## Check gene
@@ -127,7 +128,7 @@ RCA_map <- function(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y
       if(length(gene)<= 6 )
         {
           p<- ggplot2::ggplot(data,ggplot2::aes_string(x= "centroid_x",y= "centroid_y")) +
-              ggplot2::geom_point(ggplot2::aes(colour=factor(cluster), shape = variable,
+              ggplot2::geom_point(ggplot2::aes(colour=factor(cluster), shape = variable, size = ptsize,
                                                alpha=log2(value+1))) +
               ggplot2::scale_alpha(range = c(0, 1)) +
               ggplot2::theme(legend.title = ggplot2::element_blank(), legend.position="right") +
@@ -151,7 +152,7 @@ RCA_map <- function(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y
       if(length(gene) > 6 )
         {
            p<- ggplot2::ggplot(data,ggplot2::aes_string(x= "centroid_x",y= "centroid_y")) +
-               ggplot2::geom_point(ggplot2::aes(colour=factor(cluster))) +
+               ggplot2::geom_point(ggplot2::aes(colour=factor(cluster)),size = ptsize) +
                ggplot2::theme(legend.title = ggplot2::element_blank(), legend.position="right") +
                ggplot2::guides(colour = ggplot2::guide_legend(override.aes = list(size=3)),
                                fill=ggplot2::guide_legend(nrow = 10)) +
@@ -221,7 +222,7 @@ RCA_map <- function(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y
       if(length(gene)<= 6 )
         {
           p<- ggplot2::ggplot(data,ggplot2::aes_string(x= "tSNE_1",y= "tSNE_2")) +
-              ggplot2::geom_point(ggplot2::aes(colour=factor(cluster),
+              ggplot2::geom_point(ggplot2::aes(colour=factor(cluster), size = ptsize,
                                                shape = variable, alpha=log2(value+1))) +
               ggplot2::scale_alpha(range = c(0, 1)) +
               ggplot2::theme(legend.title = ggplot2::element_blank(), legend.position="right") +
@@ -244,7 +245,7 @@ RCA_map <- function(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y
      if(length(gene) > 6 )
        {
          p<- ggplot2::ggplot(data,ggplot2::aes_string(x= "tSNE_1",y= "tSNE_2")) +
-             ggplot2::geom_point(ggplot2::aes(colour=factor(cluster))) +
+             ggplot2::geom_point(ggplot2::aes(colour=factor(cluster)), size = ptsize) +
              ggplot2::theme(legend.title = ggplot2::element_blank(), legend.position="right") +
              ggplot2::guides(colour = ggplot2::guide_legend(override.aes = list(size=3)),
                              fill=ggplot2::guide_legend(nrow = 10)) +

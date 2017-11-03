@@ -120,4 +120,5 @@ RCA_marker <- function(data, topgene= 5, test.use = "bimod", marker.sig = 0.005,
     })
   main_data@cluster.marker <- res
   return(main_data)
+  #mmdata_1
 }

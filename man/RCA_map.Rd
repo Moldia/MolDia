@@ -5,8 +5,8 @@
 \title{Plot function for RCA_class data.}
 \usage{
 RCA_map(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y",
-  main = "Main plot", image = TRUE, live = FALSE, label.topgene = NULL,
-  gene = NULL)
+  main = "Main plot", ptsize = 1, image = TRUE, live = FALSE,
+  label.topgene = NULL, gene = NULL)
 }
 \arguments{
 \item{data}{Input data in class RCA_class. Output of \link[MolDia]{readRCA}.}
@@ -19,6 +19,8 @@ RCA_map(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y",
 
 \item{main}{Main title}
 
+\item{ptsize}{Point size}
+
 \item{image}{Plot image. Default is TRUE.}
 
 \item{live}{Plot interactive image. Default is FALSE.}
@@ -29,5 +31,5 @@ has identified in cluster.marker slot of input data.}
 \item{gene}{Gene of interest, Now limited to max 6 genes.}
 }
 \description{
-Map RCA data based on cell, cluster or tSNE,
+Map RCA data based on cell, cluster or tSNE
 }

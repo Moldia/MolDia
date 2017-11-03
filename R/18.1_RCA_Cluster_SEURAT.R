@@ -5,7 +5,7 @@
 #' Cluster in-situ RCA data by SEURAT.
 #'
 #' @param data Input data in class RCA_class. Output of \link[MolDia]{readRCA}.
-#' @param pc Desired percent of variance to be explained by PCA. Default in 0.9.
+#' @param pc Desired percent of variance (0 to 1) to be explained by PCA. Default in NULL (All PC will use).
 #' @param cluster_id Re-cluster clustreded data. Numeric input. Default is NULL.
 #' @param resolution Value of the resolution parameter, use a value above (below)
 #'                   1.0 if you want to obtain a larger (smaller) number of communities.
@@ -47,7 +47,7 @@
 #' #                                  cluster_id = 0, resolution = 0.5)
 #'
 #'
-RCA_seruat_cluster <- function(data, pc = 0.9, cluster_id = NULL,
+RCA_seruat_cluster <- function(data, pc = NULL, cluster_id = NULL,
                             resolution = 0.3, algorithm = 1,
                             do.norm = TRUE, do.scale = TRUE)
 {
@@ -82,19 +82,29 @@ RCA_seruat_cluster <- function(data, pc = 0.9, cluster_id = NULL,
     #SEURAT_clus   <- Seurat::ScaleData(object = SEURAT_clus, do.scale = TRUE, do.center = TRUE, check.for.norm = FALSE)
     SEURAT_clus@scale.data <- t(main_data@scale.data[rownames(data),])
     SEURAT_clus   <- Seurat::RunPCA(object  = SEURAT_clus, pc.genes = colnames(data),do.print = FALSE)
+    
 
-    # Find optimal PCA component
-    #myPCA  <- SEURAT_clus@dr$pca@cell.embeddings
-    sdev   <- SEURAT_clus@dr$pca@sdev
-    pcuse  <- cumsum(log2(sdev)^2 / sum(log2(sdev)^2))
-    print(pcuse)
-    pcuse  <- max(which(pcuse<=pc))
-    if(pcuse <= 3) stop("PC is too low", call. = FALSE)
-    cat("Number of principle component to be used :", pcuse, "\n")
+    if(length(pc) > 0 )
+      {
+      # Find optimal PCA component
+      #myPCA  <- SEURAT_clus@dr$pca@cell.embeddings
+      sdev   <- SEURAT_clus@dr$pca@sdev
+      pcuse  <- cumsum(log2(sdev)^2 / sum(log2(sdev)^2))
+      print(pcuse)
+      pcuse  <- max(which(pcuse<=pc))
+      if(pcuse <= 3) stop("PC is too low", call. = FALSE)
+      cat("Number of principle component to be used :", pcuse, "\n")
+      pc <- 1:pcuse
+      }
+    if(length(pc) == 0 )
+    {
+      cat("All principle component to be used", "\n") 
+      pc <- NULL
+    }
 
     ## Find cluster
     cat ("Running data clustering..\n")
-    SEURAT_clus   <- Seurat::FindClusters(object = SEURAT_clus, reduction.type = "pca", dims.use = 1:pcuse,
+    SEURAT_clus   <- Seurat::FindClusters(object = SEURAT_clus, reduction.type = "pca", dims.use = pc,
                                           plot.SNN = FALSE, print.output = 0, save.SNN = T,n.iter = 10,
                                           algorithm = algorithm, resolution = resolution, modularity.fxn = 1)
     ## return RCA object

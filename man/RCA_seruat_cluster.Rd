@@ -5,13 +5,13 @@
 \title{"RCA_seruat_cluster"
 Cluster in-situ RCA data by SEURAT.}
 \usage{
-RCA_seruat_cluster(data, pc = 0.9, cluster_id = NULL, resolution = 0.3,
+RCA_seruat_cluster(data, pc = NULL, cluster_id = NULL, resolution = 0.3,
   algorithm = 1, do.norm = TRUE, do.scale = TRUE)
 }
 \arguments{
 \item{data}{Input data in class RCA_class. Output of \link[MolDia]{readRCA}.}
 
-\item{pc}{Desired percent of variance to be explained by PCA. Default in 0.9.}
+\item{pc}{Desired percent of variance (0 to 1) to be explained by PCA. Default in NULL (All PC will use).}
 
 \item{cluster_id}{Re-cluster clustreded data. Numeric input. Default is NULL.}
 
