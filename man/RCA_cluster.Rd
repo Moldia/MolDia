@@ -4,7 +4,7 @@
 \alias{RCA_cluster}
 \title{Cluster in-situ RCA data.}
 \usage{
-RCA_cluster(data, method = "seurat", pc = 0.9, cluster_id = NULL,
+RCA_cluster(data, method = "seurat", pc = NULL, cluster_id = NULL,
   resolution = 0.3, algorithm = 1, do.norm = TRUE, do.scale = TRUE)
 }
 \arguments{
@@ -12,7 +12,7 @@ RCA_cluster(data, method = "seurat", pc = 0.9, cluster_id = NULL,
 
 \item{method}{Method of clustering. seurat, backspin, monocle.}
 
-\item{pc}{Desired percent of variance to be explained by PCA. Default in 0.9.}
+\item{pc}{Desired percent of variance (0 to 1) to be explained by PCA. Default in NULL (All PC will use).}
 
 \item{cluster_id}{Re-cluster clustreded data. Numeric input. Default is NULL.}
 

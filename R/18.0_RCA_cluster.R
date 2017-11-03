@@ -7,7 +7,7 @@
 #' @description Cluster in-situ RCA data by different methods used in SEURAT, MONOCLE, BackSPIN.
 #' @param data Input data in class RCA_class. Output of \link[MolDia]{readRCA}.
 #' @param method Method of clustering. seurat, backspin, monocle.
-#' @param pc Desired percent of variance to be explained by PCA. Default in 0.9.
+#' @param pc Desired percent of variance (0 to 1) to be explained by PCA. Default in NULL (All PC will use).
 #' @param cluster_id Re-cluster clustreded data. Numeric input. Default is NULL.
 #' @param resolution Value of the resolution parameter, use a value above (below)
 #'                   1.0 if you want to obtain a larger (smaller) number of communities.
@@ -53,7 +53,7 @@
 #'
 #'@export
 RCA_cluster <- function(data, method = "seurat",
-                        pc = 0.9, cluster_id = NULL,
+                        pc = NULL, cluster_id = NULL,
                         resolution = 0.3, algorithm = 1,
                         do.norm = TRUE, do.scale = TRUE)
 {
