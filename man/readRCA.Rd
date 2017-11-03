@@ -4,8 +4,8 @@
 \alias{readRCA}
 \title{Read RCA data}
 \usage{
-readRCA(file, cellid = "CellID", centX = "centroidX", centY = "centroidY",
-  rpc = 1, rpg = 1, gene = NULL, nogene = NULL)
+readRCA(file, cellid = "CellID", centX = NULL, centY = NULL, rpc = 1,
+  rpg = 1, gene = NULL, nogene = NULL)
 }
 \arguments{
 \item{file}{File name in CSV formate or data in data.frame class.}
