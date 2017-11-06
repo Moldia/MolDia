@@ -16,6 +16,7 @@
 #'        2 = Louvain algorithm with multilevel refinement; 3 = SLM algorithm). Default is 1.
 #' @param do.norm Do normalization
 #' @param do.scale Do scalling
+#' @param DEGmethod Methods to find DE genes.
 #'
 #' @examples
 #' ## Reading data
@@ -52,7 +53,7 @@
 #'                                  pc = 0.9, cluster_id = 0, resolution = 1)
 #'
 #'@export
-RCA_cluster <- function(data, method = "seurat",
+RCA_cluster <- function(data, method = "seurat", DEGmethod = "seurat",
                         pc = NULL, cluster_id = NULL,
                         resolution = 0.3, algorithm = 1,
                         do.norm = TRUE, do.scale = TRUE)
@@ -66,7 +67,7 @@ RCA_cluster <- function(data, method = "seurat",
   {
     myres<- RCA_seruat_cluster (data = data, pc = pc,
                                 cluster_id = cluster_id, resolution = resolution,
-                                algorithm = algorithm, do.norm = do.norm , do.scale = do.scale)
+                                algorithm = algorithm, do.norm = do.norm , do.scale = do.scale, DEGmethod)
     myres
   }
 

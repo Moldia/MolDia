@@ -12,6 +12,7 @@
 #'                   Default is 0.3.
 #' @param algorithm Algorithm for modularity optimization (1 = original Louvain algorithm;
 #'        2 = Louvain algorithm with multilevel refinement; 3 = SLM algorithm). Default is 1.
+#' @param DEGmethod Methods to find DE genes.
 #' @keywords internal
 #'
 #' @examples
@@ -49,7 +50,8 @@
 #'
 RCA_seruat_cluster <- function(data, pc = NULL, cluster_id = NULL,
                             resolution = 0.3, algorithm = 1,
-                            do.norm = TRUE, do.scale = TRUE)
+                            do.norm = TRUE, do.scale = TRUE,
+                            DEGmethod = "seurat")
 {
   ## Save main data
   main_data <- data
@@ -81,8 +83,13 @@ RCA_seruat_cluster <- function(data, pc = NULL, cluster_id = NULL,
     SEURAT_clus   <- Seurat::CreateSeuratObject(t(data))
     #SEURAT_clus   <- Seurat::ScaleData(object = SEURAT_clus, do.scale = TRUE, do.center = TRUE, check.for.norm = FALSE)
     SEURAT_clus@scale.data <- t(main_data@scale.data[rownames(data),])
-    SEURAT_clus   <- Seurat::RunPCA(object  = SEURAT_clus, pc.genes = colnames(data),do.print = FALSE)
     
+    # Find DE
+    gene_de <- RCA_DE(data, DEGmethod)
+    
+    # Run PCA
+    SEURAT_clus   <- withCallingHandlers(suppressWarnings(Seurat::RunPCA(object  = SEURAT_clus, pc.genes = gene_de ,do.print = FALSE, 
+                                    fastpath=FALSE, verbose = FALSE)))
 
     if(length(pc) > 0 )
       {
@@ -90,7 +97,7 @@ RCA_seruat_cluster <- function(data, pc = NULL, cluster_id = NULL,
       #myPCA  <- SEURAT_clus@dr$pca@cell.embeddings
       sdev   <- SEURAT_clus@dr$pca@sdev
       pcuse  <- cumsum(log2(sdev)^2 / sum(log2(sdev)^2))
-      print(pcuse)
+      #print(pcuse)
       pcuse  <- max(which(pcuse<=pc))
       if(pcuse <= 3) stop("PC is too low", call. = FALSE)
       cat("Number of principle component to be used :", pcuse, "\n")
@@ -98,15 +105,21 @@ RCA_seruat_cluster <- function(data, pc = NULL, cluster_id = NULL,
       }
     if(length(pc) == 0 )
     {
-      cat("All principle component to be used", "\n") 
-      pc <- NULL
+      ## Find number of optimal principle component that explain 90 percent of variaiance
+      npc   <- withCallingHandlers(suppressWarnings(irlba::prcomp_irlba(SEURAT_clus@data, n=20, 
+                                                                        fastpath = FALSE, verbose = FALSE)))
+      npc   <- summary(npc)$importance[3,]
+      pcuse <- which(npc > 0.90)[1]
+      cat("Number of principle component to be used :", pcuse, "\n")
+      pc <- 1:pcuse
     }
 
     ## Find cluster
-    cat ("Running data clustering..\n")
-    SEURAT_clus   <- Seurat::FindClusters(object = SEURAT_clus, reduction.type = "pca", dims.use = pc,
-                                          plot.SNN = FALSE, print.output = 0, save.SNN = T,n.iter = 10,
-                                          algorithm = algorithm, resolution = resolution, modularity.fxn = 1)
+    cat ("Running data clustering.....")
+    SEURAT_clus   <- suppressMessages(Seurat::FindClusters(object = SEURAT_clus, dims.use = pc, algorithm = algorithm, resolution = resolution
+                                          , reduction.type = "pca", plot.SNN = FALSE, print.output = FALSE, save.SNN = FALSE
+                                          , n.iter = 10, modularity.fxn = 1))
+    cat ("FINISHED \n")
     ## return RCA object
     newdata <- as.data.frame(t(SEURAT_clus@raw.data))
     #res <- methods::new("RCA_class",
