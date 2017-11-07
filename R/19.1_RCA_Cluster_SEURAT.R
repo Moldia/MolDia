@@ -89,7 +89,7 @@ RCA_seruat_cluster <- function(data, pc = NULL, cluster_id = NULL,
     
     # Run PCA
     SEURAT_clus   <- withCallingHandlers(suppressWarnings(Seurat::RunPCA(object  = SEURAT_clus, pc.genes = gene_de ,do.print = FALSE, 
-                                    fastpath=FALSE, verbose = FALSE)))
+                                    fastpath=TRUE, verbose = FALSE)))
 
     if(length(pc) > 0 )
       {
@@ -107,7 +107,7 @@ RCA_seruat_cluster <- function(data, pc = NULL, cluster_id = NULL,
     {
       ## Find number of optimal principle component that explain 90 percent of variaiance
       npc   <- withCallingHandlers(suppressWarnings(irlba::prcomp_irlba(SEURAT_clus@data, n=20, 
-                                                                        fastpath = FALSE, verbose = FALSE)))
+                                                                        fastpath = TRUE, verbose = FALSE)))
       npc   <- summary(npc)$importance[3,]
       pcuse <- which(npc > 0.90)[1]
       cat("Number of principle component to be used :", pcuse, "\n")
