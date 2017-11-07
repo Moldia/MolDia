@@ -6,7 +6,7 @@
 \usage{
 RCA_map(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y",
   main = "Main plot", ptsize = 1, image = TRUE, live = FALSE,
-  label.topgene = NULL, gene = NULL)
+  label.topgene = NULL, gene = NULL, cluster_id = NULL)
 }
 \arguments{
 \item{data}{Input data in class RCA_class. Output of \link[MolDia]{readRCA}.}
@@ -29,6 +29,8 @@ RCA_map(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y",
 has identified in cluster.marker slot of input data.}
 
 \item{gene}{Gene of interest, Now limited to max 6 genes.}
+
+\item{cluster_id}{Which cluster to plot. Only work when what = "cluster".}
 }
 \description{
 Map RCA data based on cell, cluster or tSNE

@@ -17,11 +17,12 @@
 #' @param label.topgene Active only when "what = cluster or tsne". Number of genes to label each cluster. Only work when data is clustered and clusted marker
 #'        has identified in cluster.marker slot of input data.
 #' @param gene Gene of interest, Now limited to max 6 genes.
+#' @param cluster_id Which cluster to plot. Only work when what = "cluster".
 #'
 #'
 #' @export
 RCA_map <- function(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y", main = "Main plot", ptsize = 1,
-                    image = TRUE, live = FALSE, label.topgene = NULL, gene = NULL)
+                    image = TRUE, live = FALSE, label.topgene = NULL, gene = NULL, cluster_id = NULL)
 {
   ## Check gene
   if(length(gene) > 6) stop("Gene number more than 6 is too slow for interactive vizualization. So inactive at this moment", call. = FALSE)
@@ -51,6 +52,26 @@ RCA_map <- function(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y
 
   if(what == "cell")
     {
+      ## If data is clustered or not
+      if(length(data@cluster) > 0)
+       {
+        ## Select cluster to plot
+        if(length(cluster_id) > 0 )
+        { data@cluster <-  droplevels(data@cluster[which(data@cluster %in% cluster_id )]) } 
+      
+         ## Select cluster information data
+         data1 <- data.frame(data@cluster)
+         colnames(data1) <- "cluster"
+        }
+    
+      if(length(data@cluster) == 0)
+       {
+        data1 <- data.frame(rep("",nrow(data@data)))
+        colnames(data1) <- "cluster"
+        rownames(data1) <- rownames(data@data)
+       } 
+      
+      ## Merge expression and location information
       data<-merge(data@data, data@location, by = "row.names")
       rownames(data) <- data$Row.names
       data$Row.names <- NULL
@@ -96,10 +117,15 @@ RCA_map <- function(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y
           ## Replace new cluster in main data
           data@cluster <- new.cluster
         }
-
+    
       ## If data is clustered or not
       if(length(data@cluster) > 0)
         {
+          ## Select cluster to plot
+          if(length(cluster_id) > 0 )
+            { data@cluster <-  droplevels(data@cluster[which(data@cluster %in% cluster_id )]) } 
+        
+          ## Select cluster information data
           data1 <- data.frame(data@cluster)
           colnames(data1) <- "cluster"
         }
@@ -116,7 +142,7 @@ RCA_map <- function(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y
       rownames(data1) <- data1$Row.names
       data1$Row.names <- NULL
 
-      ## Merge tsne data with cluster data
+      ## Merge location data with cluster data
       data <- merge(data@location,data1, by = "row.names")
       rownames(data) <- data$Row.names
       data$Row.names <- NULL

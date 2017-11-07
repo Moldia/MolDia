@@ -100,6 +100,7 @@ readRCA <- function(file, cellid = "CellID", centX = NULL, centY = NULL,
 
       ## Define cell ID
       cell_id <- paste0("cellid_",as.vector(my_file[,cellid]))
+      rownames(my_file) <- cell_id
       my_file[,cellid] <- NULL
       my_file <- data.frame(as.matrix(my_file))
       
