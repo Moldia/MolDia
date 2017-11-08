@@ -28,6 +28,7 @@ RCA_ClusterSelect <- function(data, cluster_id = NULL)
   data@gene       <- data@gene
   data@location   <- data@location[cellid,]
   if(length(data@cluster.marker) > 0) data@cluster.marker <- data@cluster.marker[match(as.character(cluster_id),names(data@cluster.marker))]
+  if(length(data@cluster.marker) > 0) data@cluster.marker <- data@cluster.marker[match(as.character(cluster_id),names(data@cluster.marker))]
   if(length(data@tsne.data) > 0) data@tsne.data  <- data@tsne.data[cellid,]
   
   ## Return data 
