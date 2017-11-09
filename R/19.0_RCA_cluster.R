@@ -68,7 +68,7 @@ RCA_cluster <- function(data, method = "seurat", DEGmethod = "seurat",
   {
     myres<- RCA_seruat_cluster (data = data, pc = pc,
                                 cluster_id = cluster_id, resolution = resolution,
-                                algorithm = algorithm, do.norm = do.norm , do.scale = do.scale, DEGmethod, k.param = k.param)
+                                algorithm = algorithm, do.norm = do.norm , do.scale = do.scale, DEGmethod = DEGmethod, k.param = k.param)
     myres
   }
 

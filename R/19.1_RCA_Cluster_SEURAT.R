@@ -118,9 +118,9 @@ RCA_seruat_cluster <- function(data, pc = NULL, cluster_id = NULL,
     ## Find cluster
     cat ("Running data clustering.....")
     SEURAT_clus   <- suppressMessages(Seurat::FindClusters(object = SEURAT_clus, genes.use = gene_de, dims.use = pc, 
-                                                           algorithm = algorithm, resolution = resolution, k.param = 60,
+                                                           algorithm = algorithm, resolution = resolution, k.param = k.param,
                                                            reduction.type = "pca", plot.SNN = FALSE, print.output = FALSE, 
-                                                           save.SNN = FALSE, n.iter = 10, modularity.fxn = 1, k.param = k.param))
+                                                           save.SNN = FALSE, n.iter = 10, modularity.fxn = 1))
     cat ("FINISHED \n")
     ## return RCA object
     newdata <- as.data.frame(t(SEURAT_clus@raw.data))

@@ -69,8 +69,8 @@ readRCA <- function(file, cellid = "CellID", centX = NULL, centY = NULL,
       if(length(nogene) > 0 ) data_reads <- data_reads[ , -which(colnames(data_reads) %in% nogene), drop=FALSE]
 
       ## Filter by reads per cell (rpc) and reads per gene (rpg)
-      data_reads <- data_reads[rowSums(data_reads) >= rpc,]
-      data_reads <- data_reads[,colSums(data_reads) >= rpg]
+      data_reads <- data_reads[rowSums(data_reads) >= rpc,, drop=FALSE]
+      data_reads <- data_reads[,colSums(data_reads) >= rpg, drop=FALSE]
 
       ## Filtered cell location
       data_loca<- data_loca[rownames(data_reads),]
@@ -92,12 +92,12 @@ readRCA <- function(file, cellid = "CellID", centX = NULL, centY = NULL,
       my_file <- file
 
       ## Selected gene
-      if(length(gene) >0 )
-        {
-        gene<- c(gene[gene%in%colnames(my_file)],cellid)
-        my_file <- my_file[,gene,drop = FALSE]
-        }
-
+      #if(length(gene) >0 )
+      #  {
+      #  gene<- c(gene[gene%in%colnames(my_file)],cellid)
+      #  my_file <- my_file[,gene,drop = FALSE]
+      #}
+      
       ## Define cell ID
       cell_id <- paste0("cellid_",as.vector(my_file[,cellid]))
       rownames(my_file) <- cell_id
@@ -121,16 +121,20 @@ readRCA <- function(file, cellid = "CellID", centX = NULL, centY = NULL,
         data_loca  <- data.frame(matrix(, nrow = 0, ncol = 0))
       }
 
+      ## Selected / un-select genes
+      if(length(gene) > 0 )   data_reads <- data_reads[ ,  gene , drop=FALSE]
+      if(length(nogene) > 0 ) data_reads <- data_reads[ , -which(colnames(data_reads) %in% nogene), drop=FALSE]
+      
       ## Filter by reads per cell (rpc) and reads per gene (rpg)
-      data_reads <- data_reads[rowSums(data_reads) >= rpc,]
-      data_reads <- data_reads[,colSums(data_reads) >= rpg]
+      data_reads <- data_reads[rowSums(data_reads) >= rpc, , drop = FALSE]
+      data_reads <- data_reads[,colSums(data_reads) >= rpg,drop = FALSE]
 
       ## return RCA object
       res <- methods::new("RCA_class",
                           data     = data_reads,
                           norm.data = matrix(, nrow = 0, ncol = 0),
                           scale.data = matrix(, nrow = 0, ncol = 0),
-                          gene = colnames(my_file),
+                          gene = colnames(data_reads),
                           cluster = factor(matrix(, nrow = 0, ncol = 0)),
                           location = data_loca,
                           cluster.marker = list(),
