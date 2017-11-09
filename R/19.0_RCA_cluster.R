@@ -17,6 +17,7 @@
 #' @param do.norm Do normalization
 #' @param do.scale Do scalling
 #' @param DEGmethod Methods to find DE genes.
+#' @param k.param Defines k for the k-nearest neighbor algorithm
 #'
 #' @examples
 #' ## Reading data
@@ -56,7 +57,7 @@
 RCA_cluster <- function(data, method = "seurat", DEGmethod = "seurat",
                         pc = NULL, cluster_id = NULL,
                         resolution = 0.3, algorithm = 1,
-                        do.norm = TRUE, do.scale = TRUE)
+                        do.norm = TRUE, do.scale = TRUE, k.param = 30)
 {
   ## Check Method
   metho <- c("seurat","backspin","monocle")
@@ -67,7 +68,7 @@ RCA_cluster <- function(data, method = "seurat", DEGmethod = "seurat",
   {
     myres<- RCA_seruat_cluster (data = data, pc = pc,
                                 cluster_id = cluster_id, resolution = resolution,
-                                algorithm = algorithm, do.norm = do.norm , do.scale = do.scale, DEGmethod)
+                                algorithm = algorithm, do.norm = do.norm , do.scale = do.scale, DEGmethod, k.param = k.param)
     myres
   }
 

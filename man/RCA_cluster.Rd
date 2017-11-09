@@ -6,7 +6,7 @@
 \usage{
 RCA_cluster(data, method = "seurat", DEGmethod = "seurat", pc = NULL,
   cluster_id = NULL, resolution = 0.3, algorithm = 1, do.norm = TRUE,
-  do.scale = TRUE)
+  do.scale = TRUE, k.param = 30)
 }
 \arguments{
 \item{data}{Input data in class RCA_class. Output of \link[MolDia]{readRCA}.}
@@ -29,6 +29,8 @@ Default is 0.3.}
 \item{do.norm}{Do normalization}
 
 \item{do.scale}{Do scalling}
+
+\item{k.param}{Defines k for the k-nearest neighbor algorithm}
 }
 \description{
 Cluster in-situ RCA data by different methods used in SEURAT, MONOCLE, BackSPIN.

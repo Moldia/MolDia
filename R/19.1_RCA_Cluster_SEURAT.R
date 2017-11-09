@@ -13,6 +13,7 @@
 #' @param algorithm Algorithm for modularity optimization (1 = original Louvain algorithm;
 #'        2 = Louvain algorithm with multilevel refinement; 3 = SLM algorithm). Default is 1.
 #' @param DEGmethod Methods to find DE genes.
+#' @param k.param Defines k for the k-nearest neighbor algorithm
 #' @keywords internal
 #'
 #' @examples
@@ -51,7 +52,7 @@
 RCA_seruat_cluster <- function(data, pc = NULL, cluster_id = NULL,
                             resolution = 0.3, algorithm = 1,
                             do.norm = TRUE, do.scale = TRUE,
-                            DEGmethod = "seurat")
+                            DEGmethod = "seurat", k.param = 30)
 {
   ## Save main data
   main_data <- data
@@ -116,9 +117,10 @@ RCA_seruat_cluster <- function(data, pc = NULL, cluster_id = NULL,
 
     ## Find cluster
     cat ("Running data clustering.....")
-    SEURAT_clus   <- suppressMessages(Seurat::FindClusters(object = SEURAT_clus, dims.use = pc, algorithm = algorithm, resolution = resolution
-                                          , reduction.type = "pca", plot.SNN = FALSE, print.output = FALSE, save.SNN = FALSE
-                                          , n.iter = 10, modularity.fxn = 1))
+    SEURAT_clus   <- suppressMessages(Seurat::FindClusters(object = SEURAT_clus, genes.use = gene_de, dims.use = pc, 
+                                                           algorithm = algorithm, resolution = resolution, k.param = 60,
+                                                           reduction.type = "pca", plot.SNN = FALSE, print.output = FALSE, 
+                                                           save.SNN = FALSE, n.iter = 10, modularity.fxn = 1, k.param = k.param))
     cat ("FINISHED \n")
     ## return RCA object
     newdata <- as.data.frame(t(SEURAT_clus@raw.data))

@@ -6,7 +6,8 @@
 Cluster in-situ RCA data by SEURAT.}
 \usage{
 RCA_seruat_cluster(data, pc = NULL, cluster_id = NULL, resolution = 0.3,
-  algorithm = 1, do.norm = TRUE, do.scale = TRUE, DEGmethod = "seurat")
+  algorithm = 1, do.norm = TRUE, do.scale = TRUE, DEGmethod = "seurat",
+  k.param = 30)
 }
 \arguments{
 \item{data}{Input data in class RCA_class. Output of \link[MolDia]{readRCA}.}
@@ -23,6 +24,8 @@ Default is 0.3.}
 2 = Louvain algorithm with multilevel refinement; 3 = SLM algorithm). Default is 1.}
 
 \item{DEGmethod}{Methods to find DE genes.}
+
+\item{k.param}{Defines k for the k-nearest neighbor algorithm}
 }
 \description{
 "RCA_seruat_cluster"
