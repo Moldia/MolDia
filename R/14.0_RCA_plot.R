@@ -104,7 +104,7 @@ RCA_map <- function(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y
           new.cluster.id <- lapply(seq_along(new.cluster.id), function(i)
             {
               myres <- stats::na.omit(as.vector(new.cluster.id[[i]][,"gene"][1:label.topgene]))
-              myres <- paste(myres, collapse = "_")
+              myres <- paste0(c(names(new.cluster.id[i]),myres), collapse = "_")
               names(myres)<- names(new.cluster.id)[i]
               myres
             })
@@ -290,5 +290,5 @@ RCA_map <- function(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y
     }
   ## Print Image
   print(q)
-  #return(NULL)
+  #return(data)
 }
