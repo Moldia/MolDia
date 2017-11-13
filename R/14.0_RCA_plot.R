@@ -50,6 +50,7 @@ RCA_map <- function(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y
   ## Check image and live has same value
   if (image == live ) stop("Argument value of `live` or `image should be different", call. = FALSE)
   
+  ######## What = "cell"
   if(what == "cell")
   {
     ## If data is clustered or not
