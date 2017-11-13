@@ -221,6 +221,12 @@ RCA_map <- function(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y
       ## If data is clustered or not
       if(length(data@cluster) > 0)
         {
+        
+          ## Select cluster to plot
+          if(length(cluster_id) > 0 )
+          { data@cluster <-  droplevels(data@cluster[which(data@cluster %in% cluster_id )]) } 
+        
+          ## Select cluster information data
           data1 <- data.frame(data@cluster)
           colnames(data1) <- "cluster"
         }
