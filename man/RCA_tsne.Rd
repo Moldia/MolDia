@@ -4,14 +4,15 @@
 \alias{RCA_tsne}
 \title{Dimentionality reduction to 2D by tSNE}
 \usage{
-RCA_tsne(data, clus = NULL, pc = 0.9, perplexity = 100, do.label = TRUE)
+RCA_tsne(data, clus = NULL, pc = NULL, perplexity = 100,
+  do.label = TRUE)
 }
 \arguments{
 \item{data}{Input data in class RCA_class. Output of \link[MolDia]{readRCA}.}
 
 \item{clus}{As factor. Each cell names has id. Cell order of data and cell order of clus should be same. (work for class data.frame)}
 
-\item{pc}{Desired percent of variance to be explained by PCA. Default in 0.9.}
+\item{pc}{Desired percent of variance to be explained by PCA. Default in NULL.}
 
 \item{perplexity}{Numeric; Perplexity parameter. See  \link[Rtsne]{Rtsne}}
 

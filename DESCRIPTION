@@ -13,7 +13,7 @@ Reference: Ke, R., Mignardi, M., Pacureanu, A., Svedlund, J., Botling, J., Wähl
 Depends: R (>= 3.3.0) 
 Imports: randomcoloR, graphics, data.table, plotrix, sunburstR, OrderedList, 
          desiR, foreach, doSNOW, parallel, doParallel, randomForest, iterators, ggplot2,
-         methods, Seurat, plotly, reshape, RColorBrewer, grid, irlba
+         methods, Seurat, plotly, reshape, RColorBrewer, grid, irlba, fields
 License: GPL
 Encoding: UTF-8
 LazyData: true

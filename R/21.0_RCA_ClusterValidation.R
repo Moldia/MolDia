@@ -8,7 +8,7 @@
 #' @description Any data in class RCA_class clusteded or not clustered used to reduce dimention to 2D by RCA-tsne.
 #' @param data Input data in class RCA_class. Output of \link[MolDia]{readRCA}.
 #' @param clus As factor. Each cell names has id. Cell order of data and cell order of clus should be same. (work for class data.frame)
-#' @param pc Desired percent of variance to be explained by PCA. Default in 0.9.
+#' @param pc Desired percent of variance to be explained by PCA. Default in NULL.
 #' @param perplexity Numeric; Perplexity parameter. See  \link[Rtsne]{Rtsne}
 #' @param do.label Label tsne plot or not
 #'
@@ -55,7 +55,7 @@
 #' result <- RCA_map(data = tsne_clust, what = "tsne")
 #'
 #' @export
-RCA_tsne <- function(data, clus = NULL, pc = 0.9, perplexity = 100, do.label = TRUE)
+RCA_tsne <- function(data, clus = NULL, pc = NULL, perplexity = 100, do.label = TRUE)
 {
   # Check class of data
   if(class(data)%in%c("RCA_class") ==FALSE) stop("Check input data in class 'RCA_class'",call. = FALSE)
@@ -66,20 +66,44 @@ RCA_tsne <- function(data, clus = NULL, pc = 0.9, perplexity = 100, do.label = T
   # Create SEURAT object
   RCAtsne   <- Seurat::CreateSeuratObject(t(data))
   #RCAtsne   <- Seurat::ScaleData(object = RCAtsne, do.scale = TRUE, do.center = TRUE, check.for.norm = FALSE)
+  if(length(mdata@scale.data)== 0 ) stop("Please scale data first with RCA_preprocess function ", call. = FALSE)
   RCAtsne@scale.data <- t(mdata@scale.data[rownames(data),])
   RCAtsne   <- Seurat::RunPCA(object  = RCAtsne, pc.genes = colnames(data),do.print = FALSE)
-
+  
   # Find optimal PCA component
-  sdev   <- RCAtsne@dr$pca@sdev
-  pcuse  <- cumsum(log2(sdev)^2 / sum(log2(sdev)^2))
-  pcuse  <- max(which(pcuse<=pc))
-  if(pcuse <= 3) stop("PC is too low")
-  cat("Number of principle component to be used :", pcuse, "\n")
+  if(length(pc) > 0 )
+  {
+    # Find optimal PCA component
+    #myPCA  <- SEURAT_clus@dr$pca@cell.embeddings
+    sdev   <- RCAtsne@dr$pca@sdev
+    pcuse  <- cumsum(log2(sdev)^2 / sum(log2(sdev)^2))
+    pcuse  <- max(which(pcuse<=pc))
+    if(pcuse <= 3) stop("PC is too low", call. = FALSE)
+    cat("Number of principle component to be used :", pcuse, "\n")
+    pc <- 1:pcuse
+  }
+  if(length(pc) == 0 )
+  {
+    ## Find number of optimal principle component that explain 90 percent of variaiance
+    npc   <- withCallingHandlers(suppressWarnings(irlba::prcomp_irlba(RCAtsne@data, n=20, 
+                                                                      fastpath = TRUE, verbose = FALSE)))
+    npc   <- summary(npc)$importance[3,]
+    pcuse <- which(npc > 0.90)[1]
+    cat("Number of principle component to be used :", pcuse, "\n")
+    pc <- 1:pcuse
+  }
+  
+  # Find optimal PCA component
+  #sdev   <- RCAtsne@dr$pca@sdev
+  #pcuse  <- cumsum(log2(sdev)^2 / sum(log2(sdev)^2))
+  #pcuse  <- max(which(pcuse<=pc))
+  #if(pcuse <= 3) stop("PC is too low")
+  #cat("Number of principle component to be used :", pcuse, "\n")
 
   # Running tSNE
   set.seed(12345)
   cat("Running dimentionality reduction by tSNE..")
-  RCAtsne   <- Seurat::RunTSNE(object = RCAtsne , dims.use = 1:pcuse, do.fast = TRUE, check_duplicates = FALSE,perplexity = perplexity )
+  RCAtsne   <- Seurat::RunTSNE(object = RCAtsne , dims.use = pc, do.fast = TRUE, check_duplicates = FALSE,perplexity = perplexity )
 
   # Assign cluster information on tSNE plot
   if(length(mdata@cluster)> 0 ) RCAtsne@ident <- mdata@cluster

@@ -83,6 +83,7 @@ RCA_seruat_cluster <- function(data, pc = NULL, cluster_id = NULL,
     # Create Seurat object
     SEURAT_clus   <- Seurat::CreateSeuratObject(t(data))
     #SEURAT_clus   <- Seurat::ScaleData(object = SEURAT_clus, do.scale = TRUE, do.center = TRUE, check.for.norm = FALSE)
+    if(length(main_data@scale.data)== 0 ) stop("Please scale data first with RCA_preprocess function ", call. = FALSE)
     SEURAT_clus@scale.data <- t(main_data@scale.data[rownames(data),])
     
     # Find DE
