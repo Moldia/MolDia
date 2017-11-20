@@ -66,6 +66,7 @@ RCA_tsne <- function(data, clus = NULL, pc = 0.9, perplexity = 100, do.label = T
   # Create SEURAT object
   RCAtsne   <- Seurat::CreateSeuratObject(t(data))
   #RCAtsne   <- Seurat::ScaleData(object = RCAtsne, do.scale = TRUE, do.center = TRUE, check.for.norm = FALSE)
+  if(length(mdata@scale.data)> 0 ) stop("Please scale data first", call. = FALSE)
   RCAtsne@scale.data <- t(mdata@scale.data[rownames(data),])
   RCAtsne   <- Seurat::RunPCA(object  = RCAtsne, pc.genes = colnames(data),do.print = FALSE)
 
