@@ -55,4 +55,3 @@ RCA_spatial <- function(data, neighbor.points = 9, spatial.info = "phisical")
   return(res)
   
 }
-
