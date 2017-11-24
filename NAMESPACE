@@ -2,6 +2,7 @@
 
 export(RCA_ClusterSelect)
 export(RCA_DE)
+export(RCA_GridSelect)
 export(RCA_barplot)
 export(RCA_clustcompare)
 export(RCA_cluster)
