@@ -31,6 +31,10 @@ RCA_spatial <- function(data, neighbor.points = 9, spatial.info = "phisical")
     res1 <- as.matrix(stats::dist(data@data))
     }
   
+  ## Distance matrix
+  res2 <- res1
+  ## Find nearest neighbout cells
+  
   res1           <- apply(res1,1,function(i)
     {
       kk<- sort(i, index.return = TRUE)$ix [2:(neighbor.points+1)]
@@ -51,7 +55,8 @@ RCA_spatial <- function(data, neighbor.points = 9, spatial.info = "phisical")
   bin_gene
   
   ## Return result
-  res <- list(bin_gene,res1)
+  res <- list(bin_gene,res1, res2)
   return(res)
   
 }
+
