@@ -47,6 +47,22 @@ readRCA <- function(file, cellid = "CellID", centX = NULL, centY = NULL,
     {
       ## Reading data
       my_file <- data.frame(data.table::fread(input = file , showProgress = TRUE))
+      
+      ## Delete cell with NA values
+      indexNA <- apply(my_file,2,function(i)
+      {
+        kk<- which(is.na(i))
+        kk
+      })
+      indexNA <- unique(unlist(indexNA))
+      
+      if(length(indexNA) == 0 ) my_file <- my_file
+      if(length(indexNA) > 0 ) 
+      {
+        cat("Removed" , length(indexNA), "cells having NA")
+        my_file <- my_file[-indexNA,]
+      }
+      
 
       ## Check cellid, centx, centy all in data or not
       if(any(c(cellid,centX,centY)%in%colnames(my_file))==FALSE) stop("Pleace check `cellid`, `centX` and `centY`", call. = TRUE)
