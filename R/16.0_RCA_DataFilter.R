@@ -249,13 +249,13 @@ RCA_barplot <- function(data, gene, total.expr = 1e4, gene.target = NULL, gene.s
 
     data_1 <- data[,gene.target, drop = FALSE]
     #data_1 <- data[,gene[[gene.target]], drop = FALSE]
-    data_1 <- data_1[rowSums(data_1) >= target.min.count.cell,]
+    data_1 <- data_1[rowSums(data_1) >= target.min.count.cell,,drop = FALSE]
 
 
     ### Define user required read thrashold to define the level of expression
     data_3 <- rowSums(data_1 >= min.count)
     gene_cell <- names(data_3)[which(data_3 %in% c(at.least.gene:at.most.gene))]
-    data     <- data[gene_cell,]
+    data     <- data[gene_cell,,drop = FALSE]
 
 
   ## Gene reads thrashhold per cel

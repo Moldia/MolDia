@@ -4,20 +4,28 @@
 \alias{RCA_GridSelect}
 \title{Select grid of interest from a tissue.}
 \usage{
-RCA_GridSelect(data, grid_id)
+RCA_GridSelect(data, nx = 6, ny = nx, gridtype = "hexa", grid_id = NULL)
 }
 \arguments{
 \item{data}{Input data in class RCA_class. Output of \link[MolDia]{readRCA}.}
 
-\item{grid_id}{Grid to select}
+\item{nx, ny}{Numbers of rectangular quadrats in the x and y directions}
+
+\item{gridtype}{type of grid to plot. Default is "hexa"}
+
+\item{grid_id}{Grid to select. Default id NULL.}
 }
 \description{
 Select grid of interest from a tissue
 }
 \examples{
 ex_data <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),cellid = "CellId", centX = "centroid_x", centY = "centroid_y", rpc = 3)
+
 ex_data <- readRCA(file = "D:\\\\Project Sweden\\\\SU Project\\\\Working code\\\\Data\\\\All tissue\\\\CellBlobs2_1.csv",
                    cellid = "CellID", centX = "centroidX", centY = "centroidY", rpc =1)
+ 
+mygrid  <- RCA_GridSelect(data = ex_data, nx = 4,gridtype = "hexa")
+mygrid  <- RCA_GridSelect(data = ex_data, nx = 8,gridtype = "rect", grid_id = c(16,17,24))
 
 
 }
