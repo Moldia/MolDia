@@ -59,7 +59,7 @@ readRCA <- function(file, cellid = "CellID", centX = NULL, centY = NULL,
       if(length(indexNA) == 0 ) my_file <- my_file
       if(length(indexNA) > 0 ) 
       {
-        cat("Removed" , length(indexNA), "cells having NA")
+        cat("Removed" , length(indexNA), "cells having NA\n")
         my_file <- my_file[-indexNA,]
       }
       
