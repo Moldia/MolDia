@@ -21,7 +21,7 @@ Select grid of interest from a tissue
 \examples{
 ex_data <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),cellid = "CellId", centX = "centroid_x", centY = "centroid_y", rpc = 3)
 ex_data <- readRCA(file = system.file("extdata", "CellBlobs_1.csv", package="MolDia"),cellid = "CellID", centX = "centroidX", centY = "centroidY", rpc = 1)
-mygrid  <- RCA_GridSelect(data = ex_data, nx = 5,gridtype = "hexa")
+mygrid  <- RCA_GridSelect(data = ex_data, nx = 8,gridtype = "hexa")
 mygrid  <- RCA_GridSelect(data = ex_data, nx = 8,gridtype = "rect", grid_id = c(6,16,20,8,17,21))
 
 
