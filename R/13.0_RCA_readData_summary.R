@@ -5,7 +5,7 @@
 #' Read RCA data
 #' @description Read RCA data
 #'
-#' @param file File name in CSV formate or data in data.frame class.
+#' @param file File name in CSV formate or data in data.frame class
 #' @param cellid String to naming cell. Default is "CellID".
 #' @param centX Name of X co-ordinate in file. Default is "centroidX"
 #' @param centY Name of Y co-ordinate in file  Default is "centroidY"
