@@ -10,7 +10,7 @@ RCA_GridSelect(data, gridtype = "rect", nx = 6, ny = nx, grid_id = NULL,
 \arguments{
 \item{data}{Input data in class RCA_class. Output of \link[MolDia]{readRCA}.}
 
-\item{gridtype}{type of grid to plot. Default is "hexa". See details.}
+\item{gridtype}{type of grid to plot. Default is "rect". See details.}
 
 \item{nx, ny}{Numbers of rectangular quadrats in the x and y directions}
 
@@ -20,9 +20,7 @@ RCA_GridSelect(data, gridtype = "rect", nx = 6, ny = nx, grid_id = NULL,
 
 \item{roi.id}{Column name in roifile file that contain ROI id}
 
-\item{roi.x}{X axis name in roifile file.}
-
-\item{roi.y}{Y axis name in roifile file.}
+\item{roi.x, roi.y}{X and Y axis name in roifile file.}
 }
 \description{
 Select grid of interest from a tissue
@@ -33,6 +31,7 @@ gridtype parameter can have 4 values :  "hexa", "rect", "roifile" and "roi"
          
          
          "rect" will create rectangular grid and number of grid is based on nx parameter and grid_id will select grid of interest.
+         
          "roifile" will require a file input in csv formate in the parameter "roifile". The input file must have at least 3 column of
          ROI id, x-axis, y-axis. The parameter "roi.id", "roi.x" and "roi.y" will be the name input of corresponding column.
          

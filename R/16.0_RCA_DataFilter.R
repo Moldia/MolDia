@@ -357,19 +357,19 @@ RCA_barplot <- function(data, gene, total.expr = 1e4, gene.target = NULL, gene.s
 #' Select grid of interest from a tissue.
 #' @description Select grid of interest from a tissue
 #' @param data Input data in class RCA_class. Output of \link[MolDia]{readRCA}.
-#' @param gridtype type of grid to plot. Default is "hexa". See details.
+#' @param gridtype type of grid to plot. Default is "rect". See details.
 #' @param grid_id Grid to select. Default id NULL.
 #' @param nx,ny Numbers of rectangular quadrats in the x and y directions
 #' @param roifile Name of the file that contain ROI. csv formate
 #' @param roi.id Column name in roifile file that contain ROI id
-#' @param roi.x X axis name in roifile file.
-#' @param roi.y Y axis name in roifile file.
+#' @param roi.x,roi.y X and Y axis name in roifile file.
 #' 
 #' @details gridtype parameter can have 4 values :  "hexa", "rect", "roifile" and "roi"
 #'          "hexa" will create hexagonal grid and number of grid is based on nx parameter and grid_id will select grid of interest.
 #'          
 #'          
 #'          "rect" will create rectangular grid and number of grid is based on nx parameter and grid_id will select grid of interest.
+#'          
 #'          "roifile" will require a file input in csv formate in the parameter "roifile". The input file must have at least 3 column of
 #'          ROI id, x-axis, y-axis. The parameter "roi.id", "roi.x" and "roi.y" will be the name input of corresponding column.
 #'          
