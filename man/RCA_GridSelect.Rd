@@ -4,15 +4,15 @@
 \alias{RCA_GridSelect}
 \title{Select grid of interest from a tissue.}
 \usage{
-RCA_GridSelect(data, nx = 6, ny = nx, gridtype = "rect", grid_id = NULL,
+RCA_GridSelect(data, gridtype = "rect", nx = 6, ny = nx, grid_id = NULL,
   roifile = NULL, roi.id = NULL, roi.x = NULL, roi.y = NULL)
 }
 \arguments{
 \item{data}{Input data in class RCA_class. Output of \link[MolDia]{readRCA}.}
 
-\item{nx, ny}{Numbers of rectangular quadrats in the x and y directions}
+\item{gridtype}{type of grid to plot. Default is "hexa". See details.}
 
-\item{gridtype}{type of grid to plot. Default is "hexa"}
+\item{nx, ny}{Numbers of rectangular quadrats in the x and y directions}
 
 \item{grid_id}{Grid to select. Default id NULL.}
 
@@ -27,6 +27,17 @@ RCA_GridSelect(data, nx = 6, ny = nx, gridtype = "rect", grid_id = NULL,
 \description{
 Select grid of interest from a tissue
 }
+\details{
+gridtype parameter can have 4 values :  "hexa", "rect", "roifile" and "roi"
+         "hexa" will create hexagonal grid and number of grid is based on nx parameter and grid_id will select grid of interest.
+         
+         
+         "rect" will create rectangular grid and number of grid is based on nx parameter and grid_id will select grid of interest.
+         "roifile" will require a file input in csv formate in the parameter "roifile". The input file must have at least 3 column of
+         ROI id, x-axis, y-axis. The parameter "roi.id", "roi.x" and "roi.y" will be the name input of corresponding column.
+         
+         "roi" will select ROI more interactively. One cal select ROI on the image by pointer.
+}
 \examples{
 ex_data <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),cellid = "CellId", centX = "centroid_x", centY = "centroid_y", rpc = 3)
 mygrid  <- RCA_GridSelect(data = ex_data, nx = 8,gridtype = "hexa")
@@ -38,5 +49,6 @@ ex_data <- readRCA(file = system.file("extdata", "CellBlobs_ROI.csv", package="M
 mygrid  <- RCA_GridSelect(data = ex_data, nx = 6, gridtype = "roifile",
                             roifile = system.file("extdata", "polygon_coordinates.csv", package="MolDia"),
                             roi.id = "Polygon_id", roi.x ="x_coordiates" , roi.y = "y_coordinates", grid_id = c(1,2,5,6))
+mygrid  <- RCA_GridSelect(data = ex_data, gridtype = "roi")
 
 }

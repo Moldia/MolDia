@@ -357,13 +357,23 @@ RCA_barplot <- function(data, gene, total.expr = 1e4, gene.target = NULL, gene.s
 #' Select grid of interest from a tissue.
 #' @description Select grid of interest from a tissue
 #' @param data Input data in class RCA_class. Output of \link[MolDia]{readRCA}.
+#' @param gridtype type of grid to plot. Default is "hexa". See details.
 #' @param grid_id Grid to select. Default id NULL.
 #' @param nx,ny Numbers of rectangular quadrats in the x and y directions
-#' @param gridtype type of grid to plot. Default is "hexa"
 #' @param roifile Name of the file that contain ROI. csv formate
 #' @param roi.id Column name in roifile file that contain ROI id
 #' @param roi.x X axis name in roifile file.
 #' @param roi.y Y axis name in roifile file.
+#' 
+#' @details gridtype parameter can have 4 values :  "hexa", "rect", "roifile" and "roi"
+#'          "hexa" will create hexagonal grid and number of grid is based on nx parameter and grid_id will select grid of interest.
+#'          
+#'          
+#'          "rect" will create rectangular grid and number of grid is based on nx parameter and grid_id will select grid of interest.
+#'          "roifile" will require a file input in csv formate in the parameter "roifile". The input file must have at least 3 column of
+#'          ROI id, x-axis, y-axis. The parameter "roi.id", "roi.x" and "roi.y" will be the name input of corresponding column.
+#'          
+#'          "roi" will select ROI more interactively. One cal select ROI on the image by pointer. 
 #' 
 #' @examples
 #' ex_data <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),cellid = "CellId", centX = "centroid_x", centY = "centroid_y", rpc = 3)
@@ -376,9 +386,10 @@ RCA_barplot <- function(data, gene, total.expr = 1e4, gene.target = NULL, gene.s
 #' mygrid  <- RCA_GridSelect(data = ex_data, nx = 6, gridtype = "roifile",
 #'                             roifile = system.file("extdata", "polygon_coordinates.csv", package="MolDia"),
 #'                             roi.id = "Polygon_id", roi.x ="x_coordiates" , roi.y = "y_coordinates", grid_id = c(1,2,5,6))
+#' mygrid  <- RCA_GridSelect(data = ex_data, gridtype = "roi")
 #' 
 #' @export
-RCA_GridSelect <- function(data, nx = 6, ny = nx, gridtype = "rect", grid_id = NULL, 
+RCA_GridSelect <- function(data, gridtype = "rect", nx = 6, ny = nx, grid_id = NULL, 
                            roifile = NULL, roi.id = NULL, roi.x = NULL, roi.y = NULL)
 {
   ## Save main data
@@ -447,20 +458,31 @@ RCA_GridSelect <- function(data, nx = 6, ny = nx, gridtype = "rect", grid_id = N
     ## Convert window object to Tessellation
     myspa1 <-spatstat::as.tess(myspa1)
   }
+  
+  if(gridtype == "roi")
+  {
+    myspa1 <- spatstat::clickpoly(add = TRUE, col = 2, lwd = 2)
+    myspa1 <- spatstat::as.tess(myspa1)
+  }
 
   
   ## Select grid of interest
-  if(length(grid_id) > 0 ){ 
+  if(length(grid_id) > 0 | gridtype == "roi"){ 
     
-    pp <- myspa1
-    tt <- pp$tiles
-    tile_id <- paste0("Grid_id_", grid_id)
-    for(i in 1:length(seq_along(grid_id)))
-    {
-      nam <- tile_id[i]
-      assign(nam, tt[[grid_id[i]]])
-    }
-    eval(parse(text = paste("kk1 <- spatstat::union.owin(",paste0(tile_id,collapse=", "),")")))
+    if(gridtype != "roi")
+      {
+      pp <- myspa1
+      tt <- pp$tiles
+      tile_id <- paste0("Grid_id_", grid_id)
+      for(i in 1:length(seq_along(grid_id)))
+        { 
+        nam <- tile_id[i]
+        assign(nam, tt[[grid_id[i]]])
+        }
+      eval(parse(text = paste("kk1 <- spatstat::union.owin(",paste0(tile_id,collapse=", "),")")))
+      }
+    
+    if(gridtype == "roi") kk1 <- myspa1$tiles[[1]]
     isin <- spatstat::inside.owin(x = mydata$centroid_x, y = mydata$centroid_y,w=kk1)
     
     ## Plot grid of interest
@@ -476,7 +498,7 @@ RCA_GridSelect <- function(data, nx = 6, ny = nx, gridtype = "rect", grid_id = N
     main_data@location <- main_data@location[rownames(point_in),]
     main_data@gene <- colnames(final_data)
     
-    RCA_map(main_data, main = "Selected grid from Tissue")
+    RCA_map(main_data, main = "Selected ROI from Tissue")
   }
   
   return(main_data)
