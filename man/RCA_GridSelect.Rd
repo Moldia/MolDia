@@ -4,7 +4,8 @@
 \alias{RCA_GridSelect}
 \title{Select grid of interest from a tissue.}
 \usage{
-RCA_GridSelect(data, nx = 6, ny = nx, gridtype = "hexa", grid_id = NULL)
+RCA_GridSelect(data, nx = 6, ny = nx, gridtype = "rect", grid_id = NULL,
+  roifile = NULL, roi.id = NULL, roi.x = NULL, roi.y = NULL)
 }
 \arguments{
 \item{data}{Input data in class RCA_class. Output of \link[MolDia]{readRCA}.}
@@ -14,15 +15,28 @@ RCA_GridSelect(data, nx = 6, ny = nx, gridtype = "hexa", grid_id = NULL)
 \item{gridtype}{type of grid to plot. Default is "hexa"}
 
 \item{grid_id}{Grid to select. Default id NULL.}
+
+\item{roifile}{Name of the file that contain ROI. csv formate}
+
+\item{roi.id}{Column name in roifile file that contain ROI id}
+
+\item{roi.x}{X axis name in roifile file.}
+
+\item{roi.y}{Y axis name in roifile file.}
 }
 \description{
 Select grid of interest from a tissue
 }
 \examples{
 ex_data <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),cellid = "CellId", centX = "centroid_x", centY = "centroid_y", rpc = 3)
-ex_data <- readRCA(file = system.file("extdata", "CellBlobs_1.csv", package="MolDia"),cellid = "CellID", centX = "centroidX", centY = "centroidY", rpc = 1)
 mygrid  <- RCA_GridSelect(data = ex_data, nx = 8,gridtype = "hexa")
 mygrid  <- RCA_GridSelect(data = ex_data, nx = 8,gridtype = "rect", grid_id = c(6,16,20,8,17,21))
 
+## Selected ROI
+ex_data <- readRCA(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
+                   cellid = "CellID", centX = "centroidX", centY = "centroidY", rpc = 3)
+mygrid  <- RCA_GridSelect(data = data, nx = 6, gridtype = "roifile",
+                            roifile = system.file("extdata", "polygon_coordinates.csv", package="MolDia"),
+                            roi.id = "Polygon_id", roi.x ="x_coordiates" , roi.y = "y_coordinates", grid_id = c(1,2,5,6))
 
 }

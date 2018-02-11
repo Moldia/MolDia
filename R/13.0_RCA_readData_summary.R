@@ -21,7 +21,7 @@
 #' @examples
 #' ##### Reading RCA data in CSV formate
 #' data_1 <- readRCA(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
-#'                   cellid = "CellID")
+#'                   cellid = "CellID", centX = "centroidX", centY = "centroidY")
 #' data_2 <- readRCA(file = system.file("extdata", "CellBlobs_QT_0.40.csv", package="MolDia"),
 #'                   cellid = "CellID")
 #' data_3 <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),

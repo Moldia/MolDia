@@ -8,7 +8,7 @@ readRCA(file, cellid = "CellID", centX = NULL, centY = NULL, rpc = 1,
   rpg = 1, gene = NULL, nogene = NULL)
 }
 \arguments{
-\item{file}{File name in CSV formate or data in data.frame class.}
+\item{file}{File name in CSV formate or data in data.frame class}
 
 \item{cellid}{String to naming cell. Default is "CellID".}
 
@@ -33,7 +33,7 @@ Read RCA data
 \examples{
 ##### Reading RCA data in CSV formate
 data_1 <- readRCA(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
-                  cellid = "CellID")
+                  cellid = "CellID", centX = "centroidX", centY = "centroidY")
 data_2 <- readRCA(file = system.file("extdata", "CellBlobs_QT_0.40.csv", package="MolDia"),
                   cellid = "CellID")
 data_3 <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),

@@ -360,16 +360,26 @@ RCA_barplot <- function(data, gene, total.expr = 1e4, gene.target = NULL, gene.s
 #' @param grid_id Grid to select. Default id NULL.
 #' @param nx,ny Numbers of rectangular quadrats in the x and y directions
 #' @param gridtype type of grid to plot. Default is "hexa"
+#' @param roifile Name of the file that contain ROI. csv formate
+#' @param roi.id Column name in roifile file that contain ROI id
+#' @param roi.x X axis name in roifile file.
+#' @param roi.y Y axis name in roifile file.
 #' 
 #' @examples
 #' ex_data <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),cellid = "CellId", centX = "centroid_x", centY = "centroid_y", rpc = 3)
-#' ex_data <- readRCA(file = system.file("extdata", "CellBlobs_1.csv", package="MolDia"),cellid = "CellID", centX = "centroidX", centY = "centroidY", rpc = 1)
 #' mygrid  <- RCA_GridSelect(data = ex_data, nx = 8,gridtype = "hexa")
 #' mygrid  <- RCA_GridSelect(data = ex_data, nx = 8,gridtype = "rect", grid_id = c(6,16,20,8,17,21))
 #' 
+#' ## Selected ROI
+#' ex_data <- readRCA(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
+#'                    cellid = "CellID", centX = "centroidX", centY = "centroidY", rpc = 3)
+#' mygrid  <- RCA_GridSelect(data = data, nx = 6, gridtype = "roifile",
+#'                             roifile = system.file("extdata", "polygon_coordinates.csv", package="MolDia"),
+#'                             roi.id = "Polygon_id", roi.x ="x_coordiates" , roi.y = "y_coordinates", grid_id = c(1,2,5,6))
 #' 
 #' @export
-RCA_GridSelect <- function(data, nx = 6, ny = nx, gridtype = "hexa", grid_id = NULL)
+RCA_GridSelect <- function(data, nx = 6, ny = nx, gridtype = "rect", grid_id = NULL, 
+                           roifile = NULL, roi.id = NULL, roi.x = NULL, roi.y = NULL)
 {
   ## Save main data
   main_data <- data
@@ -381,14 +391,14 @@ RCA_GridSelect <- function(data, nx = 6, ny = nx, gridtype = "hexa", grid_id = N
   hpts <- grDevices::chull(mydata)
   hpts <- mydata[hpts, ]
   
-  ## Sort points by anto clockwise
+  ## Sort points by anti clockwise
   anti_hpts <- contoureR::orderPoints(x = hpts$centroid_x, y = hpts$centroid_y, clockwise = FALSE)
   hpts <- hpts[anti_hpts,]
   
   ## Spatial point area
   myspa <- spatstat::ppp(x = mydata$centroid_x, y = mydata$centroid_y, 
                          poly=list(x=hpts$centroid_x, y=hpts$centroid_y), check = FALSE)
-  plot(myspa, main = "Grid on Tissue")
+  plot(myspa, main = "ROI on Tissue")
   
   ## Divides window into quadrats and counts the numbers
   if(gridtype == "rect")
@@ -396,6 +406,7 @@ RCA_GridSelect <- function(data, nx = 6, ny = nx, gridtype = "hexa", grid_id = N
     myspa1 <- spatstat::quadrats(myspa, nx = nx, ny = ny)
     #names(myspa1$tiles) <- paste("Tile",c(1:length(myspa1$tiles)))
     names(myspa1$tiles) <- c(1:length(myspa1$tiles))
+    plot(myspa1, add= TRUE,col= "red",do.labels=TRUE, labelargs = list(col = "red"))
   }
   
   if(gridtype == "hexa")
@@ -403,8 +414,40 @@ RCA_GridSelect <- function(data, nx = 6, ny = nx, gridtype = "hexa", grid_id = N
     max_range <- max(apply(apply(mydata,2,range),2,diff))
     myspa1    <- spatstat::hextess(myspa, s = abs(max_range)/nx)
     names(myspa1$tiles) <- c(1:length(myspa1$tiles))
+    plot(myspa1, add= TRUE,col= "red",do.labels=TRUE, labelargs = list(col = "red"))
   }
-  plot(myspa1, add= TRUE,col= "red",do.labels=TRUE, labelargs = list(col = "red"))
+  
+  if(gridtype == "roifile")
+  {
+    if(length(roifile)==0) stop("Please select location of ROI file in csv formate",call. = TRUE)
+    ## Read ROI file in CSV formate
+    roi <- read.csv(file = roifile)
+    
+    ## Split ROI file by region id 
+    roi <- split(roi, roi[,roi.id])
+    roi <- lapply(roi, function(i)
+    { 
+      hpts <- i #subset(i, select=-c(Polygon.id))
+      hpts[,roi.id] <- NULL
+      anti_hpts <- contoureR::orderPoints(x = hpts[,roi.x], y = hpts[,roi.y], clockwise = FALSE)
+      hpts <- hpts[anti_hpts,]
+      hpts <- apply(hpts,2,list)
+      hpts <- lapply(hpts, unlist)
+      hpts <- spatstat::owin(poly =  list(x = hpts[[roi.x]],y = hpts[[roi.y]] ))
+      hpts
+    }
+    )
+    
+    ## Ploting selected region
+    myspa1 <-lapply(roi, plot, add=T, border = "red", lwd = 2)
+    ## label each polygon
+    labs<-names(roi)
+    for (i in 1: length(roi)) {xy<-centroid.owin((poly = roi[[i]]));
+    text(xy$x,xy$y, labels = labs[i], col = "red")}
+    ## Convert window object to Tessellation
+    myspa1 <-spatstat::as.tess(myspa1)
+  }
+
   
   ## Select grid of interest
   if(length(grid_id) > 0 ){ 
@@ -421,7 +464,7 @@ RCA_GridSelect <- function(data, nx = 6, ny = nx, gridtype = "hexa", grid_id = N
     isin <- spatstat::inside.owin(x = mydata$centroid_x, y = mydata$centroid_y,w=kk1)
     
     ## Plot grid of interest
-    point_in <- ex_data@location[isin,]
+    point_in <- main_data@location[isin,]
     #point_in1 <- spatstat::ppp(x = point_in$centroid_x, y = point_in$centroid_y,window = kk1, check = FALSE)
     
     ## Return result
