@@ -33,9 +33,9 @@ mygrid  <- RCA_GridSelect(data = ex_data, nx = 8,gridtype = "hexa")
 mygrid  <- RCA_GridSelect(data = ex_data, nx = 8,gridtype = "rect", grid_id = c(6,16,20,8,17,21))
 
 ## Selected ROI
-ex_data <- readRCA(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
-                   cellid = "CellID", centX = "centroidX", centY = "centroidY", rpc = 3)
-mygrid  <- RCA_GridSelect(data = data, nx = 6, gridtype = "roifile",
+ex_data <- readRCA(file = system.file("extdata", "CellBlobs_ROI.csv", package="MolDia"),
+                   cellid = "CellID", centX = "centroidX", centY = "centroidY")
+mygrid  <- RCA_GridSelect(data = ex_data, nx = 6, gridtype = "roifile",
                             roifile = system.file("extdata", "polygon_coordinates.csv", package="MolDia"),
                             roi.id = "Polygon_id", roi.x ="x_coordiates" , roi.y = "y_coordinates", grid_id = c(1,2,5,6))
 
