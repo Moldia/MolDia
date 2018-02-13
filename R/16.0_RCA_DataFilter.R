@@ -453,7 +453,7 @@ RCA_GridSelect <- function(data, gridtype = "rect", nx = 6, ny = nx, grid_id = N
     myspa1 <-lapply(roi, plot, add=T, border = "red", lwd = 2)
     ## label each polygon
     labs<-names(roi)
-    for (i in 1: length(roi)) {xy<-centroid.owin((poly = roi[[i]]));
+    for (i in 1: length(roi)) {xy<-spatstat::centroid.owin((poly = roi[[i]]));
     text(xy$x,xy$y, labels = labs[i], col = "red")}
     ## Convert window object to Tessellation
     myspa1 <-spatstat::as.tess(myspa1)
