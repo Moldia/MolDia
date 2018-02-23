@@ -5,7 +5,18 @@
 \title{Compare ISS data}
 \usage{
 ISS_compare(..., logdata = FALSE, label = TRUE, levelCI = 0.95,
-  live = TRUE)
+  live = FALSE)
+}
+\arguments{
+\item{...}{Input data in class RCA_class. At least 2 dataset or more. Output of \link[MolDia]{readRCA}.}
+
+\item{logdata}{log2 apply to data or not. Deafult is FALSE.}
+
+\item{label}{Label each point. Default is TRUE.}
+
+\item{levelCI}{Level of confidence interval to use. Default is 0.95}
+
+\item{live}{Show plot in interactive mode. Default is FALSE}
 }
 \description{
 Compare multiple ISS data
@@ -13,7 +24,6 @@ Compare multiple ISS data
 \examples{
 hc_left  <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),  cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
 hc_right <- readRCA(file = system.file("extdata", "Hypocampus_right.csv", package="MolDia"), cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
-
-kk<- ISS_compare(hc_left,hc_right,hc_left,hc_right, label = F, levelCI = 0.99, live = F, logdata = FALSE)
+kk<- ISS_compare(hc_left,hc_right, label = F, levelCI = 0.99, live = F, logdata = FALSE)
 
 }
