@@ -44,11 +44,15 @@
 #'
 #' @export
 #' 
-ISS_pieplot <- function(data, gene= NULL)
+ISS_pieplot <- function(data, gene = NULL, with_gene = NULL, without_gene = NULL)
 {
   ## Main data 
   main_data <- data
   data <- data@data
+  
+  ## Select gene with or without names
+  if(length(with_gene) > 0 )    data <- data[rowSums(data[,with_gene, drop = FALSE]) > 0,]
+  if(length(without_gene) > 0 ) data <- data[rowSums(data[,without_gene, drop = FALSE]) == 0,]
   
   ## Select genes
   if (length(gene)==0 ) data <- data

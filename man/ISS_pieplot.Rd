@@ -4,7 +4,7 @@
 \alias{ISS_pieplot}
 \title{Venn-pie chart on RCA data based on genes of interest}
 \usage{
-ISS_pieplot(data, gene = NULL)
+ISS_pieplot(data, gene = NULL, with_gene = NULL, without_gene = NULL)
 }
 \arguments{
 \item{data}{Input data in class RCA_class. Output of \link[MolDia]{readRCA}.}
