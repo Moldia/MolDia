@@ -52,14 +52,14 @@ ISS_pieplot <- function(data, gene = NULL, with_gene = NULL, without_gene = NULL
   main_data <- data
   data <- data@data
   
-  ## Select gene with or without names
-  if(length(with_gene) > 0 )    data <- data[rowSums(data[,with_gene, drop = FALSE]) > 0,]
-  if(length(without_gene) > 0 ) data <- data[rowSums(data[,without_gene, drop = FALSE]) == 0,]
-  
   ## Select genes
   if (length(gene)==0 ) data <- data
   else {
     data <- data[,gene, drop= FALSE]}
+  
+  ## Select gene with or without names
+  if(length(with_gene) > 0 )    data <- data[rowSums(data[,with_gene, drop = FALSE]) > 0,]
+  if(length(without_gene) > 0 ) data <- data[rowSums(data[,without_gene, drop = FALSE]) == 0,]
   
   ## Check gene name in data
   if(all(gene %in%colnames(data))==FALSE) stop("Check gene name are same and equel length in both input ", call. = FALSE)
@@ -139,6 +139,9 @@ ISS_pieplot <- function(data, gene = NULL, with_gene = NULL, without_gene = NULL
 ################################################################################
 RCA_pieplot <- function(data, gene = NULL, gene_with = NULL, gene_without = NULL)
   {
+  ## Check at least 2 genes 
+  if(length(gene) < 2) stop("There should be at least 2 genes", call. = FALSE)
+  
   ## Data select
   main_data_1 <- data
   main_data_2 <- data@data
