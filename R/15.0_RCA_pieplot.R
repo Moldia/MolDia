@@ -48,16 +48,19 @@
 #' 
 ISS_pieplot <- function(data, gene = NULL, with_gene = NULL, without_gene = NULL)
 {
+  ## Check at least 2 genes 
+  if(length(gene) < 2) stop("There should be at least 2 genes to be selected", call. = FALSE)
+  
   ## Main data 
   main_data <- data
   data <- data@data
   
-  ## Select genes
+  ## Select data with selected genes
   if (length(gene)==0 ) data <- data
   else {
     data <- data[,gene, drop= FALSE]}
   
-  ## Select gene with or without names
+  ## Select data with or without gene names
   if(length(with_gene) > 0 )    data <- data[rowSums(data[,with_gene, drop = FALSE]) > 0,]
   if(length(without_gene) > 0 ) data <- data[rowSums(data[,without_gene, drop = FALSE]) == 0,]
   
@@ -95,6 +98,9 @@ ISS_pieplot <- function(data, gene = NULL, with_gene = NULL, without_gene = NULL
   ll1 <- unlist (lapply(ll, paste0, collapse= "-"))
   
   data$Gene <- ll1
+  
+  ## Order data according to gene name alphabetic
+  data<- data[order(data$Gene),]
   
   ## Apply Venn-pie plot
   if(length(gene) == 0 )
