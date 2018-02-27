@@ -138,6 +138,9 @@ ISS_pieplot <- function(data, gene = NULL, with_gene = NULL, without_gene = NULL
                         data     = data,
                         location = main_data@location[rownames(data),],
                         gene = colnames(data))
+  
+  ## Return Data
+  data <- data[order(data$Count,decreasing = TRUE),]
   return(data)
   
 }
