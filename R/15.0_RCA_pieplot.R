@@ -3,10 +3,12 @@
 #'
 #' @param data Input data in class RCA_class. Output of \link[MolDia]{readRCA}.
 #' @param gene Gene of interest. Default is NULL.
+#' @param with_gene From gene of interest , select only cells only with these genes.
+#' @param without_gene From gene of interest , select only cells only without these genes.
 #'
 #' @return The Venn-pie plot.
 #'
-#'         Result in class \link[MolDia]{readRCA}.
+#'         Number of cells having specific gene profile.
 #' @author Mohammad Tanvir Ahamed
 #'
 #' @examples
