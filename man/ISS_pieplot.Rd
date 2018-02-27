@@ -10,11 +10,15 @@ ISS_pieplot(data, gene = NULL, with_gene = NULL, without_gene = NULL)
 \item{data}{Input data in class RCA_class. Output of \link[MolDia]{readRCA}.}
 
 \item{gene}{Gene of interest. Default is NULL.}
+
+\item{with_gene}{From gene of interest , select only cells only with these genes.}
+
+\item{without_gene}{From gene of interest , select only cells only without these genes.}
 }
 \value{
 The Venn-pie plot.
 
-        Result in class \link[MolDia]{readRCA}.
+        Number of cells having specific gene profile.
 }
 \description{
 Venn-pie chart on RCA data based on genes of interest
