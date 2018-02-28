@@ -42,7 +42,7 @@
 #'
 #' #####  Pie chart of all Circular mRNA in cell with at least 3 neuronal genes.
 #' genes <- marker_gene1[[1]]
-#' res   <- ISS_pieplot (data = mydata, gene = genes)
+#' res   <- ISS_pieplot (data = mydata, gene = genes, with_gene = c("Cck.L"))
 #'
 #' @export
 #' 
@@ -72,7 +72,8 @@ ISS_pieplot <- function(data, gene = NULL, with_gene = NULL, without_gene = NULL
   data <- data[,colSums(data) > 0]
   
   ## Gene name
-  gname <-colnames(data)
+  gname <-sort(colnames(data))
+  data  <- data[,gname]
   
   ## Get combinition of gene name (Gene count > 0) for each cell and count frequency of gene combinition
   data <- apply(data,1,function(i)
@@ -81,7 +82,7 @@ ISS_pieplot <- function(data, gene = NULL, with_gene = NULL, without_gene = NULL
   })
   data <- data.frame(table(unlist(data)))
   colnames(data) <- c("Gene","Count")
-  data <- data[order(data$Count, decreasing = T),]
+  #data <- data[order(data$Count, decreasing = T),]
   
   ## Sort gene name in each gene name according their high to low occurance in gene combinition
   tot_comb  <- as.vector(data$Gene)
@@ -100,7 +101,7 @@ ISS_pieplot <- function(data, gene = NULL, with_gene = NULL, without_gene = NULL
   data$Gene <- ll1
   
   ## Order data according to gene name alphabetic
-  data<- data[order(data$Gene),]
+  #data<- data[order(data$Gene),]
   
   ## Apply Venn-pie plot
   if(length(gene) == 0 )
