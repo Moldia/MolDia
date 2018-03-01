@@ -9,15 +9,28 @@
 #' @param live Show plot in interactive mode. Default is FALSE
 #' 
 #' @examples 
-#' hc_left  <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),  cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
-#' hc_right <- readRCA(file = system.file("extdata", "Hypocampus_right.csv", package="MolDia"), cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
-#' kk<- ISS_compare(hc_left,hc_right, label = F, levelCI = 0.99, live = F, logdata = FALSE)
+#' hcleft   <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),  cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
+#' hcright  <- readRCA(file = system.file("extdata", "Hypocampus_right.csv", package="MolDia"), cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
+#' hcleft1  <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),  cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
+#' hcright1 <- readRCA(file = system.file("extdata", "Hypocampus_right.csv", package="MolDia"), cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
+
+#' kk<- ISS_compare(hcleft, hcright, hcleft1,hcright1,label = F, levelCI = 0.99, live = F, logdata = FALSE)
 #' 
 #' @export
 ISS_compare <- function(..., logdata = FALSE, label = TRUE, levelCI = 0.95, live = FALSE)
 {
   ## Main data
   maindata <- list(...)
+  
+  ## Extract name form input data 
+  ## Ref : https://stackoverflow.com/questions/5754367/using-substitute-to-get-argument-name-with
+  myfunc <- function(a, ...) {
+    arg <- deparse(substitute(a))
+    dots <- substitute(list(...))[-1]
+    c(arg, sapply(dots, deparse))
+  }
+  dname <- myfunc(...)
+  
   ## Stopping criteria
   if(length(maindata) < 2) stop("Provide at least 2 dataset", call. = TRUE)
   
@@ -25,7 +38,7 @@ ISS_compare <- function(..., logdata = FALSE, label = TRUE, levelCI = 0.95, live
   maindata <- lapply(seq_along(maindata), function(i)
   {
     data_1  <- data.frame(colSums(maindata[[i]]@data))
-    colnames(data_1) <- paste0("Data.",i)
+    colnames(data_1) <- dname[i] #paste0("Data.",i)
     data_1$probe <- rownames(data_1)
     data_1
   }
@@ -41,7 +54,7 @@ ISS_compare <- function(..., logdata = FALSE, label = TRUE, levelCI = 0.95, live
   ## Take all possible combinition
   mypairs <- t(combn(length(maindata),2))
   mypairs <- lapply(apply(mypairs,1,list),unlist)
-  mypairs_name <- lapply(mypairs, function(i) {paste(paste0("Data.",i), collapse = "_")})
+  mypairs_name <- lapply(mypairs, function(i) {paste(dname[i], collapse = "_")}) #{paste(paste0("Data.",i), collapse = "_")})
   mypairs <- lapply(mypairs, function(i) 
     {
     pp<- maindata[i]
@@ -86,7 +99,7 @@ ISS_compare <- function(..., logdata = FALSE, label = TRUE, levelCI = 0.95, live
   })
   
   ## Return multiple plot or single plot 
-  if(live & length(mypairs)==1) print(ggplotly(myggplot[[1]]))
+  if(live & length(mypairs)==1) print(plotly::ggplotly(myggplot[[1]]))
   else gridExtra::grid.arrange(grobs = myggplot)
-  return(NULL)
+  return(dname)
 }

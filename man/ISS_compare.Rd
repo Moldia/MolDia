@@ -22,8 +22,10 @@ ISS_compare(..., logdata = FALSE, label = TRUE, levelCI = 0.95,
 Compare multiple ISS data
 }
 \examples{
-hc_left  <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),  cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
-hc_right <- readRCA(file = system.file("extdata", "Hypocampus_right.csv", package="MolDia"), cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
-kk<- ISS_compare(hc_left,hc_right, label = F, levelCI = 0.99, live = F, logdata = FALSE)
+hcleft   <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),  cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
+hcright  <- readRCA(file = system.file("extdata", "Hypocampus_right.csv", package="MolDia"), cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
+hcleft1  <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),  cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
+hcright1 <- readRCA(file = system.file("extdata", "Hypocampus_right.csv", package="MolDia"), cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
+kk<- ISS_compare(hcleft, hcright, hcleft1,hcright1,label = F, levelCI = 0.99, live = F, logdata = FALSE)
 
 }
