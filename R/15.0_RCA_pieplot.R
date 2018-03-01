@@ -5,6 +5,7 @@
 #' @param gene Gene of interest. Default is NULL.
 #' @param with_gene From gene of interest , select only cells only with these genes.
 #' @param without_gene From gene of interest , select only cells only without these genes.
+#' @param segmentcol Hex color code of the overlap segment.
 #'
 #' @return The Venn-pie plot.
 #'
@@ -42,85 +43,83 @@
 #'
 #' #####  Pie chart of all Circular mRNA in cell with at least 3 neuronal genes.
 #' genes <- marker_gene1[[1]]
-#' res   <- ISS_pieplot (data = mydata, gene = genes)
+#' res   <- ISS_pieplot (data = mydata, gene = genes, without_gene = "QKI.L", segmentcol = "EEEEEE")
 #'
 #' @export
 #' 
-ISS_pieplot <- function(data, gene = NULL, with_gene = NULL, without_gene = NULL)
+ISS_pieplot <- function(data, gene = NULL, with_gene = NULL, without_gene = NULL, segmentcol = "EEEEEE")
 {
-  ## Check at least 2 genes 
-  if(length(gene) < 2) stop("There should be at least 2 genes to be selected", call. = FALSE)
+  ################################## Data preparation 
+  ## Check for at least 2 genes
+  if(length(gene) == 1) stop("There should be at least 2 genes to be selected", call. = FALSE)
   
-  ## Main data 
+  ## Select main data
   main_data <- data
   data <- data@data
   
-  ## Select data with selected genes
-  if (length(gene)==0 ) data <- data
-  else {
-    data <- data[,gene, drop= FALSE]}
-  
-  ## Select data with or without gene names
-  if(length(with_gene) > 0 )    data <- data[rowSums(data[,with_gene, drop = FALSE]) > 0,]
-  if(length(without_gene) > 0 ) data <- data[rowSums(data[,without_gene, drop = FALSE]) == 0,]
+  ## Select with_gene(+) and without_gene(-) enriched cells
+  if(length(with_gene) > 0 )
+  {
+    data <- data[rowSums(data[,with_gene,    drop = FALSE]) >  0,,drop = FALSE]
+  }
+  if(length(without_gene) > 0 ) 
+  {
+    data <- data[rowSums(data[,without_gene, drop = FALSE]) == 0,,drop = FALSE]
+  }
   
   ## Check gene name in data
-  if(all(gene %in%colnames(data))==FALSE) stop("Check gene name are same and equel length in both input ", call. = FALSE)
+  if (length(gene)==0 ) data <- data
+  else {
+    if(all(gene %in%colnames(data))==FALSE) stop("Check gene name are same and equel length in both input ", call. = FALSE)
+    data <- data[,gene, drop= FALSE]
+  }
   
-  ## Delete cell with no gene
+  ## Delete row with cell with no genes
   data <- data[rowSums(data) > 0,]
-  data <- data[,colSums(data) > 0]
+  data <- data[, apply(data, 2, sum)!=0]
   
-  ## Gene name 
-  gname <- colnames(data)
-  
+  ################################# Data convertion into sunbrust format
   ## Convery data into sunbrust formated file
   data <- data2sunbrust(data)
+  res_data <- data
   
-  ## 
+  ## Optimised for sunbrust plot
   data$Gene <- paste0(data$Gene,"- ")
   
-  ## Apply Venn-pie plot
-  if(length(gene) == 0 )
-  {
-    set.seed(1)  ## This random seed will keep the constant color reproduce
-    res <- sunburstR::sunburst(data, count = T, legendOrder = sort(gname))
-  } else {
-    set.seed(1)
-    mypalette <- as.list(randomcoloR::distinctColorPalette(length(gene)))
-    names(mypalette) <- NULL
-    
-    ## Custom Messege
-    custom.message = "function (d) {
-    root = d;
-    while (root.parent) {
-    root = root.parent
-    }
-    p = (100*d.value/root.value).toPrecision(3);
-    msg = p+' %<br/>'+d.value+' of '+root.value;
-    return msg;
-    }"
-    
-    mypalette[length(unique(unlist(strsplit(data$Gene,"-")) ))+1] <- "#eeeeee"
+  ## Gene names
+  gname <- sort(unique(unlist(strsplit(data$Gene,"-"))))
+  gname <- c(gname[-1],gname[1])
   
-    set.seed(1)  ## This random seed will keep the constant color reproduce
-    res <- sunburstR::sunburst(data, count = T, percent = T,explanation = custom.message,
-                               legendOrder = sort(gname),
-                               colors = list(range  = mypalette,
-                                             domain = gene))
-    }
+  ## Define color
+  set.seed(10)
+  mypalette <- as.list(randomcoloR::distinctColorPalette(length(gname)-1))
+  rm(.Random.seed, envir=globalenv())
+  mypalette[length(gname)+1] <- segmentcol
+  mypalette <- unlist(mypalette)
+  #names(mypalette) <- NULL
   
+  
+  ## Custom Messege
+  custom.message = "function (d) {
+  root = d;
+  while (root.parent) {
+  root = root.parent
+  }
+  p = (100*d.value/root.value).toPrecision(3);
+  msg = p+' %<br/>'+d.value+' of '+root.value;
+  return msg; }"
+  
+  ## Sunbrust plot 
+  set.seed(10)
+  res <- sunburstR::sunburst(data, count = T, legendOrder = gname[-length(gname)], 
+                             colors = list(range  = mypalette,
+                                           domain = gname),
+                             explanation = custom.message)
+  rm(.Random.seed, envir=globalenv())
   print(res)
   
-  ## return RCA object
-  myres <- methods::new("RCA_class",
-                        data     = data,
-                        location = main_data@location[rownames(data),],
-                        gene = colnames(data))
-  
-  ## Return Data
-  data <- data[order(data$Count,decreasing = TRUE),]
-  return(data)
+  ## Return
+  return(res_data)
 }
 
 
@@ -159,89 +158,4 @@ data2sunbrust <- function(data)
   
   ## Return data
   return(data)
-}
-
-
-
-
-################################################################################
-RCA_pieplot <- function(data, gene = NULL, gene_with = NULL, gene_without = NULL)
-  {
-  ## Check at least 2 genes 
-  if(length(gene) < 2) stop("There should be at least 2 genes", call. = FALSE)
-  
-  ## Data select
-  main_data_1 <- data
-  main_data_2 <- data@data
-  data        <- main_data_2
-
-  ## Select gene names
-  if(length(gene_with) > 0 )    data <- data[rowSums(data[,gene_with, drop = FALSE]) > 0,]
-  if(length(gene_without) > 0 ) data <- data[rowSums(data[,gene_without, drop = FALSE]) == 0,]
-
-  ## Check gene names in main data
-  if(all(gene %in%colnames(data))==FALSE) stop("Check gene name are same and equel length in both input ", call. = FALSE)
-
-  ## Gene selection
-  if (length(gene)==0 ) data <- data
-  else {
-    data <- data[,gene]}
-
-  ## Delete cell with no gene
-  data <- data[rowSums(data) > 0,]
-  data <- data[,colSums(data) > 0]
-
-  ## Save data to return
-  newdata<- data
-
-  ## Gene name
-  gname <-colnames(data)
-
-  ## Get combinition of gene name (Gene count > 0) for each cell and count frequency of gene combinition
-  data <- apply(data,1,function(i)
-    {
-     pp<- paste0(colnames(data)[i>0],collapse = "-")
-    })
-  data <- data.frame(table(unlist(data)))
-  colnames(data) <- c("Gene","Count")
-  data <- data[order(data$Count, decreasing = T),]
-
-  ## Sort gene name in each gene name accorging their high to low occurance in gene combinition
-  tot_comb  <- as.vector(data$Gene)
-  tot_comb1 <- strsplit(tot_comb,"-")
-  tot_comb2 <- unique(unlist(tot_comb1))
-
-  g  <- rep(seq_along(tot_comb1), sapply(tot_comb1, length))
-  m  <- lapply(tot_comb2, function(x) g[which(unlist(tot_comb1) %in% x)])
-  names(m) <- tot_comb2
-  m1 <- sort(unlist(lapply(m,function(i) sum(data$Count[i]))), decreasing = TRUE)
-  m2 <- names(m1)
-
-  ll <- lapply (tot_comb1, function(i) { m2[sort(match(i,m2))] })
-  ll1 <- unlist (lapply(ll, paste0, collapse= "-"))
-
-  data$Gene <- ll1
-
-  ## Apply Venn-pie plot
-  if(length(gene) == 0 )
-  {
-  set.seed(100000009)  ## This random seed will keep the constant color reproduce
-  res <- sunburstR::sunburst(data, count = T)
-  } else {
-    cols <- as.list(randomcoloR::distinctColorPalette(length(gene)))
-    names(cols) <- NULL
-
-    set.seed(100000009)  ## This random seed will keep the constant color reproduce
-    res <- sunburstR::sunburst(data, count = T,
-                               colors = list(range  = cols,
-                                             domain = gene))
-    }
-   print(res)
-
-   ## return RCA object
-   myres <- methods::new("RCA_class",
-                         data     = newdata,
-                         location = main_data_1@location[rownames(newdata),],
-                         gene = colnames(newdata))
-   return(myres)
 }
