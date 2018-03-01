@@ -42,7 +42,7 @@
 #'
 #' #####  Pie chart of all Circular mRNA in cell with at least 3 neuronal genes.
 #' genes <- marker_gene1[[1]]
-#' res   <- ISS_pieplot (data = mydata, gene = genes, with_gene = c("Cck.L"))
+#' res   <- ISS_pieplot (data = mydata, gene = genes)
 #'
 #' @export
 #' 
@@ -71,9 +71,66 @@ ISS_pieplot <- function(data, gene = NULL, with_gene = NULL, without_gene = NULL
   data <- data[rowSums(data) > 0,]
   data <- data[,colSums(data) > 0]
   
+  ## Gene name 
+  gname <- colnames(data)
+  
+  ## Convery data into sunbrust formated file
+  data <- data2sunbrust(data)
+  
+  ## 
+  data$Gene <- paste0(data$Gene,"- ")
+  
+  ## Apply Venn-pie plot
+  if(length(gene) == 0 )
+  {
+    set.seed(1)  ## This random seed will keep the constant color reproduce
+    res <- sunburstR::sunburst(data, count = T, legendOrder = sort(gname))
+  } else {
+    set.seed(1)
+    mypalette <- as.list(randomcoloR::distinctColorPalette(length(gene)))
+    names(mypalette) <- NULL
+    
+    ## Custom Messege
+    custom.message = "function (d) {
+    root = d;
+    while (root.parent) {
+    root = root.parent
+    }
+    p = (100*d.value/root.value).toPrecision(3);
+    msg = p+' %<br/>'+d.value+' of '+root.value;
+    return msg;
+    }"
+    
+    #mypalette[length(unique(unlist(strsplit(data$Gene,"-")) ))+1] <- "#FFFFFF"
+  
+    set.seed(1)  ## This random seed will keep the constant color reproduce
+    res <- sunburstR::sunburst(data, count = T, percent = T,explanation = custom.message,
+                               legendOrder = sort(gname),
+                               colors = list(range  = mypalette,
+                                             domain = gene))
+    }
+  
+  print(res)
+  
+  ## return RCA object
+  myres <- methods::new("RCA_class",
+                        data     = data,
+                        location = main_data@location[rownames(data),],
+                        gene = colnames(data))
+  
+  ## Return Data
+  data <- data[order(data$Count,decreasing = TRUE),]
+  return(data)
+}
+
+
+### Function to convert data frame to sunbrust formate data set
+data2sunbrust <- function(data)
+{
   ## Gene name
-  gname <-sort(colnames(data))
-  data  <- data[,gname]
+  data <- data[,names(sort(colSums(data), decreasing = T))] 
+  gname <- colnames(data)
+  #data  <- data[,gname]
   
   ## Get combinition of gene name (Gene count > 0) for each cell and count frequency of gene combinition
   data <- apply(data,1,function(i)
@@ -100,51 +157,12 @@ ISS_pieplot <- function(data, gene = NULL, with_gene = NULL, without_gene = NULL
   
   data$Gene <- ll1
   
-  ## Order data according to gene name alphabetic
-  #data<- data[order(data$Gene),]
-  
-  ## Apply Venn-pie plot
-  if(length(gene) == 0 )
-  {
-    set.seed(1)  ## This random seed will keep the constant color reproduce
-    res <- sunburstR::sunburst(data, count = T, legendOrder = sort(gname))
-  } else {
-    set.seed(1)
-    cols <- as.list(randomcoloR::distinctColorPalette(length(gene)))
-    names(cols) <- NULL
-    
-  ## Custom Messege
-    custom.message = "function (d) {
-    root = d;
-    while (root.parent) {
-    root = root.parent
-    }
-    p = (100*d.value/root.value).toPrecision(3);
-    msg = p+' %<br/>'+d.value+' of '+root.value;
-    return msg;
-  }"
-    
-    
-    
-    set.seed(1)  ## This random seed will keep the constant color reproduce
-    res <- sunburstR::sunburst(data, count = T, percent = T,explanation = custom.message,
-                               legendOrder = sort(gname),
-                               colors = list(range  = cols,
-                                             domain = gene))
-}
-  print(res)
-  
-  ## return RCA object
-  myres <- methods::new("RCA_class",
-                        data     = data,
-                        location = main_data@location[rownames(data),],
-                        gene = colnames(data))
-  
-  ## Return Data
-  data <- data[order(data$Count,decreasing = TRUE),]
+  ## Return data
   return(data)
-  
 }
+
+
+
 
 ################################################################################
 RCA_pieplot <- function(data, gene = NULL, gene_with = NULL, gene_without = NULL)

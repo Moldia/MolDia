@@ -54,7 +54,7 @@ mydata <- RCA_barplot(data = data_1, gene = marker_gene1, gene.target = 1,
 
 #####  Pie chart of all Circular mRNA in cell with at least 3 neuronal genes.
 genes <- marker_gene1[[1]]
-res   <- ISS_pieplot (data = mydata, gene = genes, with_gene = c("Cck.L"))
+res   <- ISS_pieplot (data = mydata, gene = genes)
 
 }
 \author{
