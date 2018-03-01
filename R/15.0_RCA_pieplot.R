@@ -101,7 +101,7 @@ ISS_pieplot <- function(data, gene = NULL, with_gene = NULL, without_gene = NULL
     return msg;
     }"
     
-    #mypalette[length(unique(unlist(strsplit(data$Gene,"-")) ))+1] <- "#FFFFFF"
+    mypalette[length(unique(unlist(strsplit(data$Gene,"-")) ))+1] <- "#eeeeee"
   
     set.seed(1)  ## This random seed will keep the constant color reproduce
     res <- sunburstR::sunburst(data, count = T, percent = T,explanation = custom.message,
