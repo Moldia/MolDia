@@ -13,7 +13,7 @@ RCA_cluster(data, method = "seurat", DEGmethod = "seurat", pc = NULL,
 
 \item{method}{Method of clustering. seurat, backspin, monocle.}
 
-\item{DEGmethod}{Methods to find DE genes.}
+\item{DEGmethod}{Methods to find DE genes.NULL means use all genes.}
 
 \item{pc}{Desired percent of variance (0 to 1) to be explained by PCA. Default in NULL (All PC will use).}
 

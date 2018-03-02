@@ -16,7 +16,7 @@
 #'        2 = Louvain algorithm with multilevel refinement; 3 = SLM algorithm). Default is 1.
 #' @param do.norm Do normalization
 #' @param do.scale Do scalling
-#' @param DEGmethod Methods to find DE genes.
+#' @param DEGmethod Methods to find DE genes.NULL means use all genes.
 #' @param k.param Defines k for the k-nearest neighbor algorithm
 #'
 #' @examples
