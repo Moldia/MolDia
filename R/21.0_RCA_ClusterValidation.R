@@ -87,8 +87,13 @@ RCA_tsne <- function(data, clus = NULL, pc = NULL, perplexity = 100, do.label = 
   if(length(pc) == 0 )
   {
     ## Find number of optimal principle component that explain 90 percent of variaiance
-    npc   <- withCallingHandlers(suppressWarnings(irlba::prcomp_irlba(RCAtsne@data, n=20, 
-                                                                      fastpath = TRUE, verbose = FALSE)))
+    if(length(gene_de) < 20){ ## Numbe rof PC should be less than number of source of variation i.e. genes.
+      npc <- length(gene_de) -1
+      npc   <- withCallingHandlers(suppressWarnings(irlba::prcomp_irlba(SEURAT_clus@data, n=npc, 
+                                                                        fastpath = TRUE, verbose = FALSE)))}
+    else{
+      npc   <- withCallingHandlers(suppressWarnings(irlba::prcomp_irlba(SEURAT_clus@data, n=20, 
+                                                                        fastpath = TRUE, verbose = FALSE)))}
     npc   <- summary(npc)$importance[3,]
     pcuse <- which(npc > 0.90)[1]
     cat("Number of principle component to be used :", pcuse, "\n")
