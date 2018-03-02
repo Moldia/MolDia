@@ -63,6 +63,5 @@ neuron_group <- RCA_preprocess(data = neuron_group, normalization.method = "LogN
 # re_clust  <- RCA_seruat_cluster (data = neuron_group_clust, pc = 0.9,
 #                                  cluster_id = 0, resolution = 0.5)
 
-
 }
 \keyword{internal}

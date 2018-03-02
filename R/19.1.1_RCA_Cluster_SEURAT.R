@@ -48,7 +48,6 @@
 #' # re_clust  <- RCA_seruat_cluster (data = neuron_group_clust, pc = 0.9,
 #' #                                  cluster_id = 0, resolution = 0.5)
 #'
-#'
 RCA_seruat_cluster <- function(data, pc = NULL, cluster_id = NULL,
                             resolution = 0.3, algorithm = 1,
                             do.norm = TRUE, do.scale = TRUE,

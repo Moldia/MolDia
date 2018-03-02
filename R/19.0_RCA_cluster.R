@@ -47,7 +47,7 @@
 #'
 #' ## Cluster data based on SEURAT pipeline
 #' neuron_group_clust  <- RCA_cluster (data = neuron_group, method = "seurat",
-#'                                     pc = 0.9, resolution = 0.4)
+#'                                     pc = NULL, resolution = 0.3)
 #'
 #' ## Re-cluster specific cluster
 #' re_clust  <- RCA_cluster (data = neuron_group_clust, method = "seurat",
