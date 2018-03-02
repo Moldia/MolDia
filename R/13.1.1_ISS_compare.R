@@ -92,8 +92,10 @@ ISS_compare <- function(..., logdata = FALSE, label = TRUE, levelCI = 0.95, live
                                                             list(a = format(coef(m)[1], digits = 2), 
                                                                  b = format(coef(m)[2], digits = 2), 
                                                                  r2 = format(summary(m)$r.squared, digits = 3))))) +
-      ggplot2::scale_y_log10() +
-      ggplot2::scale_x_log10()
+      ggplot2::scale_x_log10( breaks = scales::trans_breaks("log10", function(x) 10^x),
+                     labels = scales::trans_format("log10", scales::math_format(10^.x))) +
+      ggplot2::scale_y_log10( breaks = scales::trans_breaks("log10", function(x) 10^x),
+                     labels = scales::trans_format("log10", scales::math_format(10^.x))) 
     pp
     
   })
