@@ -101,7 +101,7 @@ ISS_compare <- function(..., logdata = FALSE, label = TRUE, levelCI = 0.95, live
   })
   
   ## Return multiple plot or single plot 
-  if(live & length(mypairs)==1) print(plotly::ggplotly(myggplot[[1]]))
+  if(live & length(mypairs)==1) print(plotly::ggplotly(myggplot[[1]], dynamicTicks = TRUE))
   else gridExtra::grid.arrange(grobs = myggplot)
   return(dname)
 }
