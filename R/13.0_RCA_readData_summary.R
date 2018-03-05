@@ -183,7 +183,7 @@ readRCA <- function(file, cellid = "CellID", centX = NULL, centY = NULL,
 #'
 #' @examples
 #' data_1 <- readRCA(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
-#'                   cellid = "CellID")
+#'                   cellid = "CellID", centX = "centroidX", cent = "centroidY")
 #' res    <- readsSummary(data = data_1, readlimit = 10, text.size = 6, intervel.dep = NULL )
 #'
 #' @export
@@ -372,7 +372,7 @@ readsSummary <- function(data, readlimit = 10, text.size = 6, intervel.dep = NUL
   gene_lst <- as.list(colnames(mydata))
   res      <- lapply(gene_lst, function(object)
   {
-    data1 <- mydata1[mydata1[,object],]
+    data1 <- mydata1[mydata1[,object],, drop = F]
     data2 <- colSums(data1)
     data2 <- round((data2/max(data2))*100,10)
     data2[which(data2 == max(data2))] <- max(data2) - 0.001 ## decrease max values by on for cut function later to plot correcty
