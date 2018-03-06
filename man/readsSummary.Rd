@@ -4,7 +4,8 @@
 \alias{readsSummary}
 \title{Summary of RCA data}
 \usage{
-readsSummary(data, readlimit = 10, text.size = 6, intervel.dep = NULL)
+readsSummary(data, readlimit = 10, text.size = 6, intervel.dep = NULL,
+  coexp = FALSE)
 }
 \arguments{
 \item{data}{Input data in class RCA_class. Output of \link[MolDia]{readRCA}}
@@ -15,6 +16,8 @@ readsSummary(data, readlimit = 10, text.size = 6, intervel.dep = NULL)
 
 \item{intervel.dep}{Vector of values between 0 and 100 , where you want to set interval. If one want to define the range like
 0 to 5, 5 to 20, 20 to 40, 40 to 60, 60 to 100 then the input valuse will be c(5,20,40,60)}
+
+\item{coexp}{Same gene coexpression. Default is FALSE. TRUE means at least 2 reads.}
 }
 \value{
 Summary of cells after reads delete.

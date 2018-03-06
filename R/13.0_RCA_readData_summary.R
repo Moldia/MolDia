@@ -173,6 +173,7 @@ readRCA <- function(file, cellid = "CellID", centX = NULL, centY = NULL,
 #' @param text.size Text size of Gene name.
 #' @param intervel.dep Vector of values between 0 and 100 , where you want to set interval. If one want to define the range like
 #'        0 to 5, 5 to 20, 20 to 40, 40 to 60, 60 to 100 then the input valuse will be c(5,20,40,60)
+#' @param coexp Same gene coexpression. Default is FALSE. TRUE means at least 2 reads.
 #'
 #' @return Summary of cells after reads delete.
 #'
@@ -187,7 +188,7 @@ readRCA <- function(file, cellid = "CellID", centX = NULL, centY = NULL,
 #' res    <- readsSummary(data = data_1, readlimit = 10, text.size = 6, intervel.dep = NULL )
 #'
 #' @export
-readsSummary <- function(data, readlimit = 10, text.size = 6, intervel.dep = NULL)
+readsSummary <- function(data, readlimit = 10, text.size = 6, intervel.dep = NULL, coexp = FALSE)
 {
   ## Gurbage cleaning
   gc()
@@ -365,24 +366,45 @@ readsSummary <- function(data, readlimit = 10, text.size = 6, intervel.dep = NUL
   #return(gene)
   #return(list(res1,res2,res4,res5,gene,pp))
 
-  ###############################################
+  ############################# Genes dependency (%)
   mydata  <- main_data
   mydata1 <- mydata > 0
 
-  gene_lst <- as.list(colnames(mydata))
+  gene_lst <- as.list(sort(colnames(mydata)))
   res      <- lapply(gene_lst, function(object)
   {
     data1 <- mydata1[mydata1[,object],, drop = F]
     data2 <- colSums(data1)
     data2 <- round((data2/max(data2))*100,10)
-    data2[which(data2 == max(data2))] <- max(data2) - 0.001 ## decrease max values by on for cut function later to plot correcty
+    data2[which(data2 == max(data2))] <- max(data2) - 0.0000001 ## decrease max values by on for cut function later to plot correcty
     data2
   })
   names(res) <- unlist(gene_lst)
   res <- res[sort(names(res))]
   res_1 <- do.call(rbind,res)
   res_1 <- ((res_1/100))*100
+  res_1 <- res_1[colnames(res_1),]
   #rownames(res_1) <- NULL
+  
+  if(coexp)
+  {
+    mydata  <- main_data
+    pmdata  <- lapply(gene_lst, function(object)
+    {
+      mdata <- mydata[,object]
+      pp1   <- length(mdata[mdata > 0])
+      pp2   <- length(mdata[mdata > 1])
+      pp    <- c(pp1,pp2)
+      pp    <- (pp[2]/pp[1])*100-0.0000001
+    }
+    )
+    names(pmdata) <- unlist(gene_lst)
+    diag_res <- unlist(pmdata)
+ 
+    ### Replace diagonal value 
+    diag(res_1)<- diag_res[colnames(res_1)]
+  }
+  
 
   #library(reshape)
   heat_data    <- data.frame(reshape::melt(res_1))
