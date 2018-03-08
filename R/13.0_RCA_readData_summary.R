@@ -9,6 +9,8 @@
 #' @param cellid String to naming cell. Default is "CellID".
 #' @param centX Name of X co-ordinate in file. Default is "centroidX"
 #' @param centY Name of Y co-ordinate in file  Default is "centroidY"
+#' @param genepos Name of genes to consider for gene positive cells. Default is NULL
+#' @param geneposOPT "AND" and "OR" condition for genepos. Default is "OR".
 #' @param rpc Total reads per cell to be consider. Default is 1.
 #' @param rpg Total reads per gene to be consider. Default is 1.
 #' @param gene Gene name to include in data. Default is NULL.
@@ -33,14 +35,15 @@
 #' gene <- data_3@gene
 #'
 #' #Note: Big data. Take long time to load without selected gene
-#' data(single_cell)
-#' single_cell$CellID <- rownames(single_cell)
-#' data_sc <- readRCA(single_cell, gene= gene)
+#' ## Not RUN
+#' #data(single_cell)
+#' #single_cell$CellID <- rownames(single_cell)
+#' #data_sc <- readRCA(single_cell, gene= gene)
 #'
 #'
 #' @export
 
-readRCA <- function(file, cellid = "CellID", centX = NULL, centY = NULL,
+readRCA <- function(file, cellid = "CellID", centX = NULL, centY = NULL, genepos= NULL, geneposOPT = "OR",
                     rpc = 1, rpg = 1, gene = NULL, nogene = NULL)
 {
   if(class(file)=="character")
@@ -87,7 +90,16 @@ readRCA <- function(file, cellid = "CellID", centX = NULL, centY = NULL,
       ## Filter by reads per cell (rpc) and reads per gene (rpg)
       data_reads <- data_reads[rowSums(data_reads) >= rpc,, drop=FALSE]
       data_reads <- data_reads[,colSums(data_reads) >= rpg, drop=FALSE]
-
+      
+      ## Filter by genes+ cells
+      if(length(genepos) > 0 )
+        { 
+         if(any(genepos %in% colnames(my_file))==FALSE) stop("Pleace check `genepos` ", call. = TRUE)
+         if (geneposOPT == "AND") genepos <- paste(genepos, " > 0", collapse = " & ") 
+         if (geneposOPT == "OR")  genepos <- paste(genepos, " > 0", collapse = " | ") 
+         data_reads  <- subset(data_reads, eval(parse(text = genepos)))
+        } 
+      
       ## Filtered cell location
       data_loca<- data_loca[rownames(data_reads),]
 
@@ -145,7 +157,16 @@ readRCA <- function(file, cellid = "CellID", centX = NULL, centY = NULL,
       ## Filter by reads per cell (rpc) and reads per gene (rpg)
       data_reads <- data_reads[rowSums(data_reads) >= rpc, , drop = FALSE]
       data_reads <- data_reads[,colSums(data_reads) >= rpg,drop = FALSE]
-
+      
+      ## Filter by genes+ cells
+      if(length(genepos) > 0 )
+      { 
+        if(any(genepos %in% colnames(my_file))==FALSE) stop("Pleace check `genepos` ", call. = TRUE)
+        if (geneposOPT == "AND") genepos <- paste(genepos, " > 0", collapse = " & ") 
+        if (geneposOPT == "OR")  genepos <- paste(genepos, " > 0", collapse = " | ") 
+        data_reads  <- subset(data_reads, eval(parse(text = genepos)))
+      } 
+      
       ## return RCA object
       res <- methods::new("RCA_class",
                           data     = data_reads,

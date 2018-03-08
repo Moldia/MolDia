@@ -4,8 +4,9 @@
 \alias{readRCA}
 \title{Read RCA data}
 \usage{
-readRCA(file, cellid = "CellID", centX = NULL, centY = NULL, rpc = 1,
-  rpg = 1, gene = NULL, nogene = NULL)
+readRCA(file, cellid = "CellID", centX = NULL, centY = NULL,
+  genepos = NULL, geneposOPT = "OR", rpc = 1, rpg = 1, gene = NULL,
+  nogene = NULL)
 }
 \arguments{
 \item{file}{File name in CSV formate or data in data.frame class}
@@ -15,6 +16,10 @@ readRCA(file, cellid = "CellID", centX = NULL, centY = NULL, rpc = 1,
 \item{centX}{Name of X co-ordinate in file. Default is "centroidX"}
 
 \item{centY}{Name of Y co-ordinate in file  Default is "centroidY"}
+
+\item{genepos}{Name of genes to consider for gene positive cells. Default is NULL}
+
+\item{geneposOPT}{"AND" and "OR" condition for genepos. Default is "OR".}
 
 \item{rpc}{Total reads per cell to be consider. Default is 1.}
 
@@ -45,9 +50,10 @@ data_4 <- readRCA(file = system.file("extdata", "Hypocampus_right.csv", package=
 gene <- data_3@gene
 
 #Note: Big data. Take long time to load without selected gene
-data(single_cell)
-single_cell$CellID <- rownames(single_cell)
-data_sc <- readRCA(single_cell, gene= gene)
+## Not RUN
+#data(single_cell)
+#single_cell$CellID <- rownames(single_cell)
+#data_sc <- readRCA(single_cell, gene= gene)
 
 
 }
