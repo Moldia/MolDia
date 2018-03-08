@@ -197,6 +197,16 @@ readsSummary <- function(data, readlimit = 10, text.size = 6, intervel.dep = NUL
   main_data <- data@data
   data   <- main_data
   data1  <- main_data
+  
+  ## Check maximum readsper cell
+  
+  rl <- max(rowSums(main_data))
+  if(readlimit > rl ) 
+  {
+    cat("Maximum number of reads/cell is ", rl,"\n")
+    readlimit <- rl
+  }
+  
   res  <- matrix(NA, ncol = 5, nrow =readlimit+1 )
   gene <- matrix(NA, ncol = ncol(data), nrow =readlimit+1 )
   colnames(gene) <- colnames(data)

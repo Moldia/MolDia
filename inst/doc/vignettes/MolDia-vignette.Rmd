@@ -18,7 +18,7 @@ vignette: |
 ---
 
 #Introduction
-This is a complete package to analyze single cell in-sutu RCA data analysis.
+This is a complete package to analyze single cell in-situ RCA data analysis.
 
 #Package outline
 <div style="width:800px; height=600px ; margin-left: auto; margin-right: auto;>
@@ -61,7 +61,7 @@ RCA_map(data =ex_data, what = "cell", main = "Left Hippocampus")
 ![Venn-pie plot](images\cell_image_1.png)</div>
 
 ###Summary of RCA data
-Now we have got the raw RCA data in R. Now we can observed some basic summary statistics about our data which will provide some insight about the data. And based on thses summary we can apply prespective of different analysis.  
+Now we have got the raw RCA data in R. Now we can observe some basic summary statistics about our data which will provide some insight about the data. And based on this summary we can apply prespective of different analysis.  
 
  
 The function `readsSummary` will be used to get the summary of data. Number of reads per cell is a importent feature of the data. So what will be the minimum number of reads per cell to be consider is an important issue. By using parameter `readlimit` in the function `readsSummary`, we can observe the effect.  
@@ -78,7 +78,7 @@ ex_data_summary   <- readsSummary(data = ex_data, readlimit = 10, text.size = 6,
 # Gene co expression analysis
 ## WGCNA
 ##Venn-pieagram single cell vizualization
-The ven-pie plot is a visual representaion of RCA data, based on genes of interest. As example, we want to know proportional dependency of SST-interneuronal genes enrich cells. For details about the function see `help(RCA_pieplot)`
+The venn-pie plot is a visual representation of RCA data, based on genes of interest. As example, we want to know proportional dependency of SST-interneuronal genes enriched cells. For details about the function see `help(RCA_pieplot)`
 
 ```r
 data(marker_gene)
