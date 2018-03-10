@@ -2,6 +2,8 @@
 
 export(ISS_compare)
 export(ISS_pieplot)
+export(ISS_ratiocor)
+export(ISS_sumstat)
 export(RCA_ClusterSelect)
 export(RCA_DE)
 export(RCA_GridSelect)

@@ -19,7 +19,7 @@ readRCA(file, cellid = "CellID", centX = NULL, centY = NULL,
 
 \item{genepos}{Name of genes to consider for gene positive cells. Default is NULL}
 
-\item{geneposOPT}{"AND" and "OR" condition for genepos. Default is "OR".}
+\item{geneposOPT}{Only work when 'genepos' has a value. "AND", "OR" and "NONE" condition for genepos. Default is "OR".}
 
 \item{rpc}{Total reads per cell to be consider. Default is 1.}
 

@@ -12,7 +12,7 @@ RCA_barplot(data, gene, total.expr = 10000, gene.target = NULL,
 \arguments{
 \item{data}{Input data in class RCA_class. Output of \link[MolDia]{readRCA}.}
 
-\item{gene}{Object in vector or list formate. IN list formated input every list element is a group of
+\item{gene}{Object in vector or list formate. In list formated input every list element is a group of
 interested genes.}
 
 \item{total.expr}{Scale factor to re-scale the data. Default is 1e4.}
@@ -23,10 +23,10 @@ will consider for special operation. Default is NULL. See details.}
 \item{gene.show}{Only applicable when 'gene' parameter is a list. Which group/groups of gene in 'gene' parameter
 to show. Default is NULL (Show all groups). See details}
 
-\item{target.min.count.cell}{Minimum number of reads percell to consider in trargated gene group in
+\item{target.min.count.cell}{Minimum number of reads per cell to consider in targated gene group in
 'gene.target' parameter. Default is 1.}
 
-\item{rest.min.count.cell}{Minimum number of reads percell to consider in the genes that not consider in
+\item{rest.min.count.cell}{Minimum number of reads per cell to consider in the genes that not consider in
 'gene.target' parameter. Default is 1.}
 
 \item{min.count}{Only applicable when 'gene.target' has a value. Tharshold to consider as minimum count of a gene

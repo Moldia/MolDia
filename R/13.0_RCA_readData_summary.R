@@ -10,7 +10,7 @@
 #' @param centX Name of X co-ordinate in file. Default is "centroidX"
 #' @param centY Name of Y co-ordinate in file  Default is "centroidY"
 #' @param genepos Name of genes to consider for gene positive cells. Default is NULL
-#' @param geneposOPT "AND" and "OR" condition for genepos. Default is "OR".
+#' @param geneposOPT Only work when 'genepos' has a value. "AND", "OR" and "NONE" condition for genepos. Default is "OR".
 #' @param rpc Total reads per cell to be consider. Default is 1.
 #' @param rpg Total reads per gene to be consider. Default is 1.
 #' @param gene Gene name to include in data. Default is NULL.
@@ -95,10 +95,15 @@ readRCA <- function(file, cellid = "CellID", centX = NULL, centY = NULL, genepos
       if(length(genepos) > 0 )
         { 
          if(any(genepos %in% colnames(my_file))==FALSE) stop("Pleace check `genepos` ", call. = TRUE)
-         if (geneposOPT == "AND") genepos <- paste(genepos, " > 0", collapse = " & ") 
-         if (geneposOPT == "OR")  genepos <- paste(genepos, " > 0", collapse = " | ") 
+         if (geneposOPT == "AND")  genepos <- paste(genepos, " > 0" , collapse = " & ") 
+         if (geneposOPT == "OR")   genepos <- paste(genepos, " > 0" , collapse = " | ")
+         if (geneposOPT == "NONE") genepos <- paste(genepos, " == 0", collapse = " & ")
          data_reads  <- subset(data_reads, eval(parse(text = genepos)))
         } 
+      
+      ## Deleter emplt genes and emplt cells 
+      data_reads <- data_reads[,colSums(data_reads) > 0]
+      data_reads <- data_reads[rowSums(data_reads) > 0,]
       
       ## Filtered cell location
       data_loca<- data_loca[rownames(data_reads),]
@@ -162,10 +167,18 @@ readRCA <- function(file, cellid = "CellID", centX = NULL, centY = NULL, genepos
       if(length(genepos) > 0 )
       { 
         if(any(genepos %in% colnames(my_file))==FALSE) stop("Pleace check `genepos` ", call. = TRUE)
-        if (geneposOPT == "AND") genepos <- paste(genepos, " > 0", collapse = " & ") 
-        if (geneposOPT == "OR")  genepos <- paste(genepos, " > 0", collapse = " | ") 
+        if (geneposOPT == "AND")  genepos <- paste(genepos, " > 0" , collapse = " & ") 
+        if (geneposOPT == "OR")   genepos <- paste(genepos, " > 0" , collapse = " | ")
+        if (geneposOPT == "NONE") genepos <- paste(genepos, " == 0", collapse = " & ")
         data_reads  <- subset(data_reads, eval(parse(text = genepos)))
-      } 
+      }
+      
+      ## Deleter emplt genes and emplt cells 
+      data_reads <- data_reads[,colSums(data_reads) > 0]
+      data_reads <- data_reads[rowSums(data_reads) > 0,]
+      
+      ## Filtered cell location
+      if(length(centX)== 1 ) data_loca<- data_loca[rownames(data_reads),]
       
       ## return RCA object
       res <- methods::new("RCA_class",

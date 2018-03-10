@@ -127,15 +127,15 @@ Based on different criteria or condition, on can filter data with the function `
 RCA_data    <- ex_data
 ```
 
-The loaded data is from mouse brain left hipoampus. Genes present in that data is 
+The loaded data is from mouse brain left hippocampus. Genes present in that data is 
 ```{r}
 marker_gene_1 <- RCA_data@gene
 marker_gene_1
 ```
-According to our pre knowlidge, we can classify those genes in borad category as follows
+According to our pre knowledge, we can classify those genes in broad categories as follows
 
 ```{r}
-## This data set has provided with the package as sample informatio. 
+## This data set has provided with the package as sample information. 
 data(marker_gene)
 ```
 
@@ -143,10 +143,10 @@ data(marker_gene)
 marker_gene
 ```
 
-Now we can re-classify marker genes in broad category "General", "Neoronal" and "Non-neuronal" for our further analysis requirement 
+Now we can re-classify marker genes in broad category "General", "Neuronal" and "Non-neuronal" for our further analysis requirement 
 ```{r}
 ## Re-calssify  per-dfine marker gene group in "General", "Neoronal" and "Non-neuronal"
-marker_gene <- list(genral = marker_gene$genr, neuron = c(marker_gene$genr_neuro,
+marker_gene <- list(general = marker_gene$genr, neuron = c(marker_gene$genr_neuro,
                                                           marker_gene$genr_neuro_pyra1,
                                                           marker_gene$genr_neuro_pyra2,
                                                           marker_gene$genr_neuro_inter1,

@@ -1,5 +1,5 @@
 ######################################################################
-##              RCA data Filter: Probabiliyt based                  ##
+##              RCA data Filter: Probability based                  ##
 ######################################################################
 "RCA_filter"
 #' Filter RCA data based on poisson distibution
@@ -118,16 +118,16 @@ RCA_filter <- function(data, data_mean =NULL )
 #' @description Plot bar plot on RCA data bsed on different condition
 #'
 #' @param data Input data in class RCA_class. Output of \link[MolDia]{readRCA}.
-#' @param gene Object in vector or list formate. IN list formated input every list element is a group of
+#' @param gene Object in vector or list formate. In list formated input every list element is a group of
 #'        interested genes.
 #' @param total.expr Scale factor to re-scale the data. Default is 1e4.
 #' @param gene.target Only applicable when 'gene' parameter is a list. Which gene group in 'gene' parameter
 #'        will consider for special operation. Default is NULL. See details.
 #' @param gene.show Only applicable when 'gene' parameter is a list. Which group/groups of gene in 'gene' parameter
 #'        to show. Default is NULL (Show all groups). See details
-#' @param target.min.count.cell Minimum number of reads percell to consider in trargated gene group in
+#' @param target.min.count.cell Minimum number of reads per cell to consider in targated gene group in
 #'        'gene.target' parameter. Default is 1.
-#' @param rest.min.count.cell Minimum number of reads percell to consider in the genes that not consider in
+#' @param rest.min.count.cell Minimum number of reads per cell to consider in the genes that not consider in
 #'        'gene.target' parameter. Default is 1.
 #' @param min.count Only applicable when 'gene.target' has a value. Tharshold to consider as minimum count of a gene
 #'        in a single cell to consider as gene expression. Default is 0. See details.
