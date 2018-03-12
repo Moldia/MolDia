@@ -2,10 +2,14 @@
 #' Venn-pie chart on RCA data based on genes of interest
 #'
 #' @param data Input data in class RCA_class. Output of \link[MolDia]{readRCA}.
-#' @param gene Gene of interest. Default is NULL.
+#' @param gene Gene of interest. It could be a vector of gene or a list of genes groups. Default is NULL means takes all genes
+#'             in the given dataset.
 #' @param with_gene From gene of interest , select only cells only with these genes.
 #' @param without_gene From gene of interest , select only cells only without these genes.
 #' @param segmentcol Hex color code of the overlap segment.
+#' @param randomseed Ramdom seed to change color schema.
+#' 
+#' @note Maximum 256 genes (256 color) can be ploted with this version at this moment.
 #'
 #' @return The Venn-pie plot.
 #'
@@ -47,7 +51,7 @@
 #'
 #' @export
 #' 
-ISS_pieplot <- function(data, gene = NULL, with_gene = NULL, without_gene = NULL, segmentcol = "EEEEEE")
+ISS_pieplot <- function(data, gene = NULL, with_gene = NULL, without_gene = NULL, segmentcol = "EEEEEE", randomseed = 10)
 {
   ################################## Data preparation 
   ## Check for at least 2 genes
@@ -101,17 +105,18 @@ ISS_pieplot <- function(data, gene = NULL, with_gene = NULL, without_gene = NULL
   data$Gene <- paste0(data$Gene,"- ")
   
   ## Gene names
-  gname <- sort(unique(unlist(strsplit(data$Gene,"-"))))
-  gname <- c(gname[-1],gname[1])
+  #gname <- sort(unique(unlist(strsplit(data$Gene,"-"))))
+  #gname <- c(gname[-1],gname[1])
+  gname <- c(gene," ")
   
   ## Define color
-  set.seed(10)
-  mypalette <- as.list(randomcoloR::distinctColorPalette(length(gname)-1))
-  rm(.Random.seed, envir=globalenv())
+  set.seed(randomseed)
+  #mypalette <- as.list(randomcoloR::distinctColorPalette(length(gname)-1))
+  mypalette <- randomcoloR::distinctColorPalette(k = 256)
+  mypalette  <- as.list(mypalette[1:(length(gname)-1)])
   mypalette[length(gname)+1] <- segmentcol
   mypalette <- unlist(mypalette)
   #names(mypalette) <- NULL
-  
   
   ## Custom Messege
   custom.message = "function (d) {
@@ -124,7 +129,7 @@ ISS_pieplot <- function(data, gene = NULL, with_gene = NULL, without_gene = NULL
   return msg; }"
   
   ## Sunbrust plot 
-  set.seed(10)
+  set.seed(randomseed)
   res <- sunburstR::sunburst(data, count = T, legendOrder = gname[-length(gname)], 
                              colors = list(range  = mypalette,
                                            domain = gname),
@@ -135,7 +140,6 @@ ISS_pieplot <- function(data, gene = NULL, with_gene = NULL, without_gene = NULL
   ## Return
   return(res_data)
 }
-
 
 ### Function to convert data frame to sunbrust formate data set
 data2sunbrust <- function(data)
