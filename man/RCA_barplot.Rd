@@ -79,7 +79,7 @@ Plot bar plot on RCA data bsed on different condition
 \examples{
 ########## Reading data
 data_1      <- readRCA(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
-                       cellid = "CellID")
+                       cellid = "CellID", centX = "centroidX", centY =  "centroidY")
 
 ## Define marker gene group
 marker_gene <- data_1@gene

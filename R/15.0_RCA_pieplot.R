@@ -57,6 +57,20 @@ ISS_pieplot <- function(data, gene = NULL, with_gene = NULL, without_gene = NULL
   main_data <- data
   data <- data@data
   
+  ## Check if gene is in list formate input
+  if(is.list(gene) == TRUE)
+  {
+    data <- lapply(seq_along(gene), function(i)
+    {
+      pp<- data.frame(rowSums(data[,gene[[i]],drop = FALSE]))
+      colnames(pp) <- names(gene[i])
+      pp
+    }
+    )
+    data <- do.call(cbind,data)
+    gene <- names(gene)
+  }
+  
   ## Select with_gene(+) and without_gene(-) enriched cells
   if(length(with_gene) > 0 )
   {

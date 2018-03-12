@@ -170,7 +170,7 @@ RCA_filter <- function(data, data_mean =NULL )
 #' @examples
 #' ########## Reading data
 #' data_1      <- readRCA(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
-#'                        cellid = "CellID")
+#'                        cellid = "CellID", centX = "centroidX", centY =  "centroidY")
 #'
 #' ## Define marker gene group
 #' marker_gene <- data_1@gene
@@ -325,7 +325,8 @@ RCA_barplot <- function(data, gene, total.expr = 1e4, gene.target = NULL, gene.s
   lines(cbind(bp1,tnc),col = "orange", lwd = 2)
   text(x = bp1+0.3, y = data_totalexp_colsums, label = paste0("           ",round((tnc/total.expr)*100,2)," %"),
        adj= 0.5,col = "red", cex = 1,srt= 90, pos = 3)
-
+  
+  
   #final_output
 
   ## return RCA object
@@ -343,11 +344,11 @@ RCA_barplot <- function(data, gene, total.expr = 1e4, gene.target = NULL, gene.s
   main_data@location <- main_data@location[rownames(final_output),]
   main_data@gene <- colnames(final_output)
 
-  return(main_data)
+  #return(main_data)
+  res<- list( count =data_totalexp_colsums, gene = gene )
+  return(res)
+  #return(gene_group)
 }
-
-
-
 
 
 ######################################################################
