@@ -64,6 +64,8 @@ ISS_pieplot <- function(data, gene = NULL, with_gene = NULL, without_gene = NULL
   ## Check if gene is in list formate input
   if(is.list(gene) == TRUE)
   {
+    ## Check if all gene in the list is in data
+    if(all(unlist(gene) %in%colnames(data))==FALSE) stop("Check gene name are same in both input data and supplied gene list", call. = FALSE)
     data <- lapply(seq_along(gene), function(i)
     {
       pp<- data.frame(rowSums(data[,gene[[i]],drop = FALSE]))

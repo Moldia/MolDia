@@ -344,8 +344,8 @@ RCA_barplot <- function(data, gene, total.expr = 1e4, gene.target = NULL, gene.s
   main_data@location <- main_data@location[rownames(final_output),]
   main_data@gene <- colnames(final_output)
 
-  return(main_data)
-  #res<- list( count =data_totalexp_colsums, gene = gene )
+  #return(main_data)
+  res<- list( count =data_totalexp_colsums, gene = gene, tnc = tnc)
   #return(res)
   #return(gene_group)
 }
