@@ -102,6 +102,7 @@ ISS_pieplot <- function(data, gene = NULL, with_gene = NULL, without_gene = NULL
   ## Convery data into sunbrust formated file
   data <- data2sunbrust(data)
   res_data <- data[order(data$Count, decreasing = TRUE),]
+  rownames(res_data) <- NULL
   
   ## Optimised for sunbrust plot
   data$Gene <- paste0(data$Gene,"- ")
