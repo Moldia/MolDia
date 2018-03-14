@@ -8,6 +8,7 @@
 #' @param without_gene From gene of interest , select only cells only without these genes.
 #' @param segmentcol Hex color code of the overlap segment.
 #' @param randomseed Ramdom seed to change color schema.
+#' @param colorpalette Default is NULL. A vector of value . Can be applicabile with selected element with gene list. 
 #' 
 #' @note Maximum 256 genes (256 color) can be ploted with this version at this moment.
 #'
@@ -51,7 +52,7 @@
 #'
 #' @export
 #' 
-ISS_pieplot <- function(data, gene = NULL, with_gene = NULL, without_gene = NULL, segmentcol = "EEEEEE", randomseed = 10)
+ISS_pieplot <- function(data, gene = NULL, with_gene = NULL, without_gene = NULL, segmentcol = "EEEEEE", randomseed = 10, colorpalette = NULL)
 {
   ################################## Data preparation 
   ## Check for at least 2 genes
@@ -116,7 +117,11 @@ ISS_pieplot <- function(data, gene = NULL, with_gene = NULL, without_gene = NULL
   set.seed(randomseed)
   #mypalette <- as.list(randomcoloR::distinctColorPalette(length(gname)-1))
   mypalette <- randomcoloR::distinctColorPalette(k = 256)
-  mypalette  <- as.list(mypalette[1:(length(gname)-1)])
+  if(length(colorpalette) == 0)
+    { mypalette <- as.list(mypalette[1:(length(gname)-1)])
+  } else 
+      { mypalette <-as.list(mypalette[colorpalette])}
+  
   mypalette[length(gname)+1] <- segmentcol
   mypalette <- unlist(mypalette)
   #names(mypalette) <- NULL

@@ -5,7 +5,7 @@
 \title{Venn-pie chart on RCA data based on genes of interest}
 \usage{
 ISS_pieplot(data, gene = NULL, with_gene = NULL, without_gene = NULL,
-  segmentcol = "EEEEEE", randomseed = 10)
+  segmentcol = "EEEEEE", randomseed = 10, colorpalette = NULL)
 }
 \arguments{
 \item{data}{Input data in class RCA_class. Output of \link[MolDia]{readRCA}.}
@@ -20,6 +20,8 @@ in the given dataset.}
 \item{segmentcol}{Hex color code of the overlap segment.}
 
 \item{randomseed}{Ramdom seed to change color schema.}
+
+\item{colorpalette}{Default is NULL. A vector of value . Can be applicabile with selected element with gene list.}
 }
 \value{
 The Venn-pie plot.
