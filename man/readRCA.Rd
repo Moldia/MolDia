@@ -9,7 +9,7 @@ readRCA(file, cellid = "CellID", centX = NULL, centY = NULL,
   nogene = NULL)
 }
 \arguments{
-\item{file}{File name in CSV formate or data in data.frame class}
+\item{file}{File name in CSV formate, data in data.frame class and data in RCA_class class (Output of \link[MolDia]{readRCA}).}
 
 \item{cellid}{String to naming cell. Default is "CellID".}
 
