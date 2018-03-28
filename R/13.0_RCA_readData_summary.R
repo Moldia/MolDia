@@ -46,6 +46,7 @@
 readRCA <- function(file, cellid = "CellID", centX = NULL, centY = NULL, genepos= NULL, geneposOPT = "OR",
                     rpc = 1, rpg = 1, gene = NULL, nogene = NULL)
 {
+  ## Data type : REading data from a specific location
   if(class(file)=="character")
     {
       ## Reading data
@@ -118,8 +119,9 @@ readRCA <- function(file, cellid = "CellID", centX = NULL, centY = NULL, genepos
                           location = data_loca,
                           cluster.marker = list(),
                           tsne.data = data.frame(matrix(, nrow = 0, ncol = 0)))
-    }
-
+  }
+  
+  ## Data type : Dataframe
   if(class(file)=="data.frame" )
     {
       my_file <- file
@@ -190,7 +192,82 @@ readRCA <- function(file, cellid = "CellID", centX = NULL, centY = NULL, genepos
                           location = data_loca,
                           cluster.marker = list(),
                           tsne.data = data.frame(matrix(, nrow = 0, ncol = 0)))
-     }
+  }
+  
+  
+  ## Data type : RCA_class class 
+  if(class(file)=="RCA_class" )
+  {
+    my_file <- file@data
+    
+    ## Selected gene
+    #if(length(gene) >0 )
+    #  {
+    #  gene<- c(gene[gene%in%colnames(my_file)],cellid)
+    #  my_file <- my_file[,gene,drop = FALSE]
+    #}
+    
+    ## Define cell ID
+    #cell_id <- paste0("cellid_",as.vector(my_file[,cellid]))
+    #rownames(my_file) <- cell_id
+    #my_file[,cellid] <- NULL
+    #my_file <- apply(my_file,2,as.numeric)
+    #my_file <- data.frame(as.matrix(my_file))
+    
+    
+    if(length(centX)== 1 )
+    { 
+      ## Data of Reads count
+      data_reads <- my_file[,!(names(my_file) %in% c(centX,centY))]
+      
+      ## Data of location information
+      data_loca <- my_file[, (names(my_file) %in% c(centX,centY))]
+      data_loca <- data.frame(data_loca)
+      colnames(data_loca) <- c("centroid_x", "centroid_y")
+    }
+    if(length(centX)== 0 )
+    {
+      data_reads <- my_file
+      data_loca  <- file@location #data.frame(matrix(, nrow = 0, ncol = 0))
+    }
+    
+    ## Selected / un-select genes
+    if(length(gene) > 0 )   data_reads <- data_reads[ ,  gene , drop=FALSE]
+    if(length(nogene) > 0 ) data_reads <- data_reads[ , -which(colnames(data_reads) %in% nogene), drop=FALSE]
+    
+    ## Filter by reads per cell (rpc) and reads per gene (rpg)
+    data_reads <- data_reads[rowSums(data_reads) >= rpc, , drop = FALSE]
+    data_reads <- data_reads[,colSums(data_reads) >= rpg,drop = FALSE]
+    
+    ## Filter by genes+ cells
+    if(length(genepos) > 0 )
+    { 
+      if(any(genepos %in% colnames(my_file))==FALSE) stop("Pleace check `genepos` ", call. = TRUE)
+      if (geneposOPT == "AND")  genepos <- paste(genepos, " > 0" , collapse = " & ") 
+      if (geneposOPT == "OR")   genepos <- paste(genepos, " > 0" , collapse = " | ")
+      if (geneposOPT == "NONE") genepos <- paste(genepos, " == 0", collapse = " & ")
+      data_reads  <- subset(data_reads, eval(parse(text = genepos)))
+    }
+    
+    ## Delete empty genes and empty cells 
+    data_reads <- data_reads[,colSums(data_reads) > 0]
+    data_reads <- data_reads[rowSums(data_reads) > 0,]
+    
+    ## Filtered cell location
+    if(length(centX)== 1 ) data_loca<- data_loca[rownames(data_reads),]
+    
+    ## return RCA object
+    res <- methods::new("RCA_class",
+                        data     = data_reads,
+                        norm.data = matrix(, nrow = 0, ncol = 0),
+                        scale.data = matrix(, nrow = 0, ncol = 0),
+                        gene = colnames(data_reads),
+                        cluster = factor(matrix(, nrow = 0, ncol = 0)),
+                        location = data_loca,
+                        cluster.marker = list(),
+                        tsne.data = data.frame(matrix(, nrow = 0, ncol = 0)))
+  }
+  
   return(res)
 }
 
