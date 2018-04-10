@@ -35,7 +35,7 @@ Setting center to TRUE will center the expression for each gene by subtracting t
 }
 \examples{
 data_1 <- readRCA(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
-                  cellid = "CellID")
+                  cellid = "CellID", centX = "centroidX", centY = "centroidY")
 scale_data_1 <- RCA_preprocess(data_1)
 
 }

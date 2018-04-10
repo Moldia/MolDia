@@ -31,7 +31,7 @@ A list of cluster with putative ranked markers and associated statistics in slot
 Find Cluster marker of in-situ RCA data and plot significant gene cluster wise by barplot and heatmap.
 }
 \examples{
-#' ## Reading data
+## Reading data
 data_3 <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),
                   cellid = "CellId", centX = "centroid_x", centY = "centroid_y")
 

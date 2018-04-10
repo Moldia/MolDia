@@ -19,7 +19,7 @@
 #'         Also clusterwise figure in barplot and heatmap of desired top genes.
 #'
 #' @examples
-#' #' ## Reading data
+#' ## Reading data
 #' data_3 <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),
 #'                   cellid = "CellId", centX = "centroid_x", centY = "centroid_y")
 #'
@@ -58,7 +58,7 @@ RCA_marker <- function(data, topgene= 5, test.use = "bimod", marker.sig = 0.005,
   # Main data
   main_data <- data
   # Check if data is clustered or not
-  if (length(data@cluster) == 0) stop("Please cluster your data befor finding marker gene of cluster")
+  if (length(data@cluster) == 0) stop("Please cluster your data befor finding marker gene of cluster", call. = FALSE)
 
   # Create SEURAT object
   RCA_Seurat_obj            <- Seurat::CreateSeuratObject(t(main_data@data))

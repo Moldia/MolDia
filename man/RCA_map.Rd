@@ -6,7 +6,8 @@
 \usage{
 RCA_map(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y",
   main = "Main plot", ptsize = 1, image = TRUE, live = FALSE,
-  label.topgene = NULL, gene = NULL, cluster_id = NULL)
+  label.topgene = NULL, gene = NULL, cluster_id = NULL,
+  same.y.lims = FALSE)
 }
 \arguments{
 \item{data}{Input data in class RCA_class. Output of \link[MolDia]{readRCA}.}
@@ -28,10 +29,24 @@ RCA_map(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y",
 \item{label.topgene}{Active only when "what = cluster or tsne". Number of genes to label each cluster. Only work when data is clustered and clusted marker
 has identified in cluster.marker slot of input data.}
 
-\item{gene}{Gene of interest, Now limited to max 6 genes.}
+\item{gene}{Gene of interest, Now limited to max 20 genes.}
 
 \item{cluster_id}{Which cluster to plot. Only work when what = "cluster".}
+
+\item{same.y.lims}{Set all the y-axis limits to the same values.}
 }
 \description{
 Map RCA data based on cell, cluster or tSNE
+}
+\examples{
+## Reading data
+left_hypo <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"), 
+                        cellid = "CellId", centX = "centroid_x", centY = "centroid_y")
+left_hypo <- RCA_preprocess(data = left_hypo, normalization.method = "LogNormalize", 
+                        do.scale = TRUE, do.center = TRUE)
+left_hypo <- RCA_cluster (data = left_hypo, method = "seurat",resolution = 0.05)
+
+## Plot violin plot
+res <- RCA_map(data = left_hypo, what = "vlnplot", gene = left_hypo@gene[1:4], same.y.lims = F)
+
 }

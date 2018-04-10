@@ -16,16 +16,31 @@
 #' @param live Plot interactive image. Default is FALSE.
 #' @param label.topgene Active only when "what = cluster or tsne". Number of genes to label each cluster. Only work when data is clustered and clusted marker
 #'        has identified in cluster.marker slot of input data.
-#' @param gene Gene of interest, Now limited to max 6 genes.
+#' @param gene Gene of interest, Now limited to max 20 genes.
 #' @param cluster_id Which cluster to plot. Only work when what = "cluster".
+#' @param same.y.lims Set all the y-axis limits to the same values.
 #'
 #'
+#' @examples 
+#' ## Reading data
+#' left_hypo <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"), 
+#'                         cellid = "CellId", centX = "centroid_x", centY = "centroid_y")
+#' left_hypo <- RCA_preprocess(data = left_hypo, normalization.method = "LogNormalize", 
+#'                         do.scale = TRUE, do.center = TRUE)
+#' left_hypo <- RCA_cluster (data = left_hypo, method = "seurat",resolution = 0.05)
+#' 
+#' ## Plot violin plot
+#' res <- RCA_map(data = left_hypo, what = "vlnplot", gene = left_hypo@gene[1:4], same.y.lims = F)
+#' 
 #' @export
 RCA_map <- function(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y", main = "Main plot", ptsize = 1,
-                    image = TRUE, live = FALSE, label.topgene = NULL, gene = NULL, cluster_id = NULL)
+                    image = TRUE, live = FALSE, label.topgene = NULL, gene = NULL, cluster_id = NULL, same.y.lims = FALSE)
 {
+  ## Save main data
+  mainData <- data
+  
   ## Check gene
-  if(length(gene) > 6) stop("Gene number more than 6 is too slow for interactive vizualization. So inactive at this moment", call. = FALSE)
+  if(length(gene) > 20) stop("Gene number more than 20 is too slow for interactive vizualization. So inactive at this moment", call. = FALSE)
   
   ## If gene of interest is present
   if(length(gene)!=0)
@@ -44,7 +59,7 @@ RCA_map <- function(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y
   gene <- data@gene
   
   ## Check what in category
-  what_type <- c("cell","cluster","tsne")
+  what_type <- c("cell","cluster","tsne", "vlnplot")
   if(what %in% what_type == FALSE ) stop("Please check available plot type in `what` argument", call. = FALSE)
   
   ## Check image and live has same value
@@ -299,6 +314,42 @@ RCA_map <- function(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y
       if(image) q <- p
     }
   }
+  ######## What = "vlnplot"
+  if(what == "vlnplot")
+  {
+    # Main data
+    data  <- mainData
+    
+    # Check if data is clustered or not
+    if (length(data@cluster) == 0) stop("Please cluster your data befor finding marker gene of cluster", call. = FALSE) 
+    
+    # Create SEURAT object
+    RCA_Seurat_obj            <- Seurat::CreateSeuratObject(t(data@data))
+    RCA_Seurat_obj@scale.data <- t(data@scale.data)
+    RCA_Seurat_obj@ident      <- data@cluster
+    
+    # Selct feature for violin plot
+    if(length(gene) == 0 ) {fplot <- data@gene
+    }else { fplot <- gene }
+    
+    # same y limit
+    if(same.y.lims == TRUE)  ymax <- max(data@data[,fplot])
+    if(same.y.lims == FALSE) ymax <- NULL
+    
+    # Violin plot
+    for(i in 1: length(fplot))
+    {
+      v <- Seurat::VlnPlot(object = RCA_Seurat_obj,features.plot = fplot[i], same.y.lims = TRUE, do.return = TRUE, y.max = ymax ) + 
+           ggplot2::labs(x = "Cluster", y = "Reads count")
+      assign(x = paste0("p",i), value = v)
+    }
+    
+    
+    tt<- paste0("cowplot::plot_grid(",paste0("p",1:length(fplot),collapse = " ,"),")")
+    q <-  suppressWarnings(eval(parse(text = tt)))
+    
+  }
+  
   ## Print Image
   print(q)
   #return(data)
