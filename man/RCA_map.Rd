@@ -43,10 +43,16 @@ Map RCA data based on cell, cluster or tSNE
 left_hypo <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"), 
                         cellid = "CellId", centX = "centroid_x", centY = "centroid_y")
 left_hypo <- RCA_preprocess(data = left_hypo, normalization.method = "LogNormalize", 
-                        do.scale = TRUE, do.center = TRUE)
+                        do.scale = F, do.center = F)
 left_hypo <- RCA_cluster (data = left_hypo, method = "seurat",resolution = 0.05)
 
 ## Plot violin plot
-res <- RCA_map(data = left_hypo, what = "vlnplot", gene = left_hypo@gene[1:4], same.y.lims = F)
+res1       <- RCA_map(data = left_hypo, what = "vlnplot", gene = left_hypo@gene[1:4], same.y.lims = F)
+
+## Dimention reduction by tSNE on clustered data
+left_hypo   <- RCA_tsne(data = left_hypo, do.label = TRUE, perplexity= 30)
+
+## Plot tSNE cluster
+res2       <- RCA_map(data = left_hypo, what = "tsne")
 
 }

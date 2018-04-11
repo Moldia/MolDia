@@ -61,7 +61,7 @@ RCA_seruat_cluster <- function(data, pc = NULL, cluster_id = NULL,
   if (length(cluster_id) == 0 )
     {
       ## Select data
-      data_2 <- data@data
+      data_2 <- data@norm.data
       data   <- data_2
     }
 
@@ -118,8 +118,10 @@ RCA_seruat_cluster <- function(data, pc = NULL, cluster_id = NULL,
         npc   <- withCallingHandlers(suppressWarnings(irlba::prcomp_irlba(SEURAT_clus@data, n=20, 
                                                                           fastpath = TRUE, verbose = FALSE)))}
       
+      # How many pc to be used: Cut off is 0.90
       npc   <- summary(npc)$importance[3,]
-      pcuse <- which(npc > 0.90)[1]
+      if(max(npc) < 0.9) {pcuse <- length(npc)
+      }else {pcuse <- which(npc > 0.90)[1]}
       cat("Number of principle component to be used :", pcuse, "\n")
       pc <- 1:pcuse
     }
@@ -140,7 +142,7 @@ RCA_seruat_cluster <- function(data, pc = NULL, cluster_id = NULL,
     #                      gene = colnames(newdata),
     #                      cluster = SEURAT_clus@ident)
 
-    main_data@data <- data
+    main_data@data <- data.frame(data)
     if(length(main_data@norm.data)  > 0 ) main_data@norm.data  <- main_data@norm.data[rownames(newdata),colnames(newdata)]
     if(length(main_data@scale.data) > 0 ) main_data@scale.data <- main_data@scale.data[rownames(newdata),colnames(newdata)]
     main_data@location <- main_data@location[rownames(newdata),]

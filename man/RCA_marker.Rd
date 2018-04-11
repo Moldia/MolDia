@@ -58,9 +58,11 @@ neuron_group <- RCA_preprocess(data = neuron_group, normalization.method = "LogN
 
 ## Cluster data based on SEURAT pipeline
 neuron_group_clust  <- RCA_cluster (data = neuron_group, method = "seurat",
-                                    pc = 0.9, resolution = 0.4)
+                                    pc = 0.9, resolution = 0.1)
 ## Get cluster marker
 neuron_group_clust_marker <- RCA_marker(data = neuron_group_clust, topgene =15,
                                         test.use="bimod", main = "")
+                                        
+ RCA_map (data=neuron_group_clust_marker, what = "cluster")                                       
 
 }

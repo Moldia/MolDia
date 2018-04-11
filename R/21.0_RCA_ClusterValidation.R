@@ -121,7 +121,3 @@ RCA_tsne <- function(data, clus = NULL, pc = NULL, perplexity = 100, do.label = 
   mdata@tsne.data <- data.frame(RCAtsne)
   return(mdata)
 }
-
-#Pde1a
-#data <- tsne_clust
-#mm <- RCA_map(data = tsne_clust, what = "tsne", gene = "Pde1a")

@@ -5,7 +5,7 @@
 \title{Pre-process RCA data.}
 \usage{
 RCA_preprocess(data, normalization.method = "LogNormalize",
-  scale.factor = 10000, do.scale = TRUE, do.center = TRUE,
+  scale.factor = 10000, do.scale = FALSE, do.center = FALSE,
   display.progress = FALSE)
 }
 \arguments{
@@ -34,9 +34,12 @@ Setting center to TRUE will center the expression for each gene by subtracting t
          by their standard deviations if center is TRUE and by their root mean square otherwise.
 }
 \examples{
-data_1 <- readRCA(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
+mydata  <- readRCA(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
                   cellid = "CellID", centX = "centroidX", centY = "centroidY")
-scale_data_1 <- RCA_preprocess(data_1)
+mydata_process <- RCA_preprocess(data_1, normalization.method = "QuantileNormalize", do.scale = FALSE,do.center = FALSE)
+
+
+
 
 }
 \references{

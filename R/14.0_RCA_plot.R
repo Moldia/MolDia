@@ -25,12 +25,18 @@
 #' ## Reading data
 #' left_hypo <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"), 
 #'                         cellid = "CellId", centX = "centroid_x", centY = "centroid_y")
-#' left_hypo <- RCA_preprocess(data = left_hypo, normalization.method = "LogNormalize", 
+#' left_hypo <- RCA_preprocess(data = left_hypo, normalization.method = "RankNormalize", 
 #'                         do.scale = TRUE, do.center = TRUE)
 #' left_hypo <- RCA_cluster (data = left_hypo, method = "seurat",resolution = 0.05)
 #' 
 #' ## Plot violin plot
-#' res <- RCA_map(data = left_hypo, what = "vlnplot", gene = left_hypo@gene[1:4], same.y.lims = F)
+#' res1       <- RCA_map(data = left_hypo, what = "vlnplot", gene = left_hypo@gene[1:4], same.y.lims = F)
+#' 
+#' ## Dimention reduction by tSNE on clustered data
+#' left_hypo   <- RCA_tsne(data = left_hypo, do.label = TRUE, perplexity= 30)
+#' 
+#' ## Plot tSNE cluster
+#' res2       <- RCA_map(data = left_hypo, what = "tsne")
 #' 
 #' @export
 RCA_map <- function(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y", main = "Main plot", ptsize = 1,

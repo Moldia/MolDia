@@ -46,10 +46,12 @@
 #'
 #' ## Cluster data based on SEURAT pipeline
 #' neuron_group_clust  <- RCA_cluster (data = neuron_group, method = "seurat",
-#'                                     pc = 0.9, resolution = 0.4)
+#'                                     pc = 0.9, resolution = 0.1)
 #' ## Get cluster marker
 #' neuron_group_clust_marker <- RCA_marker(data = neuron_group_clust, topgene =15,
 #'                                         test.use="bimod", main = "")
+#'                                         
+#'  RCA_map (data=neuron_group_clust_marker, what = "cluster")                                       
 #'
 #' @export
 RCA_marker <- function(data, topgene= 5, test.use = "bimod", marker.sig = 0.005,
@@ -69,7 +71,7 @@ RCA_marker <- function(data, topgene= 5, test.use = "bimod", marker.sig = 0.005,
   set.seed(12345)
   RCA_markers   <- Seurat::FindAllMarkers(object = RCA_Seurat_obj, only.pos = only.pos,
                                           test.use = test.use ,thresh.use = marker.sig,
-                                          min.pct = marker.sig, min.diff.pct = marker.sig,  min.cells = 3)
+                                          min.pct = marker.sig, min.diff.pct = marker.sig,  min.cells.gene = 3, min.cells.group = 3)
   RCA_markers_1 <- lapply(split(RCA_markers,RCA_markers$cluster), function(i){i[order( abs(i$pct.1), decreasing = TRUE),]})
   res           <- RCA_markers_1
   RCA_markers_1 <- lapply(RCA_markers_1, function(i) utils::head(i,topgene))
