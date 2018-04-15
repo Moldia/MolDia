@@ -11,36 +11,57 @@
 #' @param xlab Label of x-axis
 #' @param ylab Label of y-axis
 #' @param ptsize Point size
+#' @param pchuse Pch for plotting
 #' @param main Main title
 #' @param image Plot image. Default is TRUE.
 #' @param live Plot interactive image. Default is FALSE.
-#' @param label.topgene Active only when "what = cluster or tsne". Number of genes to label each cluster. Only work when data is clustered and clusted marker
-#'        has identified in cluster.marker slot of input data.
+#' @param label.topgene Active only when "what = cluster or tsne". Number of genes to label each cluster.
+#'        Only work when data is clustered and clusted marker has identified in cluster.marker slot of input data.
 #' @param gene Gene of interest, Now limited to max 20 genes.
 #' @param cluster_id Which cluster to plot. Only work when what = "cluster".
 #' @param same.y.lims Set all the y-axis limits to the same values.
+#' @param adjust.use A multiplicate bandwidth adjustment. This makes it possible to adjust the 
+#'        bandwidth while still using the a bandwidth estimator. For exampe, adjust = 1/2 means use half of the default bandwidth.
 #'
 #'
 #' @examples 
 #' ## Reading data
 #' left_hypo <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"), 
 #'                         cellid = "CellId", centX = "centroid_x", centY = "centroid_y")
-#' left_hypo <- RCA_preprocess(data = left_hypo, normalization.method = "RankNormalize", 
-#'                         do.scale = TRUE, do.center = TRUE)
-#' left_hypo <- RCA_cluster (data = left_hypo, method = "seurat",resolution = 0.05)
+#'                         
+#' ## Plot each gene
+#' res2      <- RCA_map(data = left_hypo, what = "gene", gene = left_hypo@gene[1:12])
+#' 
+#' ## Plot all gene togather
+#' res2      <- RCA_map(data = left_hypo, what = "cell", gene = left_hypo@gene[1:12])
+#' 
+#' ## Data normalization
+#' left_hypo <- RCA_preprocess(data = left_hypo, normalization.method = "LogNormalize", 
+#'                         do.scale = TRUE, do.center = FALSE)
+#' ## Data clustering
+#' left_hypo <- RCA_cluster (data = left_hypo, method = "seurat",resolution = 0.1)
+#' 
+#' ## Plot cluster data
+#' res1      <- RCA_map(data = left_hypo, what = "cluster", cluster_id = 1:4)
 #' 
 #' ## Plot violin plot
-#' res1       <- RCA_map(data = left_hypo, what = "vlnplot", gene = left_hypo@gene[1:4], same.y.lims = F)
+#' res1      <- RCA_map(data = left_hypo, what = "vlnplot", gene = left_hypo@gene[4:7], same.y.lims = F, adjust.use = 1)
 #' 
 #' ## Dimention reduction by tSNE on clustered data
-#' left_hypo   <- RCA_tsne(data = left_hypo, do.label = TRUE, perplexity= 30)
+#' left_hypo <- RCA_tsne(data = left_hypo, do.label = TRUE, perplexity= 30)
 #' 
-#' ## Plot tSNE cluster
-#' res2       <- RCA_map(data = left_hypo, what = "tsne")
+#' ## Plot tSNE cluster: All cluster togather
+#' res2      <- RCA_map(data = left_hypo, what = "tsneAll", gene = left_hypo@gene[1:9])
+#' 
+#' ## Plot tSNE cluster: Gene on tsne plot
+#' res3      <- RCA_map(data = left_hypo, what = "tsne", gene = left_hypo@gene[1:12])
+#' 
+#' 
 #' 
 #' @export
-RCA_map <- function(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y", main = "Main plot", ptsize = 1,
-                    image = TRUE, live = FALSE, label.topgene = NULL, gene = NULL, cluster_id = NULL, same.y.lims = FALSE)
+RCA_map <- function(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y", main = "Main plot", ptsize = 1,pchuse = 16,
+                    image = TRUE, live = FALSE, label.topgene = NULL, gene = NULL, cluster_id = NULL, same.y.lims = FALSE,
+                    adjust.use = 0.5)
 {
   ## Save main data
   mainData <- data
@@ -62,10 +83,10 @@ RCA_map <- function(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y
   }
   
   ## Gene name
-  gene <- data@gene
+  if(length(gene)==0) gene <- data@gene
   
   ## Check what in category
-  what_type <- c("cell","cluster","tsne", "vlnplot")
+  what_type <- c("cell","gene","cluster","tsne", "tsneAll","vlnplot")
   if(what %in% what_type == FALSE ) stop("Please check available plot type in `what` argument", call. = FALSE)
   
   ## Check image and live has same value
@@ -101,20 +122,56 @@ RCA_map <- function(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y
     data$value1 <- data$value>0
     data       <- data[data$value1,]
     data$value1 <- NULL
+    colnames(data) <- c("centroid_x", "centroid_y", "Genes", "Expression")
     
     ## Create gggplot object
     p <- ggplot2::ggplot(data, ggplot2::aes_string(x= "centroid_x", y= "centroid_y")) +
-      ggplot2::geom_point(ggplot2::aes(colour= variable, size = value), alpha=0.75) +
+      ggplot2::geom_point(ggplot2::aes(colour= Genes, size = Expression), alpha=0.75) +
       ggplot2::theme(legend.title=ggplot2::element_blank(), legend.position="right") +
       ggplot2::guides(colour = ggplot2::guide_legend(override.aes = list(size=3)),
                       fill=ggplot2::guide_legend(nrow = 10)) +
-      ggplot2::labs(x = xlab, y = ylab, title= main) +
+      ggplot2::labs(x = "", y = "", title= main) +
       ggplot2::scale_x_continuous(limits = c(min(data$centroid_x),max(data$centroid_x)),expand=c(0,0)) +
-      ggplot2::scale_y_continuous(limits = c(min(data$centroid_y),max(data$centroid_y)),expand=c(0,0))
+      ggplot2::scale_y_continuous(limits = c(min(data$centroid_y),max(data$centroid_y)),expand=c(0,0)) +
+      ggplot2::theme_void()
     
     ## Select which plot to show
     if(live)  q <- plotly::ggplotly(p)
     if(image) q <- p
+  }
+  
+  
+  ######## What = "gene"
+  if(what == "gene")
+  {
+    if(length(data@location) == 0 ) stop("Single cell no spatial information", call. = FALSE)
+    
+    ## Create SEURAT object 
+    RCAtsne   <- Seurat::CreateSeuratObject(raw.data = t(mainData@data))
+    #if(length(data@scale.data)== 0 ) stop("Please scale data first with RCA_preprocess function ", call. = FALSE)
+    
+    cell.embeddings<- as.matrix(data@location) 
+    reduction.key  <- "tSNE_"
+    pca.obj <- new(
+      Class = "dim.reduction",
+      #gene.loadings = gene.loadings,
+      cell.embeddings = cell.embeddings,
+      #sdev = sdev,
+      key = reduction.key
+    )
+    RCAtsne@dr$tsne<- pca.obj
+    
+    # Select color
+    colplt<- RColorBrewer::brewer.pal(n = 9, name = "YlOrRd")
+    
+    # Selct feature for tsne plot for all gene
+    if(length(gene) == 0 ) {fplot <- data@gene
+    }else { fplot <- gene }
+    
+    # Plot feature
+    mm <- Seurat::FeaturePlot(object = RCAtsne, features.plot = c(fplot), cols.use = colplt, pt.size = ptsize, pch.use = pchuse, 
+                              do.return = F, no.axes = TRUE)
+    return(mm)
   }
   
   ######## What = "cluster"
@@ -184,9 +241,10 @@ RCA_map <- function(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y
         ggplot2::theme(legend.title = ggplot2::element_blank(), legend.position="right") +
         ggplot2::guides(colour = ggplot2::guide_legend(override.aes = list(size=3)),
                         fill=ggplot2::guide_legend(nrow = 10)) +
-        ggplot2::labs(x = xlab, y = ylab, colour = "Cluster", shape = "Gene",alpha = "log(Reads)",title= main)+
+        ggplot2::labs(x = "", y = "", colour = "Cluster", shape = "Gene",alpha = "log(Reads)",title= main)+
         ggplot2::scale_x_continuous(limits = c(min(data$centroid_x),max(data$centroid_x)),expand=c(0,0)) +
-        ggplot2::scale_y_continuous(limits = c(min(data$centroid_y),max(data$centroid_y)),expand=c(0,0))
+        ggplot2::scale_y_continuous(limits = c(min(data$centroid_y),max(data$centroid_y)),expand=c(0,0)) +
+        ggplot2::theme_void()
       
       ## Select which plot to show
       if(live)  q <- plotly::ggplotly(p)
@@ -208,9 +266,10 @@ RCA_map <- function(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y
         ggplot2::theme(legend.title = ggplot2::element_blank(), legend.position="right") +
         ggplot2::guides(colour = ggplot2::guide_legend(override.aes = list(size=3)),
                         fill=ggplot2::guide_legend(nrow = 10)) +
-        ggplot2::labs(x = xlab, y = ylab, colour = "Cluster", title= main) +
+        ggplot2::labs(x = "", y = "", colour = "Cluster", title= main) +
         ggplot2::scale_x_continuous(limits = c(min(data$centroid_x),max(data$centroid_x)),expand=c(0,0)) +
-        ggplot2::scale_y_continuous(limits = c(min(data$centroid_y),max(data$centroid_y)),expand=c(0,0))
+        ggplot2::scale_y_continuous(limits = c(min(data$centroid_y),max(data$centroid_y)),expand=c(0,0)) +
+        ggplot2::theme_void()
       
       ## Select which plot to show
       if(live)  q <- plotly::ggplotly(p)
@@ -218,9 +277,43 @@ RCA_map <- function(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y
     }
   }
   
-  
   ######## What = "tsne"
   if(what == "tsne")
+  {
+    # Check if tsne applied
+    if(length(data@tsne.data) == 0 ) stop("Please perform tSNE on data first", call. = FALSE)
+    
+    ## Create SEURAT object 
+    RCAtsne   <- Seurat::CreateSeuratObject(raw.data = t(mainData@data))
+    if(length(data@scale.data)== 0 ) stop("Please scale data first with RCA_preprocess function ", call. = FALSE)
+
+    cell.embeddings<- as.matrix(data@tsne.data) 
+    #cell.embeddings<- as.matrix(left_hypo@location) 
+    reduction.key  <- "tSNE_"
+    pca.obj <- new(
+      Class = "dim.reduction",
+      #gene.loadings = gene.loadings,
+      cell.embeddings = cell.embeddings,
+      #sdev = sdev,
+      key = reduction.key
+    )
+    RCAtsne@dr$tsne<- pca.obj
+    
+    # Select color 
+    colplt<- RColorBrewer::brewer.pal(n = 9, name = "YlOrRd")
+    
+    # Selct feature for tsne plot for all gene
+    if(length(gene) == 0 ) {fplot <- data@gene
+    }else { fplot <- gene }
+    
+    # Plot feature
+    mm<- Seurat::FeaturePlot(object = RCAtsne, features.plot = fplot, cols.use = colplt, pt.size = ptsize, 
+                             pch.use = pchuse, no.axes = TRUE)
+    return(NULL)
+  }
+  
+  ######## What = "tsneAll"
+  if(what == "tsneAll")
   {
     if(length(data@tsne.data) == 0 ) stop("Please perform tSNE on data first", call. = FALSE)
     
@@ -345,7 +438,7 @@ RCA_map <- function(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y
     # Violin plot
     for(i in 1: length(fplot))
     {
-      v <- Seurat::VlnPlot(object = RCA_Seurat_obj,features.plot = fplot[i], same.y.lims = TRUE, do.return = TRUE, y.max = ymax ) + 
+      v <- Seurat::VlnPlot(object = RCA_Seurat_obj,features.plot = fplot[i], same.y.lims = TRUE, do.return = TRUE, y.max = ymax,adjust.use = adjust.use) + 
            ggplot2::labs(x = "Cluster", y = "Reads count")
       assign(x = paste0("p",i), value = v)
     }

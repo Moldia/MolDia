@@ -142,7 +142,7 @@ RCA_seruat_cluster <- function(data, pc = NULL, cluster_id = NULL,
     #                      gene = colnames(newdata),
     #                      cluster = SEURAT_clus@ident)
 
-    main_data@data <- data.frame(data)
+    main_data@data <- data.frame(newdata)
     if(length(main_data@norm.data)  > 0 ) main_data@norm.data  <- main_data@norm.data[rownames(newdata),colnames(newdata)]
     if(length(main_data@scale.data) > 0 ) main_data@scale.data <- main_data@scale.data[rownames(newdata),colnames(newdata)]
     main_data@location <- main_data@location[rownames(newdata),]

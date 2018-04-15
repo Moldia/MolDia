@@ -94,10 +94,14 @@ RCA_tsne <- function(data, clus = NULL, pc = NULL, perplexity = 100, do.label = 
     else{
       npc   <- withCallingHandlers(suppressWarnings(irlba::prcomp_irlba(RCAtsne@data, n=20, 
                                                                         fastpath = TRUE, verbose = FALSE)))}
+
+    # How many pc to be used: Cut off is 0.90
     npc   <- summary(npc)$importance[3,]
-    pcuse <- which(npc > 0.90)[1]
+    if(max(npc) < 0.9) {pcuse <- length(npc)
+    }else {pcuse <- which(npc > 0.90)[1]}
     cat("Number of principle component to be used :", pcuse, "\n")
     pc <- 1:pcuse
+    
   }
   
   # Find optimal PCA component

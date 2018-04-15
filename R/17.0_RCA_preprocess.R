@@ -87,12 +87,6 @@ RCA_preprocess <- function(data, normalization.method = "LogNormalize",
   ## Scale or center data 
   if(any(c(do.scale,do.center) == TRUE))
     {
-     ## Need to work on scale data. At this moment, scale and center normalized data.
-     #res       <- suppressWarnings(Seurat::CreateSeuratObject(raw.data = t(data@data), normalization.method = NULL,
-     #                                      project = "RCA_data_amalysis", min.cells = 0, min.genes = 0, is.expr = 0,
-     #                                      scale.factor = scale.factor, do.scale = do.scale,
-     #                                      do.center = do.center,display.progress = display.progress))
-     
      res   <- Seurat::CreateSeuratObject(raw.data = t(data@norm.data))
      res   <- Seurat::ScaleData(object = res,do.scale = do.scale,do.center = do.center, check.for.norm = FALSE)
      data@scale.data <- as.matrix(t(res@scale.data))

@@ -5,9 +5,9 @@
 \title{Plot function for RCA_class data.}
 \usage{
 RCA_map(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y",
-  main = "Main plot", ptsize = 1, image = TRUE, live = FALSE,
-  label.topgene = NULL, gene = NULL, cluster_id = NULL,
-  same.y.lims = FALSE)
+  main = "Main plot", ptsize = 1, pchuse = 16, image = TRUE,
+  live = FALSE, label.topgene = NULL, gene = NULL, cluster_id = NULL,
+  same.y.lims = FALSE, adjust.use = 0.5)
 }
 \arguments{
 \item{data}{Input data in class RCA_class. Output of \link[MolDia]{readRCA}.}
@@ -22,18 +22,23 @@ RCA_map(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y",
 
 \item{ptsize}{Point size}
 
+\item{pchuse}{Pch for plotting}
+
 \item{image}{Plot image. Default is TRUE.}
 
 \item{live}{Plot interactive image. Default is FALSE.}
 
-\item{label.topgene}{Active only when "what = cluster or tsne". Number of genes to label each cluster. Only work when data is clustered and clusted marker
-has identified in cluster.marker slot of input data.}
+\item{label.topgene}{Active only when "what = cluster or tsne". Number of genes to label each cluster.
+Only work when data is clustered and clusted marker has identified in cluster.marker slot of input data.}
 
 \item{gene}{Gene of interest, Now limited to max 20 genes.}
 
 \item{cluster_id}{Which cluster to plot. Only work when what = "cluster".}
 
 \item{same.y.lims}{Set all the y-axis limits to the same values.}
+
+\item{adjust.use}{A multiplicate bandwidth adjustment. This makes it possible to adjust the 
+bandwidth while still using the a bandwidth estimator. For exampe, adjust = 1/2 means use half of the default bandwidth.}
 }
 \description{
 Map RCA data based on cell, cluster or tSNE
@@ -42,17 +47,34 @@ Map RCA data based on cell, cluster or tSNE
 ## Reading data
 left_hypo <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"), 
                         cellid = "CellId", centX = "centroid_x", centY = "centroid_y")
+                        
+## Plot each gene
+res2      <- RCA_map(data = left_hypo, what = "gene", gene = left_hypo@gene[1:12])
+
+## Plot all gene togather
+res2      <- RCA_map(data = left_hypo, what = "cell", gene = left_hypo@gene[1:12])
+
+## Data normalization
 left_hypo <- RCA_preprocess(data = left_hypo, normalization.method = "LogNormalize", 
-                        do.scale = F, do.center = F)
-left_hypo <- RCA_cluster (data = left_hypo, method = "seurat",resolution = 0.05)
+                        do.scale = TRUE, do.center = FALSE)
+## Data clustering
+left_hypo <- RCA_cluster (data = left_hypo, method = "seurat",resolution = 0.1)
+
+## Plot cluster data
+res1      <- RCA_map(data = left_hypo, what = "cluster", cluster_id = 1:4)
 
 ## Plot violin plot
-res1       <- RCA_map(data = left_hypo, what = "vlnplot", gene = left_hypo@gene[1:4], same.y.lims = F)
+res1      <- RCA_map(data = left_hypo, what = "vlnplot", gene = left_hypo@gene[4:7], same.y.lims = F, adjust.use = 1)
 
 ## Dimention reduction by tSNE on clustered data
-left_hypo   <- RCA_tsne(data = left_hypo, do.label = TRUE, perplexity= 30)
+left_hypo <- RCA_tsne(data = left_hypo, do.label = TRUE, perplexity= 30)
 
-## Plot tSNE cluster
-res2       <- RCA_map(data = left_hypo, what = "tsne")
+## Plot tSNE cluster: All cluster togather
+res2      <- RCA_map(data = left_hypo, what = "tsneAll", gene = left_hypo@gene[1:9])
+
+## Plot tSNE cluster: Gene on tsne plot
+res3      <- RCA_map(data = left_hypo, what = "tsne", gene = left_hypo@gene[1:12])
+
+
 
 }
