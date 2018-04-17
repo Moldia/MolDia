@@ -4,8 +4,7 @@
 \alias{RCA_tsne}
 \title{Dimentionality reduction to 2D by tSNE}
 \usage{
-RCA_tsne(data, clus = NULL, pc = NULL, perplexity = 100,
-  do.label = TRUE, normalize = FALSE)
+RCA_tsne(data, clus = NULL, pc = NULL, perplexity = 100)
 }
 \arguments{
 \item{data}{Input data in class RCA_class. Output of \link[MolDia]{readRCA}.}
@@ -14,11 +13,9 @@ RCA_tsne(data, clus = NULL, pc = NULL, perplexity = 100,
 
 \item{pc}{Desired percent of variance to be explained by PCA. Default in NULL.}
 
-\item{perplexity}{Numeric; Perplexity parameter. See  \link[Rtsne]{Rtsne}}
+\item{perplexity}{Numeric; Perplexity parameter. See  \link[Rtsne]{Rtsne}
 
-\item{do.label}{Label tsne plot or not}
-
-\item{normalize}{Run tsne on normalized or raw data. Normalization methods depends on \link[MolDia]{RCA_preprocess} function.}
+## param do.label Label tsne plot or not}
 }
 \value{
 2D dataframe of points.
@@ -55,10 +52,10 @@ neuron_group <- RCA_preprocess(data = neuron_group, normalization.method = "LogN
 neuron_group_clust  <- RCA_cluster(data = neuron_group, pc = 0.9, resolution = 0.3)
 
 ## Dimention reduction by tSNE on non-clustered data
-tsne_noclust <- RCA_tsne(data = neuron_group, do.label = TRUE, pc= 0.9, perplexity= 100)
+tsne_noclust <- RCA_tsne(data = neuron_group, pc= 0.9, perplexity= 100)
 
 ## Dimention reduction by tSNE on clustered data
-tsne_clust   <- RCA_tsne(data = neuron_group_clust, do.label = TRUE, pc= 0.9, perplexity= 100)
+tsne_clust   <- RCA_tsne(data = neuron_group_clust, pc= 0.9, perplexity= 100)
 
 ## Get cluster marker
 tsne_clust <- RCA_marker(data = tsne_clust, topgene =15, marker.sig = 0.005,

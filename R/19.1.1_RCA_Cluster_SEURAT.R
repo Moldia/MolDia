@@ -50,7 +50,7 @@
 #'
 RCA_seruat_cluster <- function(data, pc = NULL, cluster_id = NULL,
                             resolution = 0.3, algorithm = 1,
-                            do.norm = TRUE, do.scale = TRUE,
+                            # do.norm = TRUE, do.scale = TRUE,
                             DEGmethod = "seurat", k.param = 30)
 {
   ## Save main data

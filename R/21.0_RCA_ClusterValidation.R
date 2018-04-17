@@ -10,8 +10,8 @@
 #' @param clus As factor. Each cell names has id. Cell order of data and cell order of clus should be same. (work for class data.frame)
 #' @param pc Desired percent of variance to be explained by PCA. Default in NULL.
 #' @param perplexity Numeric; Perplexity parameter. See  \link[Rtsne]{Rtsne}
-#' @param do.label Label tsne plot or not
-#' @param normalize Run tsne on normalized or raw data. Normalization methods depends on \link[MolDia]{RCA_preprocess} function.
+#' 
+#' ## param do.label Label tsne plot or not
 #'
 #' @return 2D dataframe of points.
 #'
@@ -44,10 +44,10 @@
 #' neuron_group_clust  <- RCA_cluster(data = neuron_group, pc = 0.9, resolution = 0.3)
 #'
 #' ## Dimention reduction by tSNE on non-clustered data
-#' tsne_noclust <- RCA_tsne(data = neuron_group, do.label = TRUE, pc= 0.9, perplexity= 100)
+#' tsne_noclust <- RCA_tsne(data = neuron_group, pc= 0.9, perplexity= 100)
 #'
 #' ## Dimention reduction by tSNE on clustered data
-#' tsne_clust   <- RCA_tsne(data = neuron_group_clust, do.label = TRUE, pc= 0.9, perplexity= 100)
+#' tsne_clust   <- RCA_tsne(data = neuron_group_clust, pc= 0.9, perplexity= 100)
 #'
 #' ## Get cluster marker
 #' tsne_clust <- RCA_marker(data = tsne_clust, topgene =15, marker.sig = 0.005,
@@ -56,7 +56,7 @@
 #' result <- RCA_map(data = tsne_clust, what = "tsne")
 #'
 #' @export
-RCA_tsne <- function(data, clus = NULL, pc = NULL, perplexity = 100, do.label = TRUE, normalize = FALSE)
+RCA_tsne <- function(data, clus = NULL, pc = NULL, perplexity = 100)
 {
   # Check class of data
   if(class(data)%in%c("RCA_class") ==FALSE) stop("Check input data in class 'RCA_class'",call. = FALSE)
@@ -65,16 +65,7 @@ RCA_tsne <- function(data, clus = NULL, pc = NULL, perplexity = 100, do.label = 
   mdata <- data
   
   # Run tSNE on normalize / non normalized data
-  if(normalize == TRUE)
-  {
-    if(length(mdata@norm.data) == 0) stop("Please Normalize your data with `RCA_preprocess` function", call. = FALSE)
-    if(length(mdata@norm.data) != 0) data  <- mdata@norm.data
-  }
-  
-  if(normalize == FALSE)
-  {
-    data  <- mdata@data
-  }
+  data  <- mdata@data
 
   # Create SEURAT object
   RCAtsne   <- Seurat::CreateSeuratObject(t(data))

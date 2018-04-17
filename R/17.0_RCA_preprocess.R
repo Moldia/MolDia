@@ -87,7 +87,8 @@ RCA_preprocess <- function(data, normalization.method = "LogNormalize",
   ## Scale or center data 
   if(any(c(do.scale,do.center) == TRUE))
     {
-     res   <- Seurat::CreateSeuratObject(raw.data = t(data@norm.data))
+     #res   <- Seurat::CreateSeuratObject(raw.data = t(data@norm.data))
+     res   <- Seurat::CreateSeuratObject(raw.data = t(data@data))
      res   <- Seurat::ScaleData(object = res,do.scale = do.scale,do.center = do.center, check.for.norm = FALSE)
      data@scale.data <- as.matrix(t(res@scale.data))
     }  

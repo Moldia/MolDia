@@ -6,8 +6,7 @@
 Cluster in-situ RCA data by SEURAT.}
 \usage{
 RCA_seruat_cluster(data, pc = NULL, cluster_id = NULL, resolution = 0.3,
-  algorithm = 1, do.norm = TRUE, do.scale = TRUE, DEGmethod = "seurat",
-  k.param = 30)
+  algorithm = 1, DEGmethod = "seurat", k.param = 30)
 }
 \arguments{
 \item{data}{Input data in class RCA_class. Output of \link[MolDia]{readRCA}.}
