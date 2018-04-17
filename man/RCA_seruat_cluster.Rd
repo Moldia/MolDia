@@ -57,7 +57,7 @@ neuron_group <- RCA_preprocess(data = neuron_group, normalization.method = "LogN
                                do.scale = TRUE, do.center = TRUE)
 
 ## Cluster data based on SEURAT pipeline
-# neuron_group_clust  <- RCA_seruat_cluster (data = neuron_group, pc = 0.9, resolution = 0.4)
+neuron_group_clust  <- RCA_seruat_cluster (data = neuron_group, pc = 0.9, resolution = 0.4)
 
 ## Re-cluster specific cluster
 # re_clust  <- RCA_seruat_cluster (data = neuron_group_clust, pc = 0.9,

@@ -42,7 +42,7 @@
 #'                                do.scale = TRUE, do.center = TRUE)
 #'
 #' ## Cluster data based on SEURAT pipeline
-#' # neuron_group_clust  <- RCA_seruat_cluster (data = neuron_group, pc = 0.9, resolution = 0.4)
+#' neuron_group_clust  <- RCA_seruat_cluster (data = neuron_group, pc = 0.9, resolution = 0.4)
 #'
 #' ## Re-cluster specific cluster
 #' # re_clust  <- RCA_seruat_cluster (data = neuron_group_clust, pc = 0.9,
@@ -134,15 +134,10 @@ RCA_seruat_cluster <- function(data, pc = NULL, cluster_id = NULL,
                                                            save.SNN = FALSE, n.iter = 10, modularity.fxn = 1,
                                                            temp.file.location = tempfile() ))
     cat ("FINISHED \n")
+    
     ## return RCA object
     newdata <- as.data.frame(t(SEURAT_clus@raw.data))
-    #res <- methods::new("RCA_class",
-    #                      data  = data,
-    #                      location = main_data@location[rownames(newdata),],
-    #                      gene = colnames(newdata),
-    #                      cluster = SEURAT_clus@ident)
-
-    main_data@data <- data.frame(newdata)
+    main_data@data <- main_data@data[rownames(newdata),colnames(newdata)] #data.frame(newdata)
     if(length(main_data@norm.data)  > 0 ) main_data@norm.data  <- main_data@norm.data[rownames(newdata),colnames(newdata)]
     if(length(main_data@scale.data) > 0 ) main_data@scale.data <- main_data@scale.data[rownames(newdata),colnames(newdata)]
     main_data@location <- main_data@location[rownames(newdata),]

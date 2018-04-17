@@ -33,8 +33,8 @@ methods::setMethod( f = "show", signature = "RCA_class",
                            "\nNumber of genes:", ncol(object@data),#sum(colSums(object@data)>=0),
                            "\nNumber of cells:", nrow(object@data),#sum(rowSums(object@data)>=0),
                            "\nNumber of reads:", sum(object@data),
-                           "\nCluster id:", levels(object@cluster),
-                           "\nCluster size:",table(object@cluster))
+                           if(length(object@cluster) > 0) "\nCluster id:", levels(object@cluster),
+                           if(length(object@cluster) > 0) "\nCluster size:",table(object@cluster))
                       invisible(x = NULL)
                       }
                     )
