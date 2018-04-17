@@ -5,7 +5,7 @@
 \title{Dimentionality reduction to 2D by tSNE}
 \usage{
 RCA_tsne(data, clus = NULL, pc = NULL, perplexity = 100,
-  do.label = TRUE)
+  do.label = TRUE, normalize = FALSE)
 }
 \arguments{
 \item{data}{Input data in class RCA_class. Output of \link[MolDia]{readRCA}.}
@@ -17,6 +17,8 @@ RCA_tsne(data, clus = NULL, pc = NULL, perplexity = 100,
 \item{perplexity}{Numeric; Perplexity parameter. See  \link[Rtsne]{Rtsne}}
 
 \item{do.label}{Label tsne plot or not}
+
+\item{normalize}{Run tsne on normalized or raw data. Normalization methods depends on \link[MolDia]{RCA_preprocess} function.}
 }
 \value{
 2D dataframe of points.

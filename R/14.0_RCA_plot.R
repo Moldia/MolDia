@@ -376,14 +376,15 @@ RCA_map <- function(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y
     {
       p<- ggplot2::ggplot(data,ggplot2::aes_string(x= "tSNE_1",y= "tSNE_2")) +
         ggplot2::geom_point(ggplot2::aes(colour=factor(cluster), size = ptsize,
-                                         shape = variable, alpha=log2(value+1))) +
+                                         shape = pchuse, alpha=log2(value+1))) +
         ggplot2::scale_alpha(range = c(0, 1)) +
         ggplot2::theme(legend.title = ggplot2::element_blank(), legend.position="right") +
         ggplot2::guides(colour = ggplot2::guide_legend(override.aes = list(size=3)),
                         fill=ggplot2::guide_legend(nrow = 10)) +
-        ggplot2::labs(x = xlab, y = ylab, colour = "Cluster", shape = "Gene",alpha = "log(Reads)", title= main)+
+        ggplot2::labs(x = "", y = "", colour = "Cluster", shape = "Gene",alpha = "log(Reads)", title= main)+
         ggplot2::scale_x_continuous(limits = c(min(data$tSNE_1),max(data$tSNE_1)),expand=c(0,0)) +
-        ggplot2::scale_y_continuous(limits = c(min(data$tSNE_2),max(data$tSNE_2)),expand=c(0,0))
+        ggplot2::scale_y_continuous(limits = c(min(data$tSNE_2),max(data$tSNE_2)),expand=c(0,0)) +
+        ggplot2::theme_void()
       
       ## Select which plot to show
       if(live)  q <- plotly::ggplotly(p)
@@ -404,9 +405,10 @@ RCA_map <- function(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y
         ggplot2::theme(legend.title = ggplot2::element_blank(), legend.position="right") +
         ggplot2::guides(colour = ggplot2::guide_legend(override.aes = list(size=3)),
                         fill=ggplot2::guide_legend(nrow = 10)) +
-        ggplot2::labs(x = xlab, y = ylab, colour = "Cluster", title= main) +
+        ggplot2::labs(x = "", y = "", colour = "Cluster", title= main) +
         ggplot2::scale_x_continuous(limits = c(min(data$tSNE_1),max(data$tSNE_1)),expand=c(0,0)) +
-        ggplot2::scale_y_continuous(limits = c(min(data$tSNE_2),max(data$tSNE_2)),expand=c(0,0))
+        ggplot2::scale_y_continuous(limits = c(min(data$tSNE_2),max(data$tSNE_2)),expand=c(0,0)) +
+        ggplot2::theme_void()
       
       ## Select which plot to show
       if(live)  q <- plotly::ggplotly(p)
