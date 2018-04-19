@@ -19,7 +19,7 @@ Summary of specific gene of interest of RCA data
 }
 \examples{
 data_1 <- readRCA(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
-                  cellid = "CellID")
+                  cellid = "CellID", centX ="centroidX", centY="centroidY" )
 res <- genesSummary(data = data_1, gene = "Actb.L")
 
 }

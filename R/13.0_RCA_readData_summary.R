@@ -604,7 +604,7 @@ readsSummary <- function(data, readlimit = 10, text.size = 6, intervel.dep = NUL
 #'
 #' @examples
 #' data_1 <- readRCA(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
-#'                   cellid = "CellID")
+#'                   cellid = "CellID", centX ="centroidX", centY="centroidY" )
 #' res <- genesSummary(data = data_1, gene = "Actb.L")
 #'
 #' @return Barplot
@@ -614,7 +614,7 @@ genesSummary <- function(data, gene = NULL)
 
 {
   ## Select gene
-  if(length(gene) == 0) stop("Please select genes of interes", call. = FALSE)
+  if(length(gene) == 0) stop("Please select genes of interest", call. = FALSE)
   if(length(gene) > 1) stop("Maximum length of gene should be 1", call. = FALSE)
   if(any(gene%in%data@gene)==FALSE) stop("Genes not present in data. Check gene name", call. = FALSE)
 
