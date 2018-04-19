@@ -7,6 +7,8 @@ install.packages("devtools")
 library(devtools)
 install_github("mashranga/MolDia")
 ```
+# Scope of the package
+
 
 ## Need to updrade 
 
