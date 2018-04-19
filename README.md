@@ -9,8 +9,10 @@ install_github("mashranga/MolDia")
 ```
 # Scope of the package
 The scope of the package can be devided into following broad category
-## Read RCA ISS data
-1. readRCA : Function to read RCA ISS data. THis function has different parameter, how to read and what to read. See detail in function help
+## Read and manupulate RCA ISS data
+1. __readRCA__ : Function to read RCA ISS data. THis function has different parameter, how to read and what to read. See detail in function help
+
+2. __ISS_rotate__ : Rotate by specific angle or flip  by x or y axis of ISS image. 
 
 
 
