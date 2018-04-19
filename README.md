@@ -12,7 +12,14 @@ The scope of the package can be devided into following broad category
 ## Read and manupulate RCA ISS data
 1. __readRCA__ : Function to read RCA ISS data. THis function has different parameter, how to read and what to read. See detail in function help.
 2. __ISS_rotate__ : Rotate by specific angle or flip  by x or y axis of ISS image.
-3. __genesSummary__: Summary of Specific gene of interest in ISS data. This include % of gene of interest positive cell with their distribution in other positive cells and visa-versa. 
+
+## ISS data summary and vizualization
+1. __genesSummary__: Summary of Specific gene of interest in ISS data. This include % of gene of interest positive cell with their distribution in other positive cells and visa-versa.
+2. __ISS_pieplot__:
+3. __ISS_ratiocor__:
+
+## Multiple ISS data comparision
+1. __ISS_compare__: Relation of multiple ISS data interms of total reads per gene. The result is presented in fitted regression line with R^2.
 
 
 
