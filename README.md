@@ -8,6 +8,10 @@ library(devtools)
 install_github("mashranga/MolDia")
 ```
 # Scope of the package
+The scope of the package can be devided into following broad category
+## Read RCA ISS data
+1. readRCA : Function to read RCA ISS data. THis function has different parameter, how to read and what to read. See detail in function help
+
 
 
 ## Need to updrade 
