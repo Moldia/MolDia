@@ -14,12 +14,12 @@ The scope of the package can be devided into following broad category
 2. __ISS_rotate__ : Rotate a tissue by specific angle or flip  by x or y axis.
 
 ## ISS data summary and vizualization
-1. __genesSummary__: Summary of Specific gene of interest in ISS data. This include % of gene of interest positive cell with their distribution in other positive cells and visa-versa.
+1. __genesSummary__: Summary of Specific gene of interest in ISS data. This include percentage of gene of interest positive cell with their distribution in other positive cells and visa-versa.
 2. __ISS_pieplot__:
 3. __ISS_ratiocor__:
 
 ## Multiple ISS data comparision
-1. __ISS_compare__: Relation of multiple ISS data interms of total reads per gene. The result is presented in fitted regression line with R^2.
+1. __ISS_compare__: Relation of multiple ISS data interms of total reads per gene. The result is presented in fitted regression line with R^{2}.
 
 
 
