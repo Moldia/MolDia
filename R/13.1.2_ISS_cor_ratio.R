@@ -16,8 +16,29 @@
 #' @param sig.level confidence level for the returned confidence interval. Currently only used for 
 #'             the Pearson product moment correlation coefficient if there are at least 4 complete pairs of observations.
 #' @param main Title of the plot 
-#' @param stat Mode of operation. Possible value is "sum", "gene" and "present". Default is "sum". 
+#' @param stat Mode of operation. Possible value is "sum", "gene" and "present". Default is "sum".
+#' @example 
+#' ## Read data: Left and right HC
+#' hc_left  <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),
+#'                   cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
+#' hc_right <- readRCA(file = system.file("extdata", "Hypocampus_right.csv", package="MolDia"),
+#'                   cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
+#'
+#' ## Arrange marker gene
+#' data(marker_gene)
+#' marker_gene <- marker_gene
+#' mark_gene <- list(genr = marker_gene$genr, neuron = c(marker_gene$genr_neuro,
+#'                                                       marker_gene$genr_neuro_pyra1,
+#'                                                       marker_gene$genr_neuro_pyra2,
+#'                                                       marker_gene$genr_neuro_inter1,
+#'                                                       marker_gene$genr_neuro_inter2,
+#'                                                       marker_gene$genr_neuro_inter3,
+#'                                                       marker_gene$genr_neuro_inter4,
+#'                                                       marker_gene$genr_neuro_inter5,
+#'                                                       marker_gene$genr_neuro_inter6),
+#'                                             nonneuron = marker_gene$genr_nonneuro) 
 #' 
+#' res <- ISS_ratiocor(data = list(Left_HC = c(hc_left),Right_HC = c(hc_right)), gene = mark_gene, plty = "ratio")
 #'@export
 
 ISS_ratiocor <- function(data, gene = marker_gene, select_gene = NULL, errorbar= TRUE, plty = "both", 
@@ -84,7 +105,7 @@ ISS_ratiocor <- function(data, gene = marker_gene, select_gene = NULL, errorbar=
       kk1 <- subset(x= kk1, mean == "ratio_mean")
       p[[i]]  <- ggplot2::ggplot(kk1 , ggplot2::aes(x = X2, y = mean_value, fill = group)) +
                  ggplot2::geom_bar(position = ggplot2::position_dodge(), stat="identity") +
-                 {if(errorbar) ggplot2::geom_errorbar(aes(ymin=mean_value-sd_value, ymax=mean_value+sd_value), width=.2, position = ggplot2::position_dodge(.9))} +
+                 {if(errorbar) ggplot2::geom_errorbar(ggplot2::aes(ymin=mean_value-sd_value, ymax=mean_value+sd_value), width=.2, position = ggplot2::position_dodge(.9))} +
                  ggplot2::labs(x=names(kk), y = "") + 
                  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 60, hjust = 1))+
                  ggplot2::labs(title = main)

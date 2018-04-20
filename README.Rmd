@@ -9,17 +9,53 @@ install_github("mashranga/MolDia")
 ```
 # Scope of the package
 The scope of the package can be devided into following broad category
-## Read and manipulate RCA ISS data
+
+## General structure of MolDia object
+1. __RCA_class__ : Main object definition and structure of "RCA_class" of MolDia package
+
+## Default data-set
+1. __marker_gene__: Neuronal marker gene by group
+
+## Read, manipulateand filter RCA ISS data
+### Read data
 1. __readRCA__ : Function to read RCA ISS data. THis function has different parameter, how to read and what to read. See detail in function help.
 2. __ISS_rotate__ : Rotate a tissue by specific angle or flip  by x or y axis.
+### Filter data
+1. __RCA_barplot__: Plot bar plot on RCA data bsed on different condition. In general filter data set based on different gese condition. 
+1. __RCA_filter__: Filter RCA data based on poisson distibution (Experimental)
+### Region of interest
+1. __RCA_GridSelect__: Draw and Select grid of interest from a tissue
 
 ## ISS data summary and vizualization
 1. __genesSummary__: Summary of Specific gene of interest in ISS data. This include percentage of gene of interest positive cell with their distribution in other positive cells and visa-versa.
-2. __ISS_pieplot__:
-3. __ISS_ratiocor__:
+2. __readsSummary__: Summary of RCA data
+2. __ISS_pieplot__: Venn-pie chart on ISS data based on genes of interest
+3. __RCA_map__: Map ISS data based on different feature like cell, gene, cluster, tSNE
 
 ## Multiple ISS data comparision
-1. __ISS_compare__: Relation of multiple ISS data interms of total reads per gene. The result is presented in fitted regression line with R^{2}.
+1. __ISS_compare__: Relation of multiple ISS data interms of total reads per gene. The result is presented in fitted regression line with R^2.
+2. __ISS_ratiocor__: Calculate and plot correlation and ratio of total reads between genes by concedering group of tissue.
+
+## ISS data dimention reduction
+1. __RCA_tsne__: Any data in class RCA_class clusteded or not clustered used to reduce dimention to 2D by RCA-tsne.
+
+## ISS data preprocessing 
+1. __RCA_preprocess__: Pre-process RCA data interms of normalization, scalling and centering
+
+## ISS clustering
+### Cluster
+1. __RCA_cluster__: Cluster in-situ RCA data by different methods
+2. __RCA_ClusterSelect__ : Select cluster of interest after clustering
+3. __RCA_spatial__ : ISS spatial clustering (Experimental)
+
+### Cluster marker
+1. __RCA_marker__: Find Cluster marker of in-situ RCA data and plot significant gene cluster wise by barplot and heatmap.
+
+### Cluster compare
+1. __RCA_clustcompare__: Compare cluster of two tissue and find their similarity by Random forest algorithm.
+
+## Differentially express gene
+1. __RCA_DE__: Find differentially express gene by different methods
 
 
 
