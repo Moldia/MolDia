@@ -17,3 +17,4 @@ interested genes}
 \description{
 Calculate summary statstics (Total reads, Total number of gene present and Gene present in group) of data
 }
+\keyword{internal}
