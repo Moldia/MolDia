@@ -187,9 +187,9 @@ ISS_ratiocor_1 <- function(data, gene = marker_gene, stat = stat, logratio = log
 #'  
 #' @param data Data in dataframe class
 #' @param gene Object in vector or list formate. In list formated input every list element is a group of
-#'             interested genes.
-#' @param stat Mode of operation. Possible value is "sum", "gene" and "present". Default is "sum".
-#'  
+#'             interested genes
+#' @param stat Mode of operation. Possible value is "sum", "gene" and "present". Default is "sum"
+
 ISS_sumstat <- function(data, gene, stat = "sum")
   {
   ##Create empty result data frame

@@ -10,9 +10,9 @@ ISS_sumstat(data, gene, stat = "sum")
 \item{data}{Data in dataframe class}
 
 \item{gene}{Object in vector or list formate. In list formated input every list element is a group of
-interested genes.}
+interested genes}
 
-\item{stat}{Mode of operation. Possible value is "sum", "gene" and "present". Default is "sum".}
+\item{stat}{Mode of operation. Possible value is "sum", "gene" and "present". Default is "sum"}
 }
 \description{
 Calculate summary statstics (Total reads, Total number of gene present and Gene present in group) of data
