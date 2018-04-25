@@ -105,6 +105,7 @@ RCA_tsne <- function(data, clus = NULL, pc = NULL, perplexity = 100)
     }else {pcuse <- which(npc > 0.90)[1]}
     cat("Number of principle component to be used :", pcuse, "\n")
     pc <- 1:pcuse
+    print(npc)
     
   }
   
@@ -119,7 +120,6 @@ RCA_tsne <- function(data, clus = NULL, pc = NULL, perplexity = 100)
   set.seed(12345)
   cat("Running dimentionality reduction by tSNE..")
   RCAtsne   <- Seurat::RunTSNE(object = RCAtsne , dims.use = pc, do.fast = TRUE, check_duplicates = FALSE,perplexity = perplexity )
-  kk <- RCAtsne
 
   # Assign cluster information on tSNE plot
   #if(length(mdata@cluster)> 0 ) RCAtsne@ident <- mdata@cluster
@@ -128,6 +128,5 @@ RCA_tsne <- function(data, clus = NULL, pc = NULL, perplexity = 100)
 
   # Assign tSNE data to slot
   mdata@tsne.data <- data.frame(RCAtsne)
-  #return(mdata)
-  return(kk)
+  return(mdata)
 }
