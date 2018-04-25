@@ -119,13 +119,15 @@ RCA_tsne <- function(data, clus = NULL, pc = NULL, perplexity = 100)
   set.seed(12345)
   cat("Running dimentionality reduction by tSNE..")
   RCAtsne   <- Seurat::RunTSNE(object = RCAtsne , dims.use = pc, do.fast = TRUE, check_duplicates = FALSE,perplexity = perplexity )
+  kk <- RCAtsne
 
   # Assign cluster information on tSNE plot
-  if(length(mdata@cluster)> 0 ) RCAtsne@ident <- mdata@cluster
+  #if(length(mdata@cluster)> 0 ) RCAtsne@ident <- mdata@cluster
   #RCAtsne_1 <- Seurat::TSNEPlot(RCAtsne, do.label = do.label, label.size = 8)
   RCAtsne   <- RCAtsne@dr$tsne@cell.embeddings
 
   # Assign tSNE data to slot
   mdata@tsne.data <- data.frame(RCAtsne)
-  return(mdata)
+  #return(mdata)
+  return(kk)
 }
