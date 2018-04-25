@@ -8,7 +8,7 @@
 #' @description Any data in class RCA_class clusteded or not clustered used to reduce dimention to 2D by RCA-tsne.
 #' @param data Input data in class RCA_class. Output of \link[MolDia]{readRCA}.
 #' @param clus As factor. Each cell names has id. Cell order of data and cell order of clus should be same. (work for class data.frame)
-#' @param pc Desired percent of variance to be explained by PCA. Default in NULL.
+#' @param pc Desired percent of variance to be explained by PCA. Default in NULL , equavalant with 0.9.
 #' @param perplexity Numeric; Perplexity parameter. See  \link[Rtsne]{Rtsne}
 #' 
 #' ## param do.label Label tsne plot or not
@@ -105,8 +105,6 @@ RCA_tsne <- function(data, clus = NULL, pc = NULL, perplexity = 100)
     }else {pcuse <- which(npc > 0.90)[1]}
     cat("Number of principle component to be used :", pcuse, "\n")
     pc <- 1:pcuse
-    print(npc)
-    
   }
   
   # Find optimal PCA component

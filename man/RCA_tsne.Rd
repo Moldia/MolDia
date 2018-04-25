@@ -11,7 +11,7 @@ RCA_tsne(data, clus = NULL, pc = NULL, perplexity = 100)
 
 \item{clus}{As factor. Each cell names has id. Cell order of data and cell order of clus should be same. (work for class data.frame)}
 
-\item{pc}{Desired percent of variance to be explained by PCA. Default in NULL.}
+\item{pc}{Desired percent of variance to be explained by PCA. Default in NULL , equavalant with 0.9.}
 
 \item{perplexity}{Numeric; Perplexity parameter. See  \link[Rtsne]{Rtsne}
 
