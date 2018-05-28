@@ -10,7 +10,7 @@ RCA_map(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y",
   same.y.lims = FALSE, adjust.use = 0.5)
 }
 \arguments{
-\item{data}{Input data in class RCA_class. Output of \link[MolDia]{readRCA}.}
+\item{data}{Input data in class RCA_class. Output of \link[MolDia]{readISS}.}
 
 \item{what}{What to plot. Values can be "cell", "cluster", "tsne". Default is "cell".}
 
@@ -45,7 +45,7 @@ Map RCA data based on cell, cluster or tSNE
 }
 \examples{
 ## Reading data
-left_hypo <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"), 
+left_hypo <- readISS(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"), 
                         cellid = "CellId", centX = "centroid_x", centY = "centroid_y")
                         
 ## Plot each gene

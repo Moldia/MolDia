@@ -6,7 +6,7 @@
 #' 
 #' @description Calculate and plot correlation and ratio of total reads between genes
 #' 
-#' @param data Data in list of groups with group name.   Individual data is in class RCA_class. Output of \link[MolDia]{readRCA} 
+#' @param data Data in list of groups with group name.   Individual data is in class RCA_class. Output of \link[MolDia]{readISS} 
 #' @param gene Object in vector or list formate. In list formated input every list element is a group of
 #'              interested genes.
 #' @param select_gene Select gene of interest, Default is NULL i.e. all genes in gele list.
@@ -19,9 +19,9 @@
 #' @param stat Mode of operation. Possible value is "sum", "gene" and "present". Default is "sum".
 #' @examples 
 #' ## Read data: Left and right HC
-#' hc_left  <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),
+#' hc_left  <- readISS(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),
 #'                   cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
-#' hc_right <- readRCA(file = system.file("extdata", "Hypocampus_right.csv", package="MolDia"),
+#' hc_right <- readISS(file = system.file("extdata", "Hypocampus_right.csv", package="MolDia"),
 #'                   cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
 #'
 #' ## Arrange marker gene

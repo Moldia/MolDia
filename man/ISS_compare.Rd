@@ -8,7 +8,7 @@ ISS_compare(..., logdata = FALSE, label = TRUE, levelCI = 0.95,
   live = FALSE)
 }
 \arguments{
-\item{...}{Input data in class RCA_class. At least 2 dataset or more. Output of \link[MolDia]{readRCA}.}
+\item{...}{Input data in class RCA_class. At least 2 dataset or more. Output of \link[MolDia]{readISS}.}
 
 \item{logdata}{log2 apply to data or not. Deafult is FALSE.}
 
@@ -22,10 +22,10 @@ ISS_compare(..., logdata = FALSE, label = TRUE, levelCI = 0.95,
 Compare multiple ISS data
 }
 \examples{
-hcleft   <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),  cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
-hcright  <- readRCA(file = system.file("extdata", "Hypocampus_right.csv", package="MolDia"), cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
-hcleft1  <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),  cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
-hcright1 <- readRCA(file = system.file("extdata", "Hypocampus_right.csv", package="MolDia"), cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
+hcleft   <- readISS(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),  cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
+hcright  <- readISS(file = system.file("extdata", "Hypocampus_right.csv", package="MolDia"), cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
+hcleft1  <- readISS(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),  cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
+hcright1 <- readISS(file = system.file("extdata", "Hypocampus_right.csv", package="MolDia"), cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
 kk<- ISS_compare(hcleft, hcright, hcleft1,hcright1,label = F, levelCI = 0.99, live = F, logdata = FALSE)
 
 }

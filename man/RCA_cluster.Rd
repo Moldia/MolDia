@@ -9,7 +9,7 @@ RCA_cluster(data, method = "seurat", DEGmethod = "seurat", pc = NULL,
   do.scale = TRUE, k.param = 30)
 }
 \arguments{
-\item{data}{Input data in class RCA_class. Output of \link[MolDia]{readRCA}.}
+\item{data}{Input data in class RCA_class. Output of \link[MolDia]{readISS}.}
 
 \item{method}{Method of clustering. seurat, backspin, monocle.}
 
@@ -37,7 +37,7 @@ Cluster in-situ RCA data by different methods used in SEURAT, MONOCLE, BackSPIN.
 }
 \examples{
 ## Reading data
-data_3 <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),
+data_3 <- readISS(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),
                   cellid = "CellId", centX = "centroid_x", centY = "centroid_y")
 
 ## Arrange marker gene

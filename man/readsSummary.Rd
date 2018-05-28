@@ -8,7 +8,7 @@ readsSummary(data, readlimit = 10, text.size = 6, intervel.dep = NULL,
   coexp = FALSE)
 }
 \arguments{
-\item{data}{Input data in class RCA_class. Output of \link[MolDia]{readRCA}}
+\item{data}{Input data in class RCA_class. Output of \link[MolDia]{readISS}}
 
 \item{readlimit}{Total number of reads per cell to consider}
 
@@ -26,7 +26,7 @@ Summary of cells after reads delete.
 Summary of RCA data
 }
 \examples{
-data_1 <- readRCA(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
+data_1 <- readISS(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
                   cellid = "CellID", centX = "centroidX", cent = "centroidY")
 res    <- readsSummary(data = data_1, readlimit = 10, text.size = 6, intervel.dep = NULL )
 

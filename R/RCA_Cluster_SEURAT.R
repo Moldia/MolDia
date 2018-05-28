@@ -4,7 +4,7 @@
 #' "RCA_seruat_cluster"
 #' Cluster in-situ RCA data by SEURAT.
 #'
-#' @param data Input data in class RCA_class. Output of \link[MolDia]{readRCA}.
+#' @param data Input data in class RCA_class. Output of \link[MolDia]{readISS}.
 #' @param pc Desired percent of variance (0 to 1) to be explained by PCA. Default in NULL (All PC will use).
 #' @param cluster_id Re-cluster clustreded data. Numeric input. Default is NULL.
 #' @param resolution Value of the resolution parameter, use a value above (below)
@@ -18,7 +18,7 @@
 #'
 #' @examples
 #' ## Reading data
-#' data_3 <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),
+#' data_3 <- readISS(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),
 #'                   cellid = "CellId", centX = "centroid_x", centY = "centroid_y")
 #'
 #' ## Arrange marker gene

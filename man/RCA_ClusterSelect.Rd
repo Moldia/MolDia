@@ -7,7 +7,7 @@
 RCA_ClusterSelect(data, cluster_id = NULL)
 }
 \arguments{
-\item{data}{Input data in class RCA_class. Output of \link[MolDia]{readRCA}.}
+\item{data}{Input data in class RCA_class. Output of \link[MolDia]{readISS}.}
 
 \item{cluster_id}{Cluster to select}
 }

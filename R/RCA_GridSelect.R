@@ -4,7 +4,7 @@
 "RCA_GridSelect"
 #' Select grid of interest from a tissue.
 #' @description Select grid of interest from a tissue
-#' @param data Input data in class RCA_class. Output of \link[MolDia]{readRCA}.
+#' @param data Input data in class RCA_class. Output of \link[MolDia]{readISS}.
 #' @param gridtype type of grid to plot. Default is "rect". See details.
 #' @param grid_id Grid to select. Default id NULL.
 #' @param nx,ny Numbers of rectangular quadrats in the x and y directions
@@ -24,12 +24,12 @@
 #'          "roi" will select ROI more interactively. One cal select ROI on the image by pointer. 
 #' 
 #' @examples
-#' ex_data <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),cellid = "CellId", centX = "centroid_x", centY = "centroid_y", rpc = 3)
+#' ex_data <- readISS(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),cellid = "CellId", centX = "centroid_x", centY = "centroid_y", rpc = 3)
 #' mygrid  <- RCA_GridSelect(data = ex_data, nx = 8,gridtype = "hexa")
 #' mygrid  <- RCA_GridSelect(data = ex_data, nx = 8,gridtype = "rect", grid_id = c(6,16,20,8,17,21))
 #' 
 #' ## Selected ROI
-#' ex_data <- readRCA(file = system.file("extdata", "CellBlobs_ROI.csv", package="MolDia"),
+#' ex_data <- readISS(file = system.file("extdata", "CellBlobs_ROI.csv", package="MolDia"),
 #'                    cellid = "CellID", centX = "centroidX", centY = "centroidY")
 #' mygrid  <- RCA_GridSelect(data = ex_data, nx = 6, gridtype = "roifile",
 #'                             roifile = system.file("extdata", "polygon_coordinates.csv", package="MolDia"),

@@ -5,7 +5,7 @@
 #' Plot barplot on RCA data bsed on different condition
 #' @description Plot bar plot on RCA data bsed on different condition
 #'
-#' @param data Input data in class RCA_class. Output of \link[MolDia]{readRCA}.
+#' @param data Input data in class RCA_class. Output of \link[MolDia]{readISS}.
 #' @param gene Object in vector or list formate. In list formated input every list element is a group of
 #'        interested genes.
 #' @param total.expr Scale factor to re-scale the data. Default is 1e4.
@@ -48,7 +48,7 @@
 #'          Example: gene Adar has two different miRNA which is circular (Adar.C) and linear (Adar.L). So the value
 #'          of str.same.gene will be c(".C",".L").
 #'
-#' @return Data in class \link[MolDia]{readRCA}.
+#' @return Data in class \link[MolDia]{readISS}.
 #'
 #'         The barplot will explain the total number of reads per gene in 'total.expr' (Default 1e4) cells. The yellow line
 #'         inside the bar plot indicate the number of expressed cells and percentage count on each bar is the percent of cells
@@ -57,7 +57,7 @@
 #' @author Mohammad Tanvir Ahamed
 #' @examples
 #' ########## Reading data
-#' data_1      <- readRCA(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
+#' data_1      <- readISS(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
 #'                        cellid = "CellID", centX = "centroidX", centY =  "centroidY")
 #'
 #' ## Define marker gene group

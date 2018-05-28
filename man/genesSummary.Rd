@@ -7,7 +7,7 @@
 genesSummary(data, gene = NULL)
 }
 \arguments{
-\item{data}{Input data in class RCA_class. Output of \link[MolDia]{readRCA}}
+\item{data}{Input data in class RCA_class. Output of \link[MolDia]{readISS}}
 
 \item{gene}{gene of interest}
 }
@@ -18,7 +18,7 @@ Barplot
 Summary of specific gene of interest of RCA data
 }
 \examples{
-data_1 <- readRCA(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
+data_1 <- readISS(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
                   cellid = "CellID", centX ="centroidX", centY="centroidY" )
 res <- genesSummary(data = data_1, gene = "Actb.L")
 

@@ -9,7 +9,7 @@ RCA_seruat_cluster(data, pc = NULL, cluster_id = NULL, resolution = 0.3,
   algorithm = 1, DEGmethod = "seurat", k.param = 30)
 }
 \arguments{
-\item{data}{Input data in class RCA_class. Output of \link[MolDia]{readRCA}.}
+\item{data}{Input data in class RCA_class. Output of \link[MolDia]{readISS}.}
 
 \item{pc}{Desired percent of variance (0 to 1) to be explained by PCA. Default in NULL (All PC will use).}
 
@@ -32,7 +32,7 @@ Cluster in-situ RCA data by SEURAT.
 }
 \examples{
 ## Reading data
-data_3 <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),
+data_3 <- readISS(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),
                   cellid = "CellId", centX = "centroid_x", centY = "centroid_y")
 
 ## Arrange marker gene

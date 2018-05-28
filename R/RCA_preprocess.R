@@ -4,7 +4,7 @@
 "RCA_preprocess"
 #' Pre-process RCA data.
 #' @description Pre-process RCA data interms of normalization, scalling and centering
-#' @param data Input data in class RCA_class. Output of \link[MolDia]{readRCA}
+#' @param data Input data in class RCA_class. Output of \link[MolDia]{readISS}
 #' @param normalization.method Method for normalization. Default is log-normalization (LogNormalize).
 #'        Use NULL if one dont apply normalization. More methods to be added very shortly.
 #' @param scale.factor Sets the scale factor for cell-level normalization.
@@ -24,7 +24,7 @@
 #' http://doi.org/10.1186/1471-2164-7-142
 #'
 #' @examples
-#' mydata  <- readRCA(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
+#' mydata  <- readISS(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
 #'                   cellid = "CellID", centX = "centroidX", centY = "centroidY")
 #' mydata_process <- RCA_preprocess(data_1, normalization.method = "QuantileNormalize", do.scale = FALSE,do.center = FALSE)
 #'

@@ -7,10 +7,10 @@
 RCA_clustcompare(preditorData, prediction, ntree = 500, method = "prob")
 }
 \arguments{
-\item{preditorData}{Data to be used to compare. Input data in class RCA_class. Output of \link[MolDia]{readRCA}
+\item{preditorData}{Data to be used to compare. Input data in class RCA_class. Output of \link[MolDia]{readISS}
 and must be clustered.}
 
-\item{prediction}{Data that need to compare. Input data in class RCA_class. Output of \link[MolDia]{readRCA}
+\item{prediction}{Data that need to compare. Input data in class RCA_class. Output of \link[MolDia]{readISS}
 and must be clustered.}
 
 \item{ntree}{Number of trees to grow. \link[randomForest]{randomForest}. See This should not be set to
@@ -26,9 +26,9 @@ This function will be apply to compare Two cluster by Random forest algorithm.
 }
 \examples{
 ## Read data: Left and right HC
-hc_left  <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),
+hc_left  <- readISS(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),
                   cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
-hc_right <- readRCA(file = system.file("extdata", "Hypocampus_right.csv", package="MolDia"),
+hc_right <- readISS(file = system.file("extdata", "Hypocampus_right.csv", package="MolDia"),
                   cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
 
 ## Arrange marker gene

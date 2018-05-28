@@ -8,7 +8,7 @@ RCA_marker(data, topgene = 5, test.use = "bimod", marker.sig = 0.005,
   only.pos = TRUE, main = "")
 }
 \arguments{
-\item{data}{Input data in class RCA_class. Output of \link[MolDia]{readRCA}.}
+\item{data}{Input data in class RCA_class. Output of \link[MolDia]{readISS}.}
 
 \item{topgene}{Desired number of top gene ineach cluster to show in summary result.}
 
@@ -32,7 +32,7 @@ Find Cluster marker of in-situ RCA data and plot significant gene cluster wise b
 }
 \examples{
 ## Reading data
-data_3 <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),
+data_3 <- readISS(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),
                   cellid = "CellId", centX = "centroid_x", centY = "centroid_y")
 
 ## Arrange marker gene

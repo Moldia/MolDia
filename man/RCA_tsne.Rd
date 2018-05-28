@@ -7,7 +7,7 @@
 RCA_tsne(data, clus = NULL, pc = NULL, perplexity = 100)
 }
 \arguments{
-\item{data}{Input data in class RCA_class. Output of \link[MolDia]{readRCA}.}
+\item{data}{Input data in class RCA_class. Output of \link[MolDia]{readISS}.}
 
 \item{clus}{As factor. Each cell names has id. Cell order of data and cell order of clus should be same. (work for class data.frame)}
 
@@ -25,7 +25,7 @@ Any data in class RCA_class clusteded or not clustered used to reduce dimention 
 }
 \examples{
 ## Reading data
-data_3 <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),
+data_3 <- readISS(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),
                   cellid = "CellId", centX = "centroid_x", centY = "centroid_y")
 ## Arrange marker gene
 data(marker_gene)

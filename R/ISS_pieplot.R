@@ -1,7 +1,7 @@
 "ISS_pieplot"
 #' Venn-pie chart on RCA data based on genes of interest
 #'
-#' @param data Input data in class RCA_class. Output of \link[MolDia]{readRCA}.
+#' @param data Input data in class RCA_class. Output of \link[MolDia]{readISS}.
 #' @param gene Gene of interest. It could be a vector of gene or a list of genes groups. Default is NULL means takes all genes
 #'             in the given dataset.
 #' @param with_gene From gene of interest , select only cells only with these genes.
@@ -19,7 +19,7 @@
 #'
 #' @examples
 #'########## Reading data
-#' data_1      <- readRCA(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
+#' data_1      <- readISS(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
 #'                        cellid = "CellID",centX = "centroidX", centY = "centroidY")
 #'
 #' ## Define marker gene group

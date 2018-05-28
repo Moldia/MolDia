@@ -4,7 +4,7 @@
 "readsSummary"
 #' Summary of RCA data
 #'
-#' @param data Input data in class RCA_class. Output of \link[MolDia]{readRCA}
+#' @param data Input data in class RCA_class. Output of \link[MolDia]{readISS}
 #' @param readlimit Total number of reads per cell to consider
 #' @param text.size Text size of Gene name.
 #' @param intervel.dep Vector of values between 0 and 100 , where you want to set interval. If one want to define the range like
@@ -19,7 +19,7 @@
 #' @author Mohammad Tanvir Ahamed
 #'
 #' @examples
-#' data_1 <- readRCA(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
+#' data_1 <- readISS(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
 #'                   cellid = "CellID", centX = "centroidX", cent = "centroidY")
 #' res    <- readsSummary(data = data_1, readlimit = 10, text.size = 6, intervel.dep = NULL )
 #'

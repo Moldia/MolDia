@@ -9,7 +9,7 @@ RCA_preprocess(data, normalization.method = "LogNormalize",
   display.progress = FALSE)
 }
 \arguments{
-\item{data}{Input data in class RCA_class. Output of \link[MolDia]{readRCA}}
+\item{data}{Input data in class RCA_class. Output of \link[MolDia]{readISS}}
 
 \item{normalization.method}{Method for normalization. Default is log-normalization (LogNormalize).
 Use NULL if one dont apply normalization. More methods to be added very shortly.}
@@ -34,7 +34,7 @@ Setting center to TRUE will center the expression for each gene by subtracting t
          by their standard deviations if center is TRUE and by their root mean square otherwise.
 }
 \examples{
-mydata  <- readRCA(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
+mydata  <- readISS(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
                   cellid = "CellID", centX = "centroidX", centY = "centroidY")
 mydata_process <- RCA_preprocess(data_1, normalization.method = "QuantileNormalize", do.scale = FALSE,do.center = FALSE)
 

@@ -2,17 +2,17 @@
 #' Compare ISS data
 #' 
 #' @description Compare multiple ISS data
-#' @param ... Input data in class RCA_class. At least 2 dataset or more. Output of \link[MolDia]{readRCA}.
+#' @param ... Input data in class RCA_class. At least 2 dataset or more. Output of \link[MolDia]{readISS}.
 #' @param logdata log2 apply to data or not. Deafult is FALSE.
 #' @param label Label each point. Default is TRUE.
 #' @param levelCI Level of confidence interval to use. Default is 0.95
 #' @param live Show plot in interactive mode. Default is FALSE
 #' 
 #' @examples 
-#' hcleft   <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),  cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
-#' hcright  <- readRCA(file = system.file("extdata", "Hypocampus_right.csv", package="MolDia"), cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
-#' hcleft1  <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),  cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
-#' hcright1 <- readRCA(file = system.file("extdata", "Hypocampus_right.csv", package="MolDia"), cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
+#' hcleft   <- readISS(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),  cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
+#' hcright  <- readISS(file = system.file("extdata", "Hypocampus_right.csv", package="MolDia"), cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
+#' hcleft1  <- readISS(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),  cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
+#' hcright1 <- readISS(file = system.file("extdata", "Hypocampus_right.csv", package="MolDia"), cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
 
 #' kk<- ISS_compare(hcleft, hcright, hcleft1,hcright1,label = F, levelCI = 0.99, live = F, logdata = FALSE)
 #' 

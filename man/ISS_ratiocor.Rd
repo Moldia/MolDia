@@ -9,7 +9,7 @@ ISS_ratiocor(data, gene = marker_gene, select_gene = NULL,
   main = "", stat = "sum")
 }
 \arguments{
-\item{data}{Data in list of groups with group name.   Individual data is in class RCA_class. Output of \link[MolDia]{readRCA}}
+\item{data}{Data in list of groups with group name.   Individual data is in class RCA_class. Output of \link[MolDia]{readISS}}
 
 \item{gene}{Object in vector or list formate. In list formated input every list element is a group of
 interested genes.}
@@ -34,9 +34,9 @@ Calculate and plot correlation and ratio of total reads between genes
 }
 \examples{
 ## Read data: Left and right HC
-hc_left  <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),
+hc_left  <- readISS(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),
                   cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
-hc_right <- readRCA(file = system.file("extdata", "Hypocampus_right.csv", package="MolDia"),
+hc_right <- readISS(file = system.file("extdata", "Hypocampus_right.csv", package="MolDia"),
                   cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
 
 ## Arrange marker gene

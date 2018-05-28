@@ -8,7 +8,7 @@ ISS_pieplot(data, gene = NULL, with_gene = NULL, without_gene = NULL,
   segmentcol = "EEEEEE", randomseed = 10, colorpalette = NULL)
 }
 \arguments{
-\item{data}{Input data in class RCA_class. Output of \link[MolDia]{readRCA}.}
+\item{data}{Input data in class RCA_class. Output of \link[MolDia]{readISS}.}
 
 \item{gene}{Gene of interest. It could be a vector of gene or a list of genes groups. Default is NULL means takes all genes
 in the given dataset.}
@@ -36,7 +36,7 @@ Maximum 256 genes (256 color) can be ploted with this version at this moment.
 }
 \examples{
 ########## Reading data
-data_1      <- readRCA(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
+data_1      <- readISS(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
                        cellid = "CellID",centX = "centroidX", centY = "centroidY")
 
 ## Define marker gene group

@@ -4,7 +4,7 @@
 "RCA_filter"
 #' Filter RCA data based on poisson distibution
 #'
-#' @param data Input data in class RCA_class. Output of \link[MolDia]{readRCA}
+#' @param data Input data in class RCA_class. Output of \link[MolDia]{readISS}
 #' @param data_mean Expected mean of number of reads press cell. Default is NULL. See details.
 #'
 #' @description This function estimate the probabity of number of reads per cell in a specific range
@@ -12,7 +12,7 @@
 #'              current fuction calculate the mean from data.
 #' @return Number of reads with peobability
 #' @examples
-#' data_1 <- readRCA(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
+#' data_1 <- readISS(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
 #'                   cellid = "CellID")
 #' res    <- RCA_filter(data = data_1, data_mean = 10)
 #'

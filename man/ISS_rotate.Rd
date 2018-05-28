@@ -7,7 +7,7 @@
 ISS_rotate(data, rot = 0, flipby = NULL)
 }
 \arguments{
-\item{data}{Input data in class RCA_class. Output of \link[MolDia]{readRCA}.}
+\item{data}{Input data in class RCA_class. Output of \link[MolDia]{readISS}.}
 
 \item{rot}{Rotation angle (Degree). Default is zero. Negative angle define the anti-clock wise rotation.}
 
@@ -17,7 +17,7 @@ ISS_rotate(data, rot = 0, flipby = NULL)
 Rotate by angle and flip by axix of ISS data
 }
 \examples{
-mydata  <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),
+mydata  <- readISS(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),
                    cellid = "CellId", centX = "centroid_x", centY = "centroid_y")
 mydata1 <- ISS_rotate (data = mydata, rot = 0, flipby = "y")
 res     <- RCA_map(data = mydata, what = "cell")

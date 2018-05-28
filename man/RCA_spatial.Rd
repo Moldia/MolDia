@@ -11,7 +11,7 @@ ISS spatial clustering
 }
 \examples{
 ## Reading data
-ex_data <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),
+ex_data <- readISS(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),
                    cellid = "CellId", centX = "centroid_x", centY = "centroid_y")
 myres <- RCA_spatial(ex_data, neighbor.points = 4)
 

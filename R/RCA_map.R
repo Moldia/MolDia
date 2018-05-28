@@ -6,7 +6,7 @@
 #' Plot function for RCA_class data.
 #'
 #' @description Map RCA data based on cell, cluster or tSNE
-#' @param data Input data in class RCA_class. Output of \link[MolDia]{readRCA}.
+#' @param data Input data in class RCA_class. Output of \link[MolDia]{readISS}.
 #' @param what What to plot. Values can be "cell", "cluster", "tsne". Default is "cell".
 #' @param xlab Label of x-axis
 #' @param ylab Label of y-axis
@@ -26,7 +26,7 @@
 #'
 #' @examples 
 #' ## Reading data
-#' left_hypo <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"), 
+#' left_hypo <- readISS(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"), 
 #'                         cellid = "CellId", centX = "centroid_x", centY = "centroid_y")
 #'                         
 #' ## Plot each gene

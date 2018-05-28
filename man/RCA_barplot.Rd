@@ -10,7 +10,7 @@ RCA_barplot(data, gene, total.expr = 10000, gene.target = NULL,
   show.same.gene = FALSE, str.same.gene = c(".C", ".L"), main = "")
 }
 \arguments{
-\item{data}{Input data in class RCA_class. Output of \link[MolDia]{readRCA}.}
+\item{data}{Input data in class RCA_class. Output of \link[MolDia]{readISS}.}
 
 \item{gene}{Object in vector or list formate. In list formated input every list element is a group of
 interested genes.}
@@ -46,7 +46,7 @@ Only active if show.same.gene = TRUE. See detail.}
 \item{main}{Main title of the plot.}
 }
 \value{
-Data in class \link[MolDia]{readRCA}.
+Data in class \link[MolDia]{readISS}.
 
         The barplot will explain the total number of reads per gene in 'total.expr' (Default 1e4) cells. The yellow line
         inside the bar plot indicate the number of expressed cells and percentage count on each bar is the percent of cells
@@ -78,7 +78,7 @@ Plot bar plot on RCA data bsed on different condition
 }
 \examples{
 ########## Reading data
-data_1      <- readRCA(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
+data_1      <- readISS(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
                        cellid = "CellID", centX = "centroidX", centY =  "centroidY")
 
 ## Define marker gene group

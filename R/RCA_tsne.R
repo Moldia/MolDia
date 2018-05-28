@@ -6,7 +6,7 @@
 #'Dimentionality reduction to 2D by tSNE
 #'
 #' @description Any data in class RCA_class clusteded or not clustered used to reduce dimention to 2D by RCA-tsne.
-#' @param data Input data in class RCA_class. Output of \link[MolDia]{readRCA}.
+#' @param data Input data in class RCA_class. Output of \link[MolDia]{readISS}.
 #' @param clus As factor. Each cell names has id. Cell order of data and cell order of clus should be same. (work for class data.frame)
 #' @param pc Desired percent of variance to be explained by PCA. Default in NULL , equavalant with 0.9.
 #' @param perplexity Numeric; Perplexity parameter. See  \link[Rtsne]{Rtsne}
@@ -17,7 +17,7 @@
 #'
 #' @examples
 #' ## Reading data
-#' data_3 <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),
+#' data_3 <- readISS(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),
 #'                   cellid = "CellId", centX = "centroid_x", centY = "centroid_y")
 #' ## Arrange marker gene
 #' data(marker_gene)
