@@ -11,6 +11,7 @@
 #' @param roifile Name of the file that contain ROI. csv formate
 #' @param roi.id Column name in roifile file that contain ROI id
 #' @param roi.x,roi.y X and Y axis name in roifile file.
+#' @param main Main title.
 #' 
 #' @details gridtype parameter can have 4 values :  "hexa", "rect", "roifile" and "roi"
 #'          
@@ -43,7 +44,7 @@
 #' 
 #' @export
 ISS_roi <- function(data, gridtype = "rect", nx = 6, ny = nx, grid_id = NULL, 
-                           roifile = NULL, roi.id = NULL, roi.x = NULL, roi.y = NULL)
+                           roifile = NULL, roi.id = NULL, roi.x = NULL, roi.y = NULL, main = "ROI on tissue")
 {
   ## Save main data
   main_data <- data
@@ -62,7 +63,7 @@ ISS_roi <- function(data, gridtype = "rect", nx = 6, ny = nx, grid_id = NULL,
   ## Spatial point area
   myspa <- spatstat::ppp(x = mydata$centroid_x, y = mydata$centroid_y, 
                          poly=list(x=hpts$centroid_x, y=hpts$centroid_y), check = FALSE)
-  plot(myspa, main = "ROI on Tissue")
+  plot(myspa, main = main)
   
   ## Divides window into quadrats and counts the numbers
   if(gridtype == "rect")
@@ -151,7 +152,7 @@ ISS_roi <- function(data, gridtype = "rect", nx = 6, ny = nx, grid_id = NULL,
     main_data@location <- main_data@location[rownames(point_in),]
     main_data@gene <- colnames(final_data)
     
-    RCA_map(main_data, main = "Selected ROI from Tissue")
+    RCA_map(main_data, main = main)
   }
   
   return(main_data)

@@ -5,7 +5,8 @@
 \title{Select grid/region of interest (ROI) from a tissue.}
 \usage{
 ISS_roi(data, gridtype = "rect", nx = 6, ny = nx, grid_id = NULL,
-  roifile = NULL, roi.id = NULL, roi.x = NULL, roi.y = NULL)
+  roifile = NULL, roi.id = NULL, roi.x = NULL, roi.y = NULL,
+  main = "ROI on tissue")
 }
 \arguments{
 \item{data}{Input data in class MolDiaISS. Output of \link[MolDia]{readISS}.}
@@ -21,6 +22,8 @@ ISS_roi(data, gridtype = "rect", nx = 6, ny = nx, grid_id = NULL,
 \item{roi.id}{Column name in roifile file that contain ROI id}
 
 \item{roi.x, roi.y}{X and Y axis name in roifile file.}
+
+\item{main}{Main title.}
 }
 \description{
 Select grid of interest from a tissue
