@@ -152,7 +152,7 @@ ISS_roi <- function(data, gridtype = "rect", nx = 6, ny = nx, grid_id = NULL,
     main_data@location <- main_data@location[rownames(point_in),]
     main_data@gene <- colnames(final_data)
     
-    RCA_map(main_data, main = main)
+    ISS_map(main_data, main = main)
   }
   
   return(main_data)

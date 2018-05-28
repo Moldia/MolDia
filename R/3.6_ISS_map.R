@@ -2,12 +2,12 @@
 ##                         RCA mapping                              ##
 ######################################################################
 ### Different methods for ploting MolDiaISS
-"RCA_map"
+"ISS_map"
 #' Plot function for MolDiaISS data.
 #'
 #' @description Map RCA data based on cell, cluster or tSNE
 #' @param data Input data in class MolDiaISS. Output of \link[MolDia]{readISS}.
-#' @param what What to plot. Values can be "cell", "cluster", "tsne". Default is "cell".
+#' @param what What to plot. Values can be "cell", "cluster", "tsne", "tsneAll" and "vlnplot". Default is "cell". See details.
 #' @param xlab Label of x-axis
 #' @param ylab Label of y-axis
 #' @param ptsize Point size
@@ -22,7 +22,14 @@
 #' @param same.y.lims Set all the y-axis limits to the same values.
 #' @param adjust.use A multiplicate bandwidth adjustment. This makes it possible to adjust the 
 #'        bandwidth while still using the a bandwidth estimator. For exampe, adjust = 1/2 means use half of the default bandwidth.
-#'
+#' 
+#' @details what parameter can have the value "cell", "cluster", "tsne", "tsneAll" and "vlnplot".
+#'          
+#'          "cell" will plot all cells. 
+#'          
+#'          "cluster" ill plot all cluster information.
+#'          
+#'     
 #'
 #' @examples 
 #' ## Reading data
@@ -30,10 +37,10 @@
 #'                         cellid = "CellId", centX = "centroid_x", centY = "centroid_y")
 #'                         
 #' ## Plot each gene
-#' res2      <- RCA_map(data = left_hypo, what = "gene", gene = left_hypo@gene[1:12])
+#' res2      <- ISS_map(data = left_hypo, what = "gene", gene = left_hypo@gene[1:12])
 #' 
 #' ## Plot all gene togather
-#' res2      <- RCA_map(data = left_hypo, what = "cell", gene = left_hypo@gene[1:12])
+#' res2      <- ISS_map(data = left_hypo, what = "cell", gene = left_hypo@gene[1:12])
 #' 
 #' ## Data normalization
 #' left_hypo <- RCA_preprocess(data = left_hypo, normalization.method = "LogNormalize", 
@@ -42,24 +49,24 @@
 #' left_hypo <- RCA_cluster (data = left_hypo, method = "seurat",resolution = 0.1)
 #' 
 #' ## Plot cluster data
-#' res1      <- RCA_map(data = left_hypo, what = "cluster", cluster_id = 1:4)
+#' res1      <- ISS_map(data = left_hypo, what = "cluster", cluster_id = 1:4)
 #' 
 #' ## Plot violin plot
-#' res1      <- RCA_map(data = left_hypo, what = "vlnplot", gene = left_hypo@gene[4:7], same.y.lims = F, adjust.use = 1)
+#' res1      <- ISS_map(data = left_hypo, what = "vlnplot", gene = left_hypo@gene[4:7], same.y.lims = F, adjust.use = 1)
 #' 
 #' ## Dimention reduction by tSNE on clustered data
 #' left_hypo <- RCA_tsne(data = left_hypo, do.label = TRUE, perplexity= 30)
 #' 
 #' ## Plot tSNE cluster: All cluster togather
-#' res2      <- RCA_map(data = left_hypo, what = "tsneAll", gene = left_hypo@gene[1:9])
+#' res2      <- ISS_map(data = left_hypo, what = "tsneAll", gene = left_hypo@gene[1:9])
 #' 
 #' ## Plot tSNE cluster: Gene on tsne plot
-#' res3      <- RCA_map(data = left_hypo, what = "tsne", gene = left_hypo@gene[1:12])
+#' res3      <- ISS_map(data = left_hypo, what = "tsne", gene = left_hypo@gene[1:12])
 #' 
 #' 
 #' 
 #' @export
-RCA_map <- function(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y", main = "Main plot", ptsize = 1,pchuse = 16,
+ISS_map <- function(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y", main = "Main plot", ptsize = 1,pchuse = 16,
                     image = TRUE, live = FALSE, label.topgene = NULL, gene = NULL, cluster_id = NULL, same.y.lims = FALSE,
                     adjust.use = 0.5)
 {

@@ -60,7 +60,7 @@ marker_gene1 <- list(Neuron = Neuron,
                      Lin_rna = c(setdiff(setdiff(l_rna,Neuron),Nonneuron)))
 
 ####  Select cell with at least 3 neuronal genes
-mydata <- RCA_barplot(data = data_1, gene = marker_gene1, gene.target = 1,
+mydata <- ISS_barplot(data = data_1, gene = marker_gene1, gene.target = 1,
                       at.least.gene = 3, show.same.gene = FALSE)
 
 #####  Pie chart of all Circular mRNA in cell with at least 3 neuronal genes.

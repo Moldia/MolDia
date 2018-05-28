@@ -25,7 +25,7 @@ mydata  <- readISS(file = system.file("extdata", "Hypocampus_left.csv", package=
 mydata1 <- ISS_rotate (data = mydata, rot = 0, flipby = "y")
 
 # Plot ISS data
-res     <- RCA_map(data = mydata, what = "cell")
-res1    <- RCA_map(data = mydata1, what = "cell")
+res     <- ISS_map(data = mydata, what = "cell")
+res1    <- ISS_map(data = mydata1, what = "cell")
 
 }

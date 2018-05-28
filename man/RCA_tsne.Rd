@@ -61,6 +61,6 @@ tsne_clust   <- RCA_tsne(data = neuron_group_clust, pc= 0.9, perplexity= 100)
 tsne_clust <- RCA_marker(data = tsne_clust, topgene =15, marker.sig = 0.005,
                                         test.use="bimod", main = "")
 ## Plot tSNE data
-result <- RCA_map(data = tsne_clust, what = "tsne")
+result <- ISS_map(data = tsne_clust, what = "tsne")
 
 }

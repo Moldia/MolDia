@@ -63,6 +63,6 @@ neuron_group_clust  <- RCA_cluster (data = neuron_group, method = "seurat",
 neuron_group_clust_marker <- RCA_marker(data = neuron_group_clust, topgene =15,
                                         test.use="bimod", main = "")
                                         
- RCA_map (data=neuron_group_clust_marker, what = "cluster")                                       
+ ISS_map (data=neuron_group_clust_marker, what = "cluster")                                       
 
 }

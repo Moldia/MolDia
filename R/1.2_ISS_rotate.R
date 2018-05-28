@@ -18,8 +18,8 @@
 #' mydata1 <- ISS_rotate (data = mydata, rot = 0, flipby = "y")
 #' 
 #' # Plot ISS data
-#' res     <- RCA_map(data = mydata, what = "cell")
-#' res1    <- RCA_map(data = mydata1, what = "cell")
+#' res     <- ISS_map(data = mydata, what = "cell")
+#' res1    <- ISS_map(data = mydata1, what = "cell")
 #'
 #' @export
 ISS_rotate <- function(data, rot = 0, flipby = NULL)
