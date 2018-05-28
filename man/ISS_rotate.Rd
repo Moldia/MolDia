@@ -17,9 +17,14 @@ ISS_rotate(data, rot = 0, flipby = NULL)
 Rotate by angle and flip by axix of ISS data
 }
 \examples{
+# Read ISS data
 mydata  <- readISS(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),
                    cellid = "CellId", centX = "centroid_x", centY = "centroid_y")
+
+# Flip/rotate ISS data
 mydata1 <- ISS_rotate (data = mydata, rot = 0, flipby = "y")
+
+# Plot ISS data
 res     <- RCA_map(data = mydata, what = "cell")
 res1    <- RCA_map(data = mydata1, what = "cell")
 

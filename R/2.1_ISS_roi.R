@@ -1,8 +1,8 @@
 ######################################################################
 ##                        Select Grid of interest                   ##
 ######################################################################
-"RCA_GridSelect"
-#' Select grid of interest from a tissue.
+"ISS_GridSelect"
+#' Select grid/region of interest (ROI) from a tissue.
 #' @description Select grid of interest from a tissue
 #' @param data Input data in class MolDiaISS. Output of \link[MolDia]{readISS}.
 #' @param gridtype type of grid to plot. Default is "rect". See details.
@@ -13,31 +13,36 @@
 #' @param roi.x,roi.y X and Y axis name in roifile file.
 #' 
 #' @details gridtype parameter can have 4 values :  "hexa", "rect", "roifile" and "roi"
-#'          "hexa" will create hexagonal grid and number of grid is based on nx parameter and grid_id will select grid of interest.
+#'          
+#'          1. "hexa" will create hexagonal grid and number of grid is based on nx parameter and grid_id will select grid of interest.
 #'          
 #'          
-#'          "rect" will create rectangular grid and number of grid is based on nx parameter and grid_id will select grid of interest.
+#'          2. "rect" will create rectangular grid and number of grid is based on nx parameter and grid_id will select grid of interest.
 #'          
-#'          "roifile" will require a file input in csv formate in the parameter "roifile". The input file must have at least 3 column of
+#'          3. "roifile" will require a file input in csv formate in the parameter "roifile". The input file must have at least 3 column of
 #'          ROI id, x-axis, y-axis. The parameter "roi.id", "roi.x" and "roi.y" will be the name input of corresponding column.
 #'          
-#'          "roi" will select ROI more interactively. One cal select ROI on the image by pointer. 
+#'          4. "roi" will select ROI more interactively. One cal select ROI on the image by pointer. 
 #' 
 #' @examples
+#' # Read ISS data
 #' ex_data <- readISS(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),cellid = "CellId", centX = "centroid_x", centY = "centroid_y", rpc = 3)
-#' mygrid  <- RCA_GridSelect(data = ex_data, nx = 8,gridtype = "hexa")
-#' mygrid  <- RCA_GridSelect(data = ex_data, nx = 8,gridtype = "rect", grid_id = c(6,16,20,8,17,21))
 #' 
-#' ## Selected ROI
+#' # Select hexagonal and rectangular ROI
+#' mygrid  <- ISS_GridSelect(data = ex_data, nx = 8,gridtype = "hexa")
+#' mygrid  <- ISS_GridSelect(data = ex_data, nx = 8,gridtype = "rect", grid_id = c(6,16,20,8,17,21))
+#' 
+#' # Selected ROI from a pre selected ROI file
 #' ex_data <- readISS(file = system.file("extdata", "CellBlobs_ROI.csv", package="MolDia"),
 #'                    cellid = "CellID", centX = "centroidX", centY = "centroidY")
-#' mygrid  <- RCA_GridSelect(data = ex_data, nx = 6, gridtype = "roifile",
+#' mygrid  <- ISS_GridSelect(data = ex_data, nx = 6, gridtype = "roifile",
 #'                             roifile = system.file("extdata", "polygon_coordinates.csv", package="MolDia"),
 #'                             roi.id = "Polygon_id", roi.x ="x_coordiates" , roi.y = "y_coordinates", grid_id = c(1,2,5,6))
-#' mygrid  <- RCA_GridSelect(data = ex_data, gridtype = "roi")
+#' # Select ROI interactively
+#' mygrid  <- ISS_GridSelect(data = ex_data, gridtype = "roi")
 #' 
 #' @export
-RCA_GridSelect <- function(data, gridtype = "rect", nx = 6, ny = nx, grid_id = NULL, 
+ISS_GridSelect <- function(data, gridtype = "rect", nx = 6, ny = nx, grid_id = NULL, 
                            roifile = NULL, roi.id = NULL, roi.x = NULL, roi.y = NULL)
 {
   ## Save main data

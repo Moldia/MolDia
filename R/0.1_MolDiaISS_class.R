@@ -1,7 +1,7 @@
-#' The RCA class
-#' The RCA class is a main object for all RCA based analysis
+#' The ISS data class
+#' The MolDiaISS class is a main object for all ISS based analysis
 #'
-#' A RCA object has the following slot
+#' A MolDiaISS class object has the following slot
 #'
 #' @slot data Main data for analysis
 #' @slot norm.data Normalized data (log-scale).

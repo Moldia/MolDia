@@ -3,14 +3,14 @@
 \docType{data}
 \name{MolDiaISS}
 \alias{MolDiaISS}
-\title{The RCA class
-The RCA class is a main object for all RCA based analysis}
+\title{The ISS data class
+The MolDiaISS class is a main object for all ISS based analysis}
 \format{An object of class \code{MolDiaISS} of length 1.}
 \usage{
 MolDiaISS
 }
 \description{
-A RCA object has the following slot
+A MolDiaISS class object has the following slot
 }
 \section{Slots}{
 

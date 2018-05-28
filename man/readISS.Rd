@@ -36,11 +36,11 @@ Output will be a object in class MolDiaISS. See detail \link[MolDia]{MolDiaISS}
 Read RCA data
 }
 \examples{
-##### Reading RCA data in CSV formate
+##### Reading ISS data in CSV formate
 data_1 <- readISS(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
                   cellid = "CellID", centX = "centroidX", centY = "centroidY")
 data_2 <- readISS(file = system.file("extdata", "CellBlobs_QT_0.40.csv", package="MolDia"),
-                  cellid = "CellID")
+                  cellid = "CellID",centX = "centroidX", centY = "centroidY")
 data_3 <- readISS(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),
                   cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
 data_4 <- readISS(file = system.file("extdata", "Hypocampus_right.csv", package="MolDia"),
