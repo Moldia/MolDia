@@ -13,7 +13,7 @@
 #' @return Number of reads with peobability
 #' @examples
 #' data_1 <- readISS(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
-#'                   cellid = "CellID")
+#'                   cellid = "CellID", , centX = "centroidX", centY = "centroidY")
 #' res    <- ISS_filter(data = data_1, data_mean = 10)
 #'
 #' @importFrom stats dpois
