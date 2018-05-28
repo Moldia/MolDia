@@ -1,7 +1,7 @@
 ######################################################################
 ##                   RCA data Filter : Barplot                      ##
 ######################################################################
-"RCA_barplot"
+"ISS_barplot"
 #' Plot barplot on RCA data bsed on different condition
 #' @description Plot bar plot on RCA data bsed on different condition
 #'
@@ -82,15 +82,15 @@
 #'                      Lin_rna = c(setdiff(setdiff(l_rna,Neuron),Nonneuron)))
 #'
 #' # Barplot
-#' all_data     <- RCA_barplot(data = data_1, gene = marker_gene,gene.target = NULL)
-#' neuron_group <- RCA_barplot(data = data_1, gene = marker_gene1, gene.target = 1,
+#' all_data     <- ISS_barplot(data = data_1, gene = marker_gene,gene.target = NULL)
+#' neuron_group <- ISS_barplot(data = data_1, gene = marker_gene1, gene.target = 1,
 #'                             target.min.count.cell = 2, rest.min.count.cell = 2,
 #'                             at.least.gene = 1, gene.show = NULL, main = " Neuron group (>=1 genes)")
 #'
 #'
 #'
 #' @export
-RCA_barplot <- function(data, gene, total.expr = 1e4, gene.target = NULL, gene.show = NULL, target.min.count.cell = 1, rest.min.count.cell = 1,
+ISS_barplot <- function(data, gene, total.expr = 1e4, gene.target = NULL, gene.show = NULL, target.min.count.cell = 1, rest.min.count.cell = 1,
                         min.count = 1, at.least.gene = 0, at.most.gene = ncol(data), show.same.gene = FALSE,
                         str.same.gene = c(".C",".L"), main = "")
 {

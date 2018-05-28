@@ -31,14 +31,13 @@
 #' data_4 <- readISS(file = system.file("extdata", "Hypocampus_right.csv", package="MolDia"),
 #'                   cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
 #'
-#' ## Read RCA data in dataframe formate
-#' gene <- data_3@gene
-#'
-#' #Note: Big data. Take long time to load without selected gene
 #' ## Not RUN
+#' ## Read RCA data in dataframe formate
+#' #gene <- data_3@gene[1:3]
 #' #data(single_cell)
 #' #single_cell$CellID <- rownames(single_cell)
-#' #data_sc <- readISS(single_cell, gene= gene)
+#' #Note: Big data. Take long time to load without selected gene
+#' #data_sc <- readISS(file = single_cell, cellid = "CellID",gene= gene) 
 #'
 #'
 #' @export
