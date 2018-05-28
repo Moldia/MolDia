@@ -1,8 +1,8 @@
 ######################################################################
 ##                       RCA gene Summary                          ##
 ######################################################################
-"genesSummary"
-#' Summary of specific gene of interest of RCA data
+"ISS_genesSummary"
+#' Summary of specific gene of interest in ISS data
 #'
 #' @description Summary of specific gene of interest of RCA data
 #' @param data Input data in class MolDiaISS. Output of \link[MolDia]{readISS}
@@ -11,12 +11,12 @@
 #' @examples
 #' data_1 <- readISS(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
 #'                   cellid = "CellID", centX ="centroidX", centY="centroidY" )
-#' res <- genesSummary(data = data_1, gene = "Actb.L")
+#' res <- ISS_genesSummary(data = data_1, gene = "Actb.L")
 #'
 #' @return Barplot
 #'
 #' @export
-genesSummary <- function(data, gene = NULL)
+ISS_genesSummary <- function(data, gene = NULL)
   
 {
   ## Select gene
