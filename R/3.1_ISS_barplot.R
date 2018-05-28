@@ -2,7 +2,7 @@
 ##                   RCA data Filter : Barplot                      ##
 ######################################################################
 "ISS_barplot"
-#' Plot barplot on RCA data bsed on different condition
+#' Plot barplot on ISS data bsed on different condition
 #' @description Plot bar plot on RCA data bsed on different condition
 #'
 #' @param data Input data in class MolDiaISS. Output of \link[MolDia]{readISS}.

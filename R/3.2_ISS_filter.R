@@ -1,8 +1,8 @@
 ######################################################################
 ##              RCA data Filter: Probability based                  ##
 ######################################################################
-"RCA_filter"
-#' Filter RCA data based on poisson distibution
+"ISS_filter"
+#' Filter ISS data based on poisson distibution
 #'
 #' @param data Input data in class MolDiaISS. Output of \link[MolDia]{readISS}
 #' @param data_mean Expected mean of number of reads press cell. Default is NULL. See details.
@@ -14,12 +14,12 @@
 #' @examples
 #' data_1 <- readISS(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
 #'                   cellid = "CellID")
-#' res    <- RCA_filter(data = data_1, data_mean = 10)
+#' res    <- ISS_filter(data = data_1, data_mean = 10)
 #'
 #' @importFrom stats dpois
 #'
 #' @export
-RCA_filter <- function(data, data_mean =NULL )
+ISS_filter <- function(data, data_mean =NULL )
   
 {
   ## Reading main data
