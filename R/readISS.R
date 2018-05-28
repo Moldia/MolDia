@@ -5,7 +5,7 @@
 #' Read RCA data
 #' @description Read RCA data
 #'
-#' @param file File name in CSV formate, data in "data.frame" class and data in "RCA_class" class (Output of \link[MolDia]{readRCA}). 
+#' @param file File name in CSV formate, data in "data.frame" class and data in "RCA_class" class (Output of \link[MolDia]{readISS}). 
 #' @param cellid String to naming cell. Default is "CellID".
 #' @param centX Name of X co-ordinate in file. Default is "centroidX"
 #' @param centY Name of Y co-ordinate in file  Default is "centroidY"
@@ -22,13 +22,13 @@
 #'
 #' @examples
 #' ##### Reading RCA data in CSV formate
-#' data_1 <- readRCA(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
+#' data_1 <- readISS(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
 #'                   cellid = "CellID", centX = "centroidX", centY = "centroidY")
-#' data_2 <- readRCA(file = system.file("extdata", "CellBlobs_QT_0.40.csv", package="MolDia"),
+#' data_2 <- readISS(file = system.file("extdata", "CellBlobs_QT_0.40.csv", package="MolDia"),
 #'                   cellid = "CellID")
-#' data_3 <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),
+#' data_3 <- readISS(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),
 #'                   cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
-#' data_4 <- readRCA(file = system.file("extdata", "Hypocampus_right.csv", package="MolDia"),
+#' data_4 <- readISS(file = system.file("extdata", "Hypocampus_right.csv", package="MolDia"),
 #'                   cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
 #'
 #' ## Read RCA data in dataframe formate
@@ -38,12 +38,11 @@
 #' ## Not RUN
 #' #data(single_cell)
 #' #single_cell$CellID <- rownames(single_cell)
-#' #data_sc <- readRCA(single_cell, gene= gene)
+#' #data_sc <- readISS(single_cell, gene= gene)
 #'
 #'
 #' @export
-
-readRCA <- function(file, cellid = "CellID", centX = NULL, centY = NULL, genepos= NULL, geneposOPT = "OR",
+readISS <- function(file, cellid = "CellID", centX = NULL, centY = NULL, genepos= NULL, geneposOPT = "OR",
                     rpc = 1, rpg = 1, gene = NULL, nogene = NULL)
 {
   ## Data type : REading data from a specific location
