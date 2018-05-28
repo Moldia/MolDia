@@ -85,26 +85,42 @@ RCA_seruat_cluster <- function(data, pc = NULL, cluster_id = NULL,
     if(length(main_data@scale.data)== 0 ) stop("Please scale data first with RCA_preprocess function ", call. = FALSE)
     SEURAT_clus@scale.data <- t(main_data@scale.data[rownames(data),])
     
-    # Find DE
-    if(length(DEGmethod) == 0) {gene_de <- colnames(data)}
-    else{
+    # Find Differential express gene
+    if(length(DEGmethod) == 0) 
+      {
+      gene_de <- colnames(data)
+      }
+    else
+      {
       gene_de <- RCA_DE(data, DEGmethod)
       }
     
     # Run PCA
     SEURAT_clus   <- withCallingHandlers(suppressWarnings(Seurat::RunPCA(object  = SEURAT_clus, pc.genes = gene_de ,do.print = FALSE, 
-                                    fastpath=TRUE, verbose = FALSE)))
-
+                                                                         fastpath=TRUE, verbose = FALSE)))
+    ## Note : Number of PC cant not be less than number of DE genes.
+    ## Find optimal pc
     if(length(pc) > 0 )
       {
       # Find optimal PCA component
       #myPCA  <- SEURAT_clus@dr$pca@cell.embeddings
+      npc <- nrow(SEURAT_clus@data)- 1
+      print(npc)
+      npc   <- withCallingHandlers(suppressWarnings(irlba::prcomp_irlba(SEURAT_clus@data, n=npc, 
+                                                                        fastpath = TRUE, verbose = FALSE)))
+      npc   <- summary(npc)$importance[3,]
+      print(npc)
+      
       sdev   <- SEURAT_clus@dr$pca@sdev
+      #print(sdev)
       pcuse  <- cumsum(log2(sdev)^2 / sum(log2(sdev)^2))
       #print(pcuse)
-      pcuse  <- max(which(pcuse<=pc))
-      if(pcuse <= 3) stop("PC is too low", call. = FALSE)
-      cat("Number of principle component to be used :", pcuse, "\n")
+      pcuse  <- max(which(npc<=pc))
+      #print(pcuse)
+      #if(pcuse <= 3) stop("PC is too low", call. = FALSE)
+      #cat("Number of principle component to be used :", pcuse, "\n")
+      #if(pcuse > 30 ) pcuse <- 30
+      cat("Principle component: ", round(npc[pcuse]*100,2), "% of variation has explained by" ,pcuse, "principle component", "\n")
       pc <- 1:pcuse
       }
     if(length(pc) == 0 )
@@ -115,20 +131,38 @@ RCA_seruat_cluster <- function(data, pc = NULL, cluster_id = NULL,
         npc   <- withCallingHandlers(suppressWarnings(irlba::prcomp_irlba(SEURAT_clus@data, n=npc, 
                                                                           fastpath = TRUE, verbose = FALSE)))}
       else{
-        npc   <- withCallingHandlers(suppressWarnings(irlba::prcomp_irlba(SEURAT_clus@data, n=20, 
+        npc <- length(gene_de) -1
+        npc   <- withCallingHandlers(suppressWarnings(irlba::prcomp_irlba(SEURAT_clus@data, n=npc, 
                                                                           fastpath = TRUE, verbose = FALSE)))}
       
       # How many pc to be used: Cut off is 0.90
       npc   <- summary(npc)$importance[3,]
+      print(npc)
       if(max(npc) < 0.9) {pcuse <- length(npc)
       }else {pcuse <- which(npc > 0.90)[1]}
-      cat("Number of principle component to be used :", pcuse, "\n")
+      #cat("Number of principle component to be used :", pcuse, "\n")
+      cat("Principle component: ", round(npc[pcuse]*100,2), "% of variation has explained by" ,pcuse, "principle component", "\n")
       pc <- 1:pcuse
     }
-
+    
+    # Stopping criteria for principle component
+    if(pcuse <= 3) stop("Number of principle component should be greater than 3. Please increase the value of pc", call. = FALSE)
+    
+    # Run PCA
+    print(gene_de)
+    pcs.compute <- ifelse(length(gene_de)<length(pc), length(gene_de), length(pc))-1
+    print(pcs.compute)
+    SEURAT_clus   <- withCallingHandlers(suppressWarnings(Seurat::RunPCA(object  = SEURAT_clus, pc.genes = gene_de, 
+                                                                         do.print = FALSE, fastpath=TRUE, verbose = FALSE,
+                                                                         #pcs.compute = 34)))
+                                                                         #pcs.compute = ifelse(length(gene_de)< 10, 20, (length(pc))))))
+                                                                         pcs.compute = ifelse(length(gene_de)<length(pc), length(gene_de), length(pc)) )))
+    
+    print(dim(SEURAT_clus@dr$pca@gene.loadings))
+    print(pc)
     ## Find cluster
     cat ("Running data clustering.....")
-    SEURAT_clus   <- suppressMessages(Seurat::FindClusters(object = SEURAT_clus, genes.use = gene_de, dims.use = pc, 
+    SEURAT_clus   <- suppressMessages(Seurat::FindClusters(object = SEURAT_clus, genes.use = gene_de, dims.use = 1:pcs.compute, 
                                                            algorithm = algorithm, resolution = resolution, k.param = k.param,
                                                            reduction.type = "pca", plot.SNN = FALSE, print.output = FALSE, 
                                                            save.SNN = FALSE, n.iter = 10, modularity.fxn = 1,

@@ -1,7 +1,7 @@
 ######################################################################
 ##                       RCA Data preprocess                        ##
 ######################################################################
-"RCA_scale"
+"RCA_preprocess"
 #' Pre-process RCA data.
 #' @description Pre-process RCA data interms of normalization, scalling and centering
 #' @param data Input data in class RCA_class. Output of \link[MolDia]{readRCA}

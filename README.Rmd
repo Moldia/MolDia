@@ -13,7 +13,7 @@ The scope of the package can be devided into following broad category
 ## General structure of MolDia object
 1. __RCA_class__ : Main object definition and structure of "RCA_class" of MolDia package
 
-## Default data-set
+## Default example data-set
 1. __marker_gene__: Neuronal marker gene by group
 
 ## Read, manipulateand filter RCA ISS data

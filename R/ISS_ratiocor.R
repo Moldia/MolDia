@@ -1,5 +1,5 @@
 ######################################################################
-##              ISS : Correlation and ration of genes groups        ##
+##              ISS : Correlation and ratio  of genes groups        ##
 ######################################################################
 "ISS_ratiocor"
 #' Calculate and plot correlation and ratio of total reads between genes
@@ -17,7 +17,7 @@
 #'             the Pearson product moment correlation coefficient if there are at least 4 complete pairs of observations.
 #' @param main Title of the plot 
 #' @param stat Mode of operation. Possible value is "sum", "gene" and "present". Default is "sum".
-#' @example 
+#' @examples 
 #' ## Read data: Left and right HC
 #' hc_left  <- readRCA(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),
 #'                   cellid = "CellId",centX = "centroid_x", centY = "centroid_y")

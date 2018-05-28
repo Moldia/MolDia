@@ -44,7 +44,7 @@
 #' neuron_group_clust  <- RCA_cluster(data = neuron_group, pc = 0.9, resolution = 0.3)
 #'
 #' ## Dimention reduction by tSNE on non-clustered data
-#' tsne_noclust <- RCA_tsne(data = neuron_group, pc= 0.9, perplexity= 100)
+#' tsne_noclust <- RCA_tsne(data = neuron_group)
 #'
 #' ## Dimention reduction by tSNE on clustered data
 #' tsne_clust   <- RCA_tsne(data = neuron_group_clust, pc= 0.9, perplexity= 100)
@@ -84,14 +84,15 @@ RCA_tsne <- function(data, clus = NULL, pc = NULL, perplexity = 100)
     sdev   <- RCAtsne@dr$pca@sdev
     pcuse  <- cumsum(log2(sdev)^2 / sum(log2(sdev)^2))
     pcuse  <- max(which(pcuse<=pc))
-    if(pcuse <= 3) stop("PC is too low", call. = FALSE)
-    cat("Number of principle component to be used :", pcuse, "\n")
+    #if(pcuse <= 3) stop("PC is too low", call. = FALSE)
+    #cat("Number of principle component to be used :", pcuse, "\n")
+    cat("Principle component: ", round(npc[pcuse]*100,2), "% of variation has explained by" ,pcuse, "principle component", "\n")
     pc <- 1:pcuse
   }
   if(length(pc) == 0 )
   {
     ## Find number of optimal principle component that explain 90 percent of variaiance
-    if(length(colnames(data)) < 20){ ## Numbe rof PC should be less than number of source of variation i.e. genes.
+    if(length(colnames(data)) < 20){ ## Number of PC should be less than number of source of variation i.e. genes.
       npc <- ncol(data) -1
       npc   <- withCallingHandlers(suppressWarnings(irlba::prcomp_irlba(RCAtsne@data, n=npc, 
                                                                         fastpath = TRUE, verbose = FALSE)))}
@@ -103,9 +104,13 @@ RCA_tsne <- function(data, clus = NULL, pc = NULL, perplexity = 100)
     npc   <- summary(npc)$importance[3,]
     if(max(npc) < 0.9) {pcuse <- length(npc)
     }else {pcuse <- which(npc > 0.90)[1]}
-    cat("Number of principle component to be used :", pcuse, "\n")
+    #cat("Number of principle component to be used :", pcuse, "\n")
+    cat("Principle component: ", round(npc[pcuse]*100,2), "% of variation has explained by" ,pcuse, "principle component", "\n")
     pc <- 1:pcuse
   }
+  
+  # Stopping criteria for principle component
+  if(pcuse <= 3) stop("Number of principle component should be greater than 3. Please increase the value of pc", call. = FALSE)
   
   # Find optimal PCA component
   #sdev   <- RCAtsne@dr$pca@sdev
