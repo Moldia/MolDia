@@ -4,7 +4,7 @@
 "readsSummary"
 #' Summary of RCA data
 #'
-#' @param data Input data in class RCA_class. Output of \link[MolDia]{readISS}
+#' @param data Input data in class MolDiaISS. Output of \link[MolDia]{readISS}
 #' @param readlimit Total number of reads per cell to consider
 #' @param text.size Text size of Gene name.
 #' @param intervel.dep Vector of values between 0 and 100 , where you want to set interval. If one want to define the range like

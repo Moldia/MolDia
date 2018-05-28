@@ -5,7 +5,7 @@
 #' Select cluster of interest after clustering.
 #' 
 #' @description Select cluster of interest after clustering
-#' @param data Input data in class RCA_class. Output of \link[MolDia]{readISS}.
+#' @param data Input data in class MolDiaISS. Output of \link[MolDia]{readISS}.
 #' @param cluster_id Cluster to select
 #' 
 #' @export

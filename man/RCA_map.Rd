@@ -2,7 +2,7 @@
 % Please edit documentation in R/RCA_map.R
 \name{RCA_map}
 \alias{RCA_map}
-\title{Plot function for RCA_class data.}
+\title{Plot function for MolDiaISS data.}
 \usage{
 RCA_map(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y",
   main = "Main plot", ptsize = 1, pchuse = 16, image = TRUE,
@@ -10,7 +10,7 @@ RCA_map(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y",
   same.y.lims = FALSE, adjust.use = 0.5)
 }
 \arguments{
-\item{data}{Input data in class RCA_class. Output of \link[MolDia]{readISS}.}
+\item{data}{Input data in class MolDiaISS. Output of \link[MolDia]{readISS}.}
 
 \item{what}{What to plot. Values can be "cell", "cluster", "tsne". Default is "cell".}
 

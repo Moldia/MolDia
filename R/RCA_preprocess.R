@@ -4,7 +4,7 @@
 "RCA_preprocess"
 #' Pre-process RCA data.
 #' @description Pre-process RCA data interms of normalization, scalling and centering
-#' @param data Input data in class RCA_class. Output of \link[MolDia]{readISS}
+#' @param data Input data in class MolDiaISS. Output of \link[MolDia]{readISS}
 #' @param normalization.method Method for normalization. Default is log-normalization (LogNormalize).
 #'        Use NULL if one dont apply normalization. More methods to be added very shortly.
 #' @param scale.factor Sets the scale factor for cell-level normalization.
@@ -16,7 +16,7 @@
 #'          Setting scale to TRUE will scale the expression level for each gene by dividing the centered gene expression levels
 #'          by their standard deviations if center is TRUE and by their root mean square otherwise.
 #'
-#' @return Return a object in RCA_class with value in slot norm.data or scale.data
+#' @return Return a object in MolDiaISS with value in slot norm.data or scale.data
 #'
 #' @references
 #' Van den Berg, R. A., Hoefsloot, H. C., Westerhuis, J. A., Smilde, A. K., & van der Werf, M. J. (2006). Centering, scaling, and

@@ -5,8 +5,8 @@
 #'
 #'Dimentionality reduction to 2D by tSNE
 #'
-#' @description Any data in class RCA_class clusteded or not clustered used to reduce dimention to 2D by RCA-tsne.
-#' @param data Input data in class RCA_class. Output of \link[MolDia]{readISS}.
+#' @description Any data in class MolDiaISS clusteded or not clustered used to reduce dimention to 2D by RCA-tsne.
+#' @param data Input data in class MolDiaISS. Output of \link[MolDia]{readISS}.
 #' @param clus As factor. Each cell names has id. Cell order of data and cell order of clus should be same. (work for class data.frame)
 #' @param pc Desired percent of variance to be explained by PCA. Default in NULL , equavalant with 0.9.
 #' @param perplexity Numeric; Perplexity parameter. See  \link[Rtsne]{Rtsne}
@@ -59,7 +59,7 @@
 RCA_tsne <- function(data, clus = NULL, pc = NULL, perplexity = 100)
 {
   # Check class of data
-  if(class(data)%in%c("RCA_class") ==FALSE) stop("Check input data in class 'RCA_class'",call. = FALSE)
+  if(class(data)%in%c("MolDiaISS") ==FALSE) stop("Check input data in class 'MolDiaISS'",call. = FALSE)
 
   # Save main data 
   mdata <- data

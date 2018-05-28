@@ -5,7 +5,7 @@
 #' Rotate and flip ISS data
 #'
 #' @description Rotate by angle and flip by axix of ISS data
-#' @param data Input data in class RCA_class. Output of \link[MolDia]{readISS}.
+#' @param data Input data in class MolDiaISS. Output of \link[MolDia]{readISS}.
 #' @param rot Rotation angle (Degree). Default is zero. Negative angle define the anti-clock wise rotation.
 #' @param flipby Flip the data points by x or y axis. Default is NULL. Possible value is NULL, "x", "y".  
 #'

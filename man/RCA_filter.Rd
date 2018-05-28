@@ -7,7 +7,7 @@
 RCA_filter(data, data_mean = NULL)
 }
 \arguments{
-\item{data}{Input data in class RCA_class. Output of \link[MolDia]{readISS}}
+\item{data}{Input data in class MolDiaISS. Output of \link[MolDia]{readISS}}
 
 \item{data_mean}{Expected mean of number of reads press cell. Default is NULL. See details.}
 }

@@ -7,10 +7,10 @@
 RCA_clustcompare(preditorData, prediction, ntree = 500, method = "prob")
 }
 \arguments{
-\item{preditorData}{Data to be used to compare. Input data in class RCA_class. Output of \link[MolDia]{readISS}
+\item{preditorData}{Data to be used to compare. Input data in class MolDiaISS. Output of \link[MolDia]{readISS}
 and must be clustered.}
 
-\item{prediction}{Data that need to compare. Input data in class RCA_class. Output of \link[MolDia]{readISS}
+\item{prediction}{Data that need to compare. Input data in class MolDiaISS. Output of \link[MolDia]{readISS}
 and must be clustered.}
 
 \item{ntree}{Number of trees to grow. \link[randomForest]{randomForest}. See This should not be set to

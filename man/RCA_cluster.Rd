@@ -9,7 +9,7 @@ RCA_cluster(data, method = "seurat", DEGmethod = "seurat", pc = NULL,
   do.scale = TRUE, k.param = 30)
 }
 \arguments{
-\item{data}{Input data in class RCA_class. Output of \link[MolDia]{readISS}.}
+\item{data}{Input data in class MolDiaISS. Output of \link[MolDia]{readISS}.}
 
 \item{method}{Method of clustering. seurat, backspin, monocle.}
 

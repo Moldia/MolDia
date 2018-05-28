@@ -4,7 +4,7 @@
 "RCA_GridSelect"
 #' Select grid of interest from a tissue.
 #' @description Select grid of interest from a tissue
-#' @param data Input data in class RCA_class. Output of \link[MolDia]{readISS}.
+#' @param data Input data in class MolDiaISS. Output of \link[MolDia]{readISS}.
 #' @param gridtype type of grid to plot. Default is "rect". See details.
 #' @param grid_id Grid to select. Default id NULL.
 #' @param nx,ny Numbers of rectangular quadrats in the x and y directions

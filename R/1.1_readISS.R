@@ -5,7 +5,7 @@
 #' Read RCA data
 #' @description Read RCA data
 #'
-#' @param file File name in CSV formate, data in "data.frame" class and data in "RCA_class" class (Output of \link[MolDia]{readISS}). 
+#' @param file File name in CSV formate, data in "data.frame" class and data in "MolDiaISS" class (Output of \link[MolDia]{readISS}). 
 #' @param cellid String to naming cell. Default is "CellID".
 #' @param centX Name of X co-ordinate in file. Default is "centroidX"
 #' @param centY Name of Y co-ordinate in file  Default is "centroidY"
@@ -18,7 +18,7 @@
 #'
 #' @author Mohammad Tanvir Ahamed
 #'
-#' @return Output will be a object in class RCA_class. See detail \link[MolDia]{RCA_class}
+#' @return Output will be a object in class MolDiaISS. See detail \link[MolDia]{MolDiaISS}
 #'
 #' @examples
 #' ##### Reading RCA data in CSV formate
@@ -108,7 +108,7 @@ readISS <- function(file, cellid = "CellID", centX = NULL, centY = NULL, genepos
     data_loca<- data_loca[rownames(data_reads),]
     
     ## return RCA object
-    res <- methods::new("RCA_class",
+    res <- methods::new("MolDiaISS",
                         data     = data_reads,
                         norm.data = matrix(, nrow = 0, ncol = 0),
                         scale.data = matrix(, nrow = 0, ncol = 0),
@@ -181,7 +181,7 @@ readISS <- function(file, cellid = "CellID", centX = NULL, centY = NULL, genepos
     if(length(centX)== 1 ) data_loca<- data_loca[rownames(data_reads),]
     
     ## return RCA object
-    res <- methods::new("RCA_class",
+    res <- methods::new("MolDiaISS",
                         data     = data_reads,
                         norm.data = matrix(, nrow = 0, ncol = 0),
                         scale.data = matrix(, nrow = 0, ncol = 0),
@@ -193,8 +193,8 @@ readISS <- function(file, cellid = "CellID", centX = NULL, centY = NULL, genepos
   }
   
   
-  ## Data type : RCA_class class 
-  if(class(file)=="RCA_class" )
+  ## Data type : MolDiaISS class 
+  if(class(file)=="MolDiaISS" )
   {
     my_file <- file@data
     
@@ -255,7 +255,7 @@ readISS <- function(file, cellid = "CellID", centX = NULL, centY = NULL, genepos
     if(length(centX)== 1 ) data_loca<- data_loca[rownames(data_reads),]
     
     ## return RCA object
-    res <- methods::new("RCA_class",
+    res <- methods::new("MolDiaISS",
                         data     = data_reads,
                         norm.data = matrix(, nrow = 0, ncol = 0),
                         scale.data = matrix(, nrow = 0, ncol = 0),

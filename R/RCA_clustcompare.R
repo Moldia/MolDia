@@ -2,9 +2,9 @@
 #' Compare among Single cell cluster based Random forest algorithm
 #'
 #' @description Compare two two cluster and find their similarity (Supervised).
-#' @param preditorData Data to be used to compare. Input data in class RCA_class. Output of \link[MolDia]{readISS}
+#' @param preditorData Data to be used to compare. Input data in class MolDiaISS. Output of \link[MolDia]{readISS}
 #'        and must be clustered.
-#' @param prediction Data that need to compare. Input data in class RCA_class. Output of \link[MolDia]{readISS}
+#' @param prediction Data that need to compare. Input data in class MolDiaISS. Output of \link[MolDia]{readISS}
 #'        and must be clustered.
 #' @param ntree Number of trees to grow. \link[randomForest]{randomForest}. See This should not be set to
 #'        too small a number, to ensure that every input row gets predicted at least a few times.

@@ -10,7 +10,7 @@ ISS_barplot(data, gene, total.expr = 10000, gene.target = NULL,
   show.same.gene = FALSE, str.same.gene = c(".C", ".L"), main = "")
 }
 \arguments{
-\item{data}{Input data in class RCA_class. Output of \link[MolDia]{readISS}.}
+\item{data}{Input data in class MolDiaISS. Output of \link[MolDia]{readISS}.}
 
 \item{gene}{Object in vector or list formate. In list formated input every list element is a group of
 interested genes.}

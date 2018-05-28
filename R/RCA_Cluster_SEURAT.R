@@ -4,7 +4,7 @@
 #' "RCA_seruat_cluster"
 #' Cluster in-situ RCA data by SEURAT.
 #'
-#' @param data Input data in class RCA_class. Output of \link[MolDia]{readISS}.
+#' @param data Input data in class MolDiaISS. Output of \link[MolDia]{readISS}.
 #' @param pc Desired percent of variance (0 to 1) to be explained by PCA. Default in NULL (All PC will use).
 #' @param cluster_id Re-cluster clustreded data. Numeric input. Default is NULL.
 #' @param resolution Value of the resolution parameter, use a value above (below)
@@ -56,7 +56,7 @@ RCA_seruat_cluster <- function(data, pc = NULL, cluster_id = NULL,
   ## Save main data
   main_data <- data
   # Check class of data
-  if(class(data)%in%c("RCA_class") ==FALSE) stop("Check input data in class 'RCA_class'",call. = FALSE)
+  if(class(data)%in%c("MolDiaISS") ==FALSE) stop("Check input data in class 'MolDiaISS'",call. = FALSE)
 
   if (length(cluster_id) == 0 )
     {

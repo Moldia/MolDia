@@ -9,7 +9,7 @@ ISS_ratiocor(data, gene = marker_gene, select_gene = NULL,
   main = "", stat = "sum")
 }
 \arguments{
-\item{data}{Data in list of groups with group name.   Individual data is in class RCA_class. Output of \link[MolDia]{readISS}}
+\item{data}{Data in list of groups with group name.   Individual data is in class MolDiaISS. Output of \link[MolDia]{readISS}}
 
 \item{gene}{Object in vector or list formate. In list formated input every list element is a group of
 interested genes.}

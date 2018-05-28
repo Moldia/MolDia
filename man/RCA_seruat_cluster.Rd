@@ -9,7 +9,7 @@ RCA_seruat_cluster(data, pc = NULL, cluster_id = NULL, resolution = 0.3,
   algorithm = 1, DEGmethod = "seurat", k.param = 30)
 }
 \arguments{
-\item{data}{Input data in class RCA_class. Output of \link[MolDia]{readISS}.}
+\item{data}{Input data in class MolDiaISS. Output of \link[MolDia]{readISS}.}
 
 \item{pc}{Desired percent of variance (0 to 1) to be explained by PCA. Default in NULL (All PC will use).}
 

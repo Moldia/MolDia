@@ -7,7 +7,7 @@
 genesSummary(data, gene = NULL)
 }
 \arguments{
-\item{data}{Input data in class RCA_class. Output of \link[MolDia]{readISS}}
+\item{data}{Input data in class MolDiaISS. Output of \link[MolDia]{readISS}}
 
 \item{gene}{gene of interest}
 }

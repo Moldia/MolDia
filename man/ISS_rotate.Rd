@@ -7,7 +7,7 @@
 ISS_rotate(data, rot = 0, flipby = NULL)
 }
 \arguments{
-\item{data}{Input data in class RCA_class. Output of \link[MolDia]{readISS}.}
+\item{data}{Input data in class MolDiaISS. Output of \link[MolDia]{readISS}.}
 
 \item{rot}{Rotation angle (Degree). Default is zero. Negative angle define the anti-clock wise rotation.}
 

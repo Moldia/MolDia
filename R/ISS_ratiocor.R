@@ -6,7 +6,7 @@
 #' 
 #' @description Calculate and plot correlation and ratio of total reads between genes
 #' 
-#' @param data Data in list of groups with group name.   Individual data is in class RCA_class. Output of \link[MolDia]{readISS} 
+#' @param data Data in list of groups with group name.   Individual data is in class MolDiaISS. Output of \link[MolDia]{readISS} 
 #' @param gene Object in vector or list formate. In list formated input every list element is a group of
 #'              interested genes.
 #' @param select_gene Select gene of interest, Default is NULL i.e. all genes in gele list.

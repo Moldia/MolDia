@@ -9,7 +9,7 @@ readISS(file, cellid = "CellID", centX = NULL, centY = NULL,
   nogene = NULL)
 }
 \arguments{
-\item{file}{File name in CSV formate, data in "data.frame" class and data in "RCA_class" class (Output of \link[MolDia]{readISS}).}
+\item{file}{File name in CSV formate, data in "data.frame" class and data in "MolDiaISS" class (Output of \link[MolDia]{readISS}).}
 
 \item{cellid}{String to naming cell. Default is "CellID".}
 
@@ -30,7 +30,7 @@ readISS(file, cellid = "CellID", centX = NULL, centY = NULL,
 \item{nogene}{Gene name to exclude from data. Default is NULL.}
 }
 \value{
-Output will be a object in class RCA_class. See detail \link[MolDia]{RCA_class}
+Output will be a object in class MolDiaISS. See detail \link[MolDia]{MolDiaISS}
 }
 \description{
 Read RCA data

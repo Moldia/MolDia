@@ -8,7 +8,7 @@ RCA_marker(data, topgene = 5, test.use = "bimod", marker.sig = 0.005,
   only.pos = TRUE, main = "")
 }
 \arguments{
-\item{data}{Input data in class RCA_class. Output of \link[MolDia]{readISS}.}
+\item{data}{Input data in class MolDiaISS. Output of \link[MolDia]{readISS}.}
 
 \item{topgene}{Desired number of top gene ineach cluster to show in summary result.}
 

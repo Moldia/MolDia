@@ -9,7 +9,7 @@ RCA_preprocess(data, normalization.method = "LogNormalize",
   display.progress = FALSE)
 }
 \arguments{
-\item{data}{Input data in class RCA_class. Output of \link[MolDia]{readISS}}
+\item{data}{Input data in class MolDiaISS. Output of \link[MolDia]{readISS}}
 
 \item{normalization.method}{Method for normalization. Default is log-normalization (LogNormalize).
 Use NULL if one dont apply normalization. More methods to be added very shortly.}
@@ -23,7 +23,7 @@ Use NULL if one dont apply normalization. More methods to be added very shortly.
 \item{display.progress}{Displays a progress bar}
 }
 \value{
-Return a object in RCA_class with value in slot norm.data or scale.data
+Return a object in MolDiaISS with value in slot norm.data or scale.data
 }
 \description{
 Pre-process RCA data interms of normalization, scalling and centering

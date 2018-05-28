@@ -5,7 +5,7 @@
 #' Plot barplot on RCA data bsed on different condition
 #' @description Plot bar plot on RCA data bsed on different condition
 #'
-#' @param data Input data in class RCA_class. Output of \link[MolDia]{readISS}.
+#' @param data Input data in class MolDiaISS. Output of \link[MolDia]{readISS}.
 #' @param gene Object in vector or list formate. In list formated input every list element is a group of
 #'        interested genes.
 #' @param total.expr Scale factor to re-scale the data. Default is 1e4.
@@ -94,7 +94,7 @@ ISS_barplot <- function(data, gene, total.expr = 1e4, gene.target = NULL, gene.s
                         min.count = 1, at.least.gene = 0, at.most.gene = ncol(data), show.same.gene = FALSE,
                         str.same.gene = c(".C",".L"), main = "")
 {
-  ## Extract data from RCA_class object
+  ## Extract data from MolDiaISS object
   main_data <- data
   data      <- main_data@data
 
@@ -218,7 +218,7 @@ ISS_barplot <- function(data, gene, total.expr = 1e4, gene.target = NULL, gene.s
   #final_output
 
   ## return RCA object
-  #res <- methods::new("RCA_class",
+  #res <- methods::new("MolDiaISS",
   #                    data     = final_output,
   #                    normdata = main_data@normdata[rownames(final_output),],
   #                    scaledata = main_data@scaledata[rownames(final_output),],

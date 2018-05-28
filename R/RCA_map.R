@@ -1,12 +1,12 @@
 ######################################################################
 ##                         RCA mapping                              ##
 ######################################################################
-### Different methods for ploting RCA_class
+### Different methods for ploting MolDiaISS
 "RCA_map"
-#' Plot function for RCA_class data.
+#' Plot function for MolDiaISS data.
 #'
 #' @description Map RCA data based on cell, cluster or tSNE
-#' @param data Input data in class RCA_class. Output of \link[MolDia]{readISS}.
+#' @param data Input data in class MolDiaISS. Output of \link[MolDia]{readISS}.
 #' @param what What to plot. Values can be "cell", "cluster", "tsne". Default is "cell".
 #' @param xlab Label of x-axis
 #' @param ylab Label of y-axis

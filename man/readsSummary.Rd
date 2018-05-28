@@ -8,7 +8,7 @@ readsSummary(data, readlimit = 10, text.size = 6, intervel.dep = NULL,
   coexp = FALSE)
 }
 \arguments{
-\item{data}{Input data in class RCA_class. Output of \link[MolDia]{readISS}}
+\item{data}{Input data in class MolDiaISS. Output of \link[MolDia]{readISS}}
 
 \item{readlimit}{Total number of reads per cell to consider}
 

@@ -4,7 +4,7 @@
 "RCA_filter"
 #' Filter RCA data based on poisson distibution
 #'
-#' @param data Input data in class RCA_class. Output of \link[MolDia]{readISS}
+#' @param data Input data in class MolDiaISS. Output of \link[MolDia]{readISS}
 #' @param data_mean Expected mean of number of reads press cell. Default is NULL. See details.
 #'
 #' @description This function estimate the probabity of number of reads per cell in a specific range
@@ -73,7 +73,7 @@ RCA_filter <- function(data, data_mean =NULL )
   
   ## Data output
   data_reads <- main_data@data[rowSums(main_data@data) %in% reads_range[1]:reads_range[2],]
-  res <- methods::new("RCA_class",
+  res <- methods::new("MolDiaISS",
                       data     = data_reads,
                       location = main_data@location[rownames(data_reads),],
                       gene = colnames(data_reads))

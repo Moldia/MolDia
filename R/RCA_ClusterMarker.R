@@ -5,7 +5,7 @@
 #' Find Cluster marker of in-situ RCA data.
 #' @description Find Cluster marker of in-situ RCA data and plot significant gene cluster wise by barplot and heatmap.
 #'
-#' @param data Input data in class RCA_class. Output of \link[MolDia]{readISS}.
+#' @param data Input data in class MolDiaISS. Output of \link[MolDia]{readISS}.
 #' @param topgene Desired number of top gene ineach cluster to show in summary result.
 #' @param test.use Denotes which test to use. Seurat currently implements "bimod"
 #'        (likelihood-ratio test for single cell gene expression, McDavid et al., Bioinformatics, 2013, default), "roc"

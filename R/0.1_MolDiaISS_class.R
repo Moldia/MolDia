@@ -14,8 +14,8 @@
 #'
 #' @section Dataclass: Data class section
 #'
-#' @name RCA_class
-RCA_class <- methods::setClass(Class = "RCA_class",
+#' @name MolDiaISS
+MolDiaISS <- methods::setClass(Class = "MolDiaISS",
                                slots = c(data           = "data.frame",
                                          norm.data      = "matrix",
                                          scale.data     = "matrix",
@@ -26,7 +26,7 @@ RCA_class <- methods::setClass(Class = "RCA_class",
                                          tsne.data      = "data.frame"))
 
 
-methods::setMethod( f = "show", signature = "RCA_class",
+methods::setMethod( f = "show", signature = "MolDiaISS",
                     definition = function(object)
                       {
                       cat( "An object of class", class(object),
@@ -38,4 +38,4 @@ methods::setMethod( f = "show", signature = "RCA_class",
                       invisible(x = NULL)
                       }
                     )
-RCA_class <- methods::new("RCA_class")
+MolDiaISS <- methods::new("MolDiaISS")

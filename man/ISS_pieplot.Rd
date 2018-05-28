@@ -8,7 +8,7 @@ ISS_pieplot(data, gene = NULL, with_gene = NULL, without_gene = NULL,
   segmentcol = "EEEEEE", randomseed = 10, colorpalette = NULL)
 }
 \arguments{
-\item{data}{Input data in class RCA_class. Output of \link[MolDia]{readISS}.}
+\item{data}{Input data in class MolDiaISS. Output of \link[MolDia]{readISS}.}
 
 \item{gene}{Gene of interest. It could be a vector of gene or a list of genes groups. Default is NULL means takes all genes
 in the given dataset.}

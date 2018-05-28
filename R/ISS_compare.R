@@ -2,7 +2,7 @@
 #' Compare ISS data
 #' 
 #' @description Compare multiple ISS data
-#' @param ... Input data in class RCA_class. At least 2 dataset or more. Output of \link[MolDia]{readISS}.
+#' @param ... Input data in class MolDiaISS. At least 2 dataset or more. Output of \link[MolDia]{readISS}.
 #' @param logdata log2 apply to data or not. Deafult is FALSE.
 #' @param label Label each point. Default is TRUE.
 #' @param levelCI Level of confidence interval to use. Default is 0.95

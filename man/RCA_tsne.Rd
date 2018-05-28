@@ -7,7 +7,7 @@
 RCA_tsne(data, clus = NULL, pc = NULL, perplexity = 100)
 }
 \arguments{
-\item{data}{Input data in class RCA_class. Output of \link[MolDia]{readISS}.}
+\item{data}{Input data in class MolDiaISS. Output of \link[MolDia]{readISS}.}
 
 \item{clus}{As factor. Each cell names has id. Cell order of data and cell order of clus should be same. (work for class data.frame)}
 
@@ -21,7 +21,7 @@ RCA_tsne(data, clus = NULL, pc = NULL, perplexity = 100)
 2D dataframe of points.
 }
 \description{
-Any data in class RCA_class clusteded or not clustered used to reduce dimention to 2D by RCA-tsne.
+Any data in class MolDiaISS clusteded or not clustered used to reduce dimention to 2D by RCA-tsne.
 }
 \examples{
 ## Reading data

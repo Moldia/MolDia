@@ -5,7 +5,7 @@
 #' Summary of specific gene of interest of RCA data
 #'
 #' @description Summary of specific gene of interest of RCA data
-#' @param data Input data in class RCA_class. Output of \link[MolDia]{readISS}
+#' @param data Input data in class MolDiaISS. Output of \link[MolDia]{readISS}
 #' @param gene gene of interest
 #'
 #' @examples

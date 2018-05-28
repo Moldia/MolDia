@@ -8,7 +8,7 @@ ISS_compare(..., logdata = FALSE, label = TRUE, levelCI = 0.95,
   live = FALSE)
 }
 \arguments{
-\item{...}{Input data in class RCA_class. At least 2 dataset or more. Output of \link[MolDia]{readISS}.}
+\item{...}{Input data in class MolDiaISS. At least 2 dataset or more. Output of \link[MolDia]{readISS}.}
 
 \item{logdata}{log2 apply to data or not. Deafult is FALSE.}
 

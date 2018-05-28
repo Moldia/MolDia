@@ -5,7 +5,7 @@
 #' Cluster in-situ RCA data.
 #'
 #' @description Cluster in-situ RCA data by different methods used in SEURAT, MONOCLE, BackSPIN.
-#' @param data Input data in class RCA_class. Output of \link[MolDia]{readISS}.
+#' @param data Input data in class MolDiaISS. Output of \link[MolDia]{readISS}.
 #' @param method Method of clustering. seurat, backspin, monocle.
 #' @param pc Desired percent of variance (0 to 1) to be explained by PCA. Default in NULL (All PC will use).
 #' @param cluster_id Re-cluster clustreded data. Numeric input. Default is NULL.

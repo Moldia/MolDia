@@ -8,7 +8,7 @@ RCA_GridSelect(data, gridtype = "rect", nx = 6, ny = nx, grid_id = NULL,
   roifile = NULL, roi.id = NULL, roi.x = NULL, roi.y = NULL)
 }
 \arguments{
-\item{data}{Input data in class RCA_class. Output of \link[MolDia]{readISS}.}
+\item{data}{Input data in class MolDiaISS. Output of \link[MolDia]{readISS}.}
 
 \item{gridtype}{type of grid to plot. Default is "rect". See details.}
 
