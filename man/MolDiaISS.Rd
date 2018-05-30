@@ -30,6 +30,8 @@ A MolDiaISS class object has the following slot
 \item{\code{cluster.marker}}{Marker gene of each cluster.}
 
 \item{\code{tsne.data}}{tSNE co-ordinate for data.}
+
+\item{\code{pca.data}}{List of stored dimmensional reductions}
 }}
 
 \section{Dataclass}{

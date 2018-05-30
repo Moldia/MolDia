@@ -11,6 +11,7 @@
 #' @slot cluster Cluster identification of all cells
 #' @slot cluster.marker Marker gene of each cluster.
 #' @slot tsne.data tSNE co-ordinate for data.
+#' @slot pca.data List of stored dimmensional reductions
 #'
 #' @section Dataclass: Data class section
 #'
@@ -23,7 +24,8 @@ MolDiaISS <- methods::setClass(Class = "MolDiaISS",
                                          cluster        = "factor",
                                          location       = "data.frame",
                                          cluster.marker = "list",
-                                         tsne.data      = "data.frame"))
+                                         tsne.data      = "data.frame",
+                                         pca.data       = "list"))
 
 
 methods::setMethod( f = "show", signature = "MolDiaISS",

@@ -23,50 +23,64 @@
 #' @param adjust.use A multiplicate bandwidth adjustment. This makes it possible to adjust the 
 #'        bandwidth while still using the a bandwidth estimator. For exampe, adjust = 1/2 means use half of the default bandwidth.
 #' 
-#' @details what parameter can have the value "cell", "cluster", "tsne", "tsneAll" and "vlnplot".
+#' @details what parameter can have the value "cell", "gene", "cluster", "tsne", "tsneAll" and "vlnplot".
 #'          
-#'          "cell" will plot all cells. 
+#'          "cell" will plot all cells with selected/all genes togather.
 #'          
-#'          "cluster" ill plot all cluster information.
+#'          "gene" will plot all/selected gene separately one  by one on the tissue.   
 #'          
+#'          "cluster" will plot all cluster information.
+#'          
+#'          "tsne" and "tsneAll" will plot the Dimention reduction by tSNE
+#'          
+#'          "vlnplot" will plot the violin plot on cluster data.
 #'     
 #'
 #' @examples 
-#' ## Reading data
+#' ## Reading ISS data
 #' left_hypo <- readISS(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"), 
 #'                         cellid = "CellId", centX = "centroid_x", centY = "centroid_y")
-#'                         
-#' ## Plot each gene
-#' res2      <- ISS_map(data = left_hypo, what = "gene", gene = left_hypo@gene[1:12])
+#'
+#' ############################# Plot cell                                                  
+#' ## Plot all cell with selected/all genes togather
+#' res       <- ISS_map(data = left_hypo, what = "cell", gene = left_hypo@gene[1:12], main = "Plot all cells gene")
+#'
+#' ############################# Plot gene                                                 
+#' ## Plot each single gene
+#' res       <- ISS_map(data = left_hypo, what = "gene", gene = left_hypo@gene[1:12], main = "Plot selected genes")
 #' 
-#' ## Plot all gene togather
-#' res2      <- ISS_map(data = left_hypo, what = "cell", gene = left_hypo@gene[1:12])
-#' 
-#' ## Data normalization
-#' left_hypo <- RCA_preprocess(data = left_hypo, normalization.method = "LogNormalize", 
-#'                         do.scale = TRUE, do.center = FALSE)
-#' ## Data clustering
-#' left_hypo <- RCA_cluster (data = left_hypo, method = "seurat",resolution = 0.1)
-#' 
-#' ## Plot cluster data
-#' res1      <- ISS_map(data = left_hypo, what = "cluster", cluster_id = 1:4)
-#' 
-#' ## Plot violin plot
-#' res1      <- ISS_map(data = left_hypo, what = "vlnplot", gene = left_hypo@gene[4:7], same.y.lims = F, adjust.use = 1)
+#' ############################# Data Pre-processing
+#' left_hypo <- ISS_preprocess(data = left_hypo, normalization.method = "LogNormalize",
+#'                             do.scale = TRUE, do.center = FALSE)
+#'                             
+#' ############################# Plot tsne and tsneAll
+#' ## Dimention reduction by tSNE on non-clustered data
+#' left_hypo <- ISS_tsne(data = left_hypo, perplexity= 30, pc = 0.7)
+#' # Plot selected gene on tSNE plot
+#' result <- ISS_map(data = left_hypo, what = "tsne", gene =left_hypo@gene[1:2] )
+#' # Plot tSNE
+#' result <- ISS_map(data = left_hypo, what = "tsneAll")
 #' 
 #' ## Dimention reduction by tSNE on clustered data
-#' left_hypo <- RCA_tsne(data = left_hypo, do.label = TRUE, perplexity= 30)
+#' # Cluster data based on SEURAT pipeline
+#' left_hypo_clust  <- ISS_cluster(data = left_hypo, pc = 0.7, resolution = 0.3, method = "seurat")
+#' # Dimention reduction by tSNE
+#' left_hypo_clust   <- ISS_tsne(data = left_hypo_clust, pc= 0.9, perplexity= 100)
+#' Plot cluster on tSNE plot
+#' result <- ISS_map(data = left_hypo_clust, what = "tsneAll")
 #' 
-#' ## Plot tSNE cluster: All cluster togather
-#' res2      <- ISS_map(data = left_hypo, what = "tsneAll", gene = left_hypo@gene[1:9])
+#' ############################# Plot cluster 
+#' # Cluster data based on SEURAT pipeline
+#' left_hypo <- ISS_cluster(data = left_hypo, pc = 0.7, resolution = 0.08, method = "seurat")
+#' res       <- ISS_map(data = left_hypo, what = "cluster")
+#' res       <- ISS_map(data = left_hypo, what = "cluster", cluster_id = 1:2)
 #' 
-#' ## Plot tSNE cluster: Gene on tsne plot
-#' res3      <- ISS_map(data = left_hypo, what = "tsne", gene = left_hypo@gene[1:12])
-#' 
+#' ############################# Plot violin plot
+#' res       <- ISS_map(data = left_hypo, what = "vlnplot", gene = left_hypo@gene[4:7], same.y.lims = F, adjust.use = 1)
 #' 
 #' 
 #' @export
-ISS_map <- function(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y", main = "Main plot", ptsize = 1,pchuse = 16,
+ISS_map <- function(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y", main = "Plot title", ptsize = 1,pchuse = 16,
                     image = TRUE, live = FALSE, label.topgene = NULL, gene = NULL, cluster_id = NULL, same.y.lims = FALSE,
                     adjust.use = 0.5)
 {
@@ -155,7 +169,7 @@ ISS_map <- function(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y
     
     ## Create SEURAT object 
     RCAtsne   <- Seurat::CreateSeuratObject(raw.data = t(mainData@data))
-    #if(length(data@scale.data)== 0 ) stop("Please scale data first with RCA_preprocess function ", call. = FALSE)
+    #if(length(data@scale.data)== 0 ) stop("Please scale data first with ISS_preprocess function ", call. = FALSE)
     
     cell.embeddings<- as.matrix(data@location) 
     reduction.key  <- "tSNE_"
@@ -292,7 +306,7 @@ ISS_map <- function(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y
     
     ## Create SEURAT object 
     RCAtsne   <- Seurat::CreateSeuratObject(raw.data = t(mainData@data))
-    if(length(data@scale.data)== 0 ) stop("Please scale data first with RCA_preprocess function ", call. = FALSE)
+    if(length(data@scale.data)== 0 ) stop("Please scale data first with ISS_preprocess function ", call. = FALSE)
 
     cell.embeddings<- as.matrix(data@tsne.data) 
     #cell.embeddings<- as.matrix(left_hypo@location) 
