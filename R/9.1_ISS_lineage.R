@@ -16,6 +16,9 @@
 #'                  cellid = "CellID",centX = "centroidX", centY = "centroidY")
 #'                  
 #'  ISS_map (data = adult, what = "cell")
+#'  ISS_map (data = p7, what = "cell")
+#'  ISS_map (data = p0, what = "cell")
+#'  ISS_map (data = e15, what = "cell")
 
 
 
