@@ -1,7 +1,7 @@
 ######################################################################
 ##                        Select cluster of interest                ##
 ######################################################################
-"ISS_ClustSelect"
+"ISS_clustSelect"
 #' Select cluster of interest after clustering.
 #' 
 #' @description Select cluster of interest after clustering
@@ -9,7 +9,7 @@
 #' @param cluster_id Cluster to select
 #' 
 #' @export
-ISS_ClustSelect <- function(data, cluster_id = NULL)
+ISS_clustSelect <- function(data, cluster_id = NULL)
 {
   ## Check id data is cluster or not 
   if(length(data@cluster) == 0) stop("Please define cluster on data first", call. = FALSE)

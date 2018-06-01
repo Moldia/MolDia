@@ -1,4 +1,4 @@
-"ISS_ClustCompare"
+"ISS_clustCompare"
 #' Compare among ISS clusters based on Random Forest algorithm
 #'
 #' @description Compare two cluster and find their similarity (Supervised).
@@ -21,8 +21,8 @@
 #' left_hypo  <- readISS(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),
 #'                   cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
 #' right_hypo <- readISS(file = system.file("extdata", "Hypocampus_right.csv", package="MolDia"),
-#'                   cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
 #'
+#'                                      cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
 #' ## Data preprocessing
 #' left_hypo  <- ISS_preprocess(data = left_hypo, normalization.method = "LogNormalize",
 #'                                do.scale = TRUE, do.center = TRUE)
@@ -34,12 +34,12 @@
 #' right_hypo  <- ISS_cluster(data = right_hypo, pc = 0.9, resolution = 0.05)
 #'
 #' ## Cluster compare
-#' comapre_left_right <- ISS_ClustCompare(preditorData = left_hypo, prediction = right_hypo, ntree = 10)
-#' comapre_right_left <- ISS_ClustCompare(preditorData = right_hypo, prediction = left_hypo, ntree = 10)
+#' comapre_left_right <- ISS_clustCompare(preditorData = left_hypo, prediction = right_hypo, ntree = 10)
+#' comapre_right_left <- ISS_clustCompare(preditorData = right_hypo, prediction = left_hypo, ntree = 10)
 #'
 #'
 #' @export
-ISS_ClustCompare <- function(preditorData, prediction, ntree = 100, method = "prob")
+ISS_clustCompare <- function(preditorData, prediction, ntree = 100, method = "prob")
 {
   #### Library
   #library("foreach")

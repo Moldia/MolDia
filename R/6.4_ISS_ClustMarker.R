@@ -1,7 +1,7 @@
 ######################################################################
 ##                       RCA define cluster marker                  ##
 ######################################################################
-"ISS_ClustMarker"
+"ISS_clustMarker"
 #' Find Cluster marker of ISS data.
 #' @description Find Cluster marker of ISS data and plot significant gene cluster by barplot and heatmap.
 #'
@@ -47,7 +47,7 @@
 #' neuron_group_clust  <- ISS_cluster (data = neuron_group, method = "seurat",
 #'                                     pc = 0.9, resolution = 0.1)
 #' ## Get cluster marker
-#' neuron_group_clust_marker <- ISS_ClustMarker(data = neuron_group_clust, topgene =5,
+#' neuron_group_clust_marker <- ISS_clustMarker(data = neuron_group_clust, topgene =5,
 #'                                         test.use="bimod", main = "")
 #'  
 #' ## Plot cluster                                                                              
@@ -58,7 +58,7 @@
 #' ISS_map (data=neuron_group_clust_marker, what = "tsneAll", label.topgene = 4)
 #' 
 #' @export
-ISS_ClustMarker <- function(data, topgene= 5, test.use = "bimod", marker.sig = 0.005,
+ISS_clustMarker <- function(data, topgene= 5, test.use = "bimod", marker.sig = 0.005,
                        only.pos = TRUE, main = "")
 {
   # Main data
@@ -73,13 +73,13 @@ ISS_ClustMarker <- function(data, topgene= 5, test.use = "bimod", marker.sig = 0
 
   ## Find cluster marker
   set.seed(12345)
-  ISS_ClustMarkers   <- Seurat::FindAllMarkers(object = RCA_Seurat_obj, only.pos = only.pos,
+  ISS_clustMarkers   <- Seurat::FindAllMarkers(object = RCA_Seurat_obj, only.pos = only.pos,
                                           test.use = test.use ,thresh.use = marker.sig,
                                           min.pct = marker.sig, min.diff.pct = marker.sig,  min.cells.gene = 3, min.cells.group = 3)
-  ISS_ClustMarkers_1 <- lapply(split(ISS_ClustMarkers,ISS_ClustMarkers$cluster), function(i){i[order( abs(i$pct.1), decreasing = TRUE),]})
-  res           <- ISS_ClustMarkers_1
-  ISS_ClustMarkers_1 <- lapply(ISS_ClustMarkers_1, function(i) utils::head(i,topgene))
-  ISS_ClustMarkers_1 <- unique(unlist(lapply(ISS_ClustMarkers_1, "[[", "gene")))
+  ISS_clustMarkers_1 <- lapply(split(ISS_clustMarkers,ISS_clustMarkers$cluster), function(i){i[order( abs(i$pct.1), decreasing = TRUE),]})
+  res           <- ISS_clustMarkers_1
+  ISS_clustMarkers_1 <- lapply(ISS_clustMarkers_1, function(i) utils::head(i,topgene))
+  ISS_clustMarkers_1 <- unique(unlist(lapply(ISS_clustMarkers_1, "[[", "gene")))
 
   ## List of cells name by each cluster
   data_identity <- data.frame(main_data@cluster)
@@ -94,13 +94,13 @@ ISS_ClustMarker <- function(data, topgene= 5, test.use = "bimod", marker.sig = 0
     rownames(mmdata) <-mmdata$Row.names
     mmdata$Row.names <- NULL
     mmdata$cluster   <- NULL
-    mmdata <- colSums(mmdata)[ISS_ClustMarkers_1] / nrow(mmdata)
+    mmdata <- colSums(mmdata)[ISS_clustMarkers_1] / nrow(mmdata)
     mmdata
   })
   mmdata_1 <- do.call(cbind, mmdata)
   mmdata   <- log2(as.matrix(mmdata_1+1))
   dfp1     <- reshape::melt(mmdata)
-  dfp1$X1  <- factor(dfp1$X1, levels = ISS_ClustMarkers_1)
+  dfp1$X1  <- factor(dfp1$X1, levels = ISS_clustMarkers_1)
 
   p <- ggplot2::ggplot(dfp1, ggplot2::aes_string(x = "X2", y= "value", fill = "X1")) +
     ggplot2::scale_x_discrete(limits= (dfp1$X2)) +
@@ -111,7 +111,7 @@ ISS_ClustMarker <- function(data, topgene= 5, test.use = "bimod", marker.sig = 0
     ggplot2::coord_cartesian(xlim = c(0, length(unique(dfp1$X2))-1))
 
   #### Heatmap of cluster based on marker gene
-  p1 <- Seurat::DoHeatmap(object = RCA_Seurat_obj, genes.use = ISS_ClustMarkers_1, group.by = "ident",
+  p1 <- Seurat::DoHeatmap(object = RCA_Seurat_obj, genes.use = ISS_clustMarkers_1, group.by = "ident",
                   slim.col.label = TRUE, remove.key = TRUE, rotate.key = FALSE, use.scaled = TRUE, title = paste0(main, "-All common marker gene (Heatmap)"))
 
   ## Multiple plot

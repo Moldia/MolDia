@@ -1,7 +1,7 @@
 #' The ISS data class
-#' The MolDiaISS class is a main object for all ISS based analysis
-#'
-#' A MolDiaISS class object has the following slot
+#' 
+#' @description The MolDiaISS class is a main object for all ISS based analysis. 
+#'              A MolDiaISS class object has the following slot
 #'
 #' @slot data Main data for analysis
 #' @slot norm.data Normalized data (log-scale).

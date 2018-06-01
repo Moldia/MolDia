@@ -18,8 +18,8 @@ Barplot
 Summary of specific gene of interest of RCA data
 }
 \examples{
-data_1 <- readISS(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
+ex_data <- readISS(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
                   cellid = "CellID", centX ="centroidX", centY="centroidY" )
-res <- ISS_genesSummary(data = data_1, gene = "Actb.L")
+res <- ISS_genesSummary(data = ex_data, gene = "Actb.L")
 
 }

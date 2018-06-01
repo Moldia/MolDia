@@ -11,10 +11,10 @@
 #' @examples 
 #' hcleft   <- readISS(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),  cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
 #' hcright  <- readISS(file = system.file("extdata", "Hypocampus_right.csv", package="MolDia"), cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
-#' hcleft1  <- readISS(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),  cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
-#' hcright1 <- readISS(file = system.file("extdata", "Hypocampus_right.csv", package="MolDia"), cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
+#' hcleft_1  <- readISS(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),  cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
+#' hcright_1 <- readISS(file = system.file("extdata", "Hypocampus_right.csv", package="MolDia"), cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
 
-#' res <- ISS_compare(hcleft, hcright,hcleft1,hcright1, label = F, levelCI = 0.99, live = F, logdata = FALSE)
+#' res <- ISS_compare(hcleft, hcright, label = T, levelCI = 0.99, live = F, logdata = FALSE)
 #' res <- ISS_compare(hcleft, hcright, label = T, levelCI = 0.8, live = F, logdata = TRUE)
 #' 
 #' @export

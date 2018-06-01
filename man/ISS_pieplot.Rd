@@ -36,11 +36,11 @@ Maximum 256 genes (256 color) can be ploted with this version at this moment.
 }
 \examples{
 ########## Reading data
-data_1      <- readISS(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
+ex_data      <- readISS(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
                        cellid = "CellID",centX = "centroidX", centY = "centroidY")
 
 ## Define marker gene group
-marker_gene <- data_1@gene
+marker_gene <- ex_data@gene
 c_rna <- marker_gene[grepl(".C",marker_gene)] # Circular RNA
 l_rna <- setdiff(marker_gene,c_rna)           # Linear RNA
 
@@ -60,7 +60,7 @@ marker_gene1 <- list(Neuron = Neuron,
                      Lin_rna = c(setdiff(setdiff(l_rna,Neuron),Nonneuron)))
 
 ####  Select cell with at least 3 neuronal genes
-mydata <- ISS_barplot(data = data_1, gene = marker_gene1, gene.target = 1,
+mydata <- ISS_barplot(data = ex_data, gene = marker_gene1, gene.target = 1,
                       at.least.gene = 3, show.same.gene = FALSE)
 
 #####  Pie chart of all Circular mRNA in cell with at least 3 neuronal genes.

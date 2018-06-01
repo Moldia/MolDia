@@ -46,7 +46,8 @@ gridtype parameter can have 4 values :  "hexa", "rect", "roifile" and "roi"
 ex_data <- readISS(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),cellid = "CellId", centX = "centroid_x", centY = "centroid_y", rpc = 3)
 
 # Select hexagonal and rectangular ROI
-mygrid  <- ISS_roi(data = ex_data, nx = 8,gridtype = "hexa")
+mygrid  <- ISS_roi(data = ex_data, nx = 8,gridtype = "hexa", main = "Hexagonal ROI on tissue")
+mygrid  <- ISS_roi(data = ex_data, nx = 8,gridtype = "rect", main = "Rectangular ROI on tissue")
 mygrid  <- ISS_roi(data = ex_data, nx = 8,gridtype = "rect", grid_id = c(6,16,20,8,17,21))
 
 # Selected ROI from a pre selected ROI file
@@ -54,7 +55,8 @@ ex_data <- readISS(file = system.file("extdata", "CellBlobs_ROI.csv", package="M
                    cellid = "CellID", centX = "centroidX", centY = "centroidY")
 mygrid  <- ISS_roi(data = ex_data, nx = 6, gridtype = "roifile",
                             roifile = system.file("extdata", "polygon_coordinates.csv", package="MolDia"),
-                            roi.id = "Polygon_id", roi.x ="x_coordiates" , roi.y = "y_coordinates", grid_id = c(1,2,5,6))
+                            roi.id = "Polygon_id", roi.x ="x_coordiates" , roi.y = "y_coordinates", grid_id = c(1,2,5,6),
+                            main = "Selected ROI on tissue")
 # Select ROI interactively by user
 mygrid  <- ISS_roi(data = ex_data, gridtype = "roi")
 

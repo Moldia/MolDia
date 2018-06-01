@@ -63,11 +63,11 @@ left_hypo <- readISS(file = system.file("extdata", "Hypocampus_left.csv", packag
 
 ############################# Plot cell                                                  
 ## Plot all cell with selected/all genes togather
-res       <- ISS_map(data = left_hypo, what = "cell", gene = left_hypo@gene[1:12], main = "Plot all cells gene")
+res       <- ISS_map(data = left_hypo, what = "cell", gene = left_hypo@gene[1:4], main = "Plot all cells gene")
 
 ############################# Plot gene                                                 
 ## Plot each single gene
-res       <- ISS_map(data = left_hypo, what = "gene", gene = left_hypo@gene[1:12], main = "Plot selected genes")
+res       <- ISS_map(data = left_hypo, what = "gene", gene = left_hypo@gene[1:4], main = "Plot selected genes")
 
 ############################# Data Pre-processing
 left_hypo <- ISS_preprocess(data = left_hypo, normalization.method = "LogNormalize",
@@ -76,10 +76,10 @@ left_hypo <- ISS_preprocess(data = left_hypo, normalization.method = "LogNormali
 ############################# Plot tsne and tsneAll
 ## Dimention reduction by tSNE on non-clustered data
 left_hypo <- ISS_tsne(data = left_hypo, perplexity= 30, pc = 0.7)
-# Plot selected gene on tSNE plot
-result <- ISS_map(data = left_hypo, what = "tsne", gene =left_hypo@gene[1:2] )
 # Plot tSNE
 result <- ISS_map(data = left_hypo, what = "tsneAll")
+# Plot selected gene on tSNE plot
+result <- ISS_map(data = left_hypo, what = "tsne", gene = left_hypo@gene[1:4] )
 
 ## Dimention reduction by tSNE on clustered data
 # Cluster data based on SEURAT pipeline
@@ -96,7 +96,7 @@ res       <- ISS_map(data = left_hypo, what = "cluster")
 res       <- ISS_map(data = left_hypo, what = "cluster", cluster_id = 1:2)
 
 ############################# Plot violin plot
-res       <- ISS_map(data = left_hypo, what = "vlnplot", gene = left_hypo@gene[4:7], same.y.lims = F, adjust.use = 1)
+res       <- ISS_map(data = left_hypo_clust, what = "vlnplot", gene = left_hypo@gene[4:7], same.y.lims = F, adjust.use = 1)
 
 
 }

@@ -85,7 +85,7 @@ ISS_cluster_seruat <- function(data, pc = NULL, cluster_id = NULL,
       }
       
       # Select data in cluster
-      selected_data <- ISS_ClustSelect(data = main_data , cluster_id = cluster_id)
+      selected_data <- ISS_clustSelect(data = main_data , cluster_id = cluster_id)
       
       # Run PCA and get optimum pc
       res <- ISS_pca(data = selected_data, pc = pc)

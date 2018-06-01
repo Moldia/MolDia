@@ -7,7 +7,8 @@
 #'
 #' @examples 
 #' adult <- readISS(file = system.file("extdata", "lineage_adult.csv", package="MolDia"),  
-#'                  cellid = "CellID",centX = "centroidX", centY = "centroidY")
+#'                  cellid = "CellID",centX = "centroidX", centY = "centroidY", 
+#'                  gene = c("Actb.L", "Adar1", "Adar2","Aldh1l1", "Blcap.edQR","Blcap.edYC" ))
 #' p7    <- readISS(file = system.file("extdata", "linrage_p07.csv", package="MolDia"),  
 #'                  cellid = "CellID",centX = "centroidX", centY = "centroidY")
 #' p0    <- readISS(file = system.file("extdata", "lineage_p00.csv", package="MolDia"),  

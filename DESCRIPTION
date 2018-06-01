@@ -1,6 +1,6 @@
 Package: MolDia
 Type: Package
-Title: Single cell In-Situ RCA data analysis
+Title: Single cell In-Situ sequencing (ISS) data analysis
 Version: 0.0.1
 Date: 2017-10-01
 Author: Mats Nilsson

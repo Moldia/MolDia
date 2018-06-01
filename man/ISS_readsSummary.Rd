@@ -26,9 +26,9 @@ Summary of cells after reads delete.
 Summary of ISS data and expression
 }
 \examples{
-data_1 <- readISS(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
+ex_data <- readISS(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
                   cellid = "CellID", centX = "centroidX", cent = "centroidY")
-res    <- ISS_readsSummary(data = data_1, readlimit = 10, text.size = 6, intervel.dep = NULL, coexp = TRUE)
+res    <- ISS_readsSummary(data = ex_data, readlimit = 10, text.size = 10, intervel.dep = NULL, coexp = TRUE)
 
 }
 \author{
