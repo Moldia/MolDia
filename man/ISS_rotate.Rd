@@ -22,10 +22,14 @@ mydata  <- readISS(file = system.file("extdata", "Hypocampus_left.csv", package=
                    cellid = "CellId", centX = "centroid_x", centY = "centroid_y")
 
 # Flip/rotate ISS data
-mydata1 <- ISS_rotate (data = mydata, rot = 0, flipby = "y")
+mydata_x  <- ISS_rotate (data = mydata, rot = 0, flipby = "x")
+mydata_y  <- ISS_rotate (data = mydata, rot = 0, flipby = "y")
+mydata_90 <- ISS_rotate (data = mydata, rot = 90)
 
 # Plot ISS data
-res     <- ISS_map(data = mydata, what = "cell")
-res1    <- ISS_map(data = mydata1, what = "cell")
+res     <- ISS_map(data = mydata, what = "cell", main = "Left hippocampus")
+res1    <- ISS_map(data = mydata_x, what = "cell", main = "Left hippocampus")
+res1    <- ISS_map(data = mydata_y, what = "cell", main = "Left hippocampus")
+res1    <- ISS_map(data = mydata_90, what = "cell", main = "Left hippocampus")
 
 }
