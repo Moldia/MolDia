@@ -5,7 +5,7 @@
 #' Read RCA data
 #' @description Read RCA data
 #'
-#' @param file File name in CSV formate, data in "data.frame" class and data in "MolDiaISS" class (Output of \link[MolDia]{readISS}). 
+#' @param file File name in CSV formate.Also data formate in "data.frame" class and "MolDiaISS" class (Output of \link[MolDia]{readISS}). 
 #' @param cellid String to naming cell. Default is "CellID".
 #' @param centX Name of X co-ordinate in file. Default is "centroidX"
 #' @param centY Name of Y co-ordinate in file  Default is "centroidY"
@@ -13,7 +13,8 @@
 #' @param geneposOPT Only work when 'genepos' has a value. "AND", "OR" and "NONE" condition for genepos. Default is "OR".
 #' @param rpc Total reads per cell to be consider. Default is 1.
 #' @param rpg Total reads per gene to be consider. Default is 1.
-#' @param gene Gene name to include in data. Default is NULL.
+#' @param gene Gene names to be consider. Object in vector or list class. In list formated input, every list element is a group of
+#'             interested genes. Every list element should have a name. Default is NULL.
 #' @param nogene Gene name to exclude from data. Default is NULL.
 #'
 #' @author Mohammad Tanvir Ahamed
@@ -31,6 +32,12 @@
 #' data_4 <- readISS(file = system.file("extdata", "Hypocampus_right.csv", package="MolDia"),
 #'                   cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
 #'
+#' ###### Merge genes of interest into groups and plot
+#' data(marker_gene)
+#' data_5 <- readISS(file = data_4, gene = marker_gene)
+#' result <- ISS_map(data = data_5, what = "cell", gene = data_5@gene[1:8]) 
+#'
+#'
 #' ## Not RUN
 #' ## Read RCA data in dataframe formate
 #' #gene <- data_3@gene[1:3]
@@ -44,7 +51,7 @@
 readISS <- function(file, cellid = "CellID", centX = NULL, centY = NULL, genepos= NULL, geneposOPT = "OR",
                     rpc = 1, rpg = 1, gene = NULL, nogene = NULL)
 {
-  ## Data type : REading data from a specific location
+  ## Data type : Reading data from a specific location
   if(class(file)=="character")
   {
     ## Reading data
@@ -83,7 +90,16 @@ readISS <- function(file, cellid = "CellID", centX = NULL, centY = NULL, genepos
     colnames(data_loca) <- c("centroid_x", "centroid_y")
     
     ## Selected / un-select genes
-    if(length(gene) > 0 )   data_reads <- data_reads[,gene, drop=FALSE]
+    #if(length(gene) > 0 )   data_reads <- data_reads[,gene, drop=FALSE]
+    if(length(gene) > 0 )   
+     {
+      if(class(gene) == "character") data_reads <- data_reads[,gene, drop=FALSE]
+      if(class(gene) == "list")      
+        {
+        data_reads <- ISS_sumstat (data = data_reads, gene = gene, stat = "sum")
+        data_reads$total_reads <- NULL # Extra column added by ISS_sumstat function 
+        }
+     }
     if(length(nogene) > 0 ) data_reads <- data_reads[ , -which(colnames(data_reads) %in% nogene), drop=FALSE]
     
     ## Filter by reads per cell (rpc) and reads per gene (rpg)
@@ -100,14 +116,14 @@ readISS <- function(file, cellid = "CellID", centX = NULL, centY = NULL, genepos
       data_reads  <- subset(data_reads, eval(parse(text = genepos)))
     } 
     
-    ## Deleter emplt genes and emplt cells 
+    ## Delete empty genes and empty cells 
     data_reads <- data_reads[,colSums(data_reads) > 0]
     data_reads <- data_reads[rowSums(data_reads) > 0,]
     
     ## Filtered cell location
     data_loca<- data_loca[rownames(data_reads),]
     
-    ## return RCA object
+    ## Return RCA object
     res <- methods::new("MolDiaISS",
                         data     = data_reads,
                         norm.data = matrix(, nrow = 0, ncol = 0),
@@ -156,7 +172,16 @@ readISS <- function(file, cellid = "CellID", centX = NULL, centY = NULL, genepos
     }
     
     ## Selected / un-select genes
-    if(length(gene) > 0 )   data_reads <- data_reads[ ,  gene , drop=FALSE]
+    #if(length(gene) > 0 )   data_reads <- data_reads[ ,  gene , drop=FALSE]
+    if(length(gene) > 0 )   
+    {
+      if(class(gene) == "character") data_reads <- data_reads[,gene, drop=FALSE]
+      if(class(gene) == "list")      
+      {
+        data_reads <- ISS_sumstat (data = data_reads, gene = gene, stat = "sum")
+        data_reads$total_reads <- NULL # Extra column added by ISS_sumstat function 
+      }
+    }
     if(length(nogene) > 0 ) data_reads <- data_reads[ , -which(colnames(data_reads) %in% nogene), drop=FALSE]
     
     ## Filter by reads per cell (rpc) and reads per gene (rpg)
@@ -230,7 +255,16 @@ readISS <- function(file, cellid = "CellID", centX = NULL, centY = NULL, genepos
     }
     
     ## Selected / un-select genes
-    if(length(gene) > 0 )   data_reads <- data_reads[ ,  gene , drop=FALSE]
+    #if(length(gene) > 0 )   data_reads <- data_reads[ ,  gene , drop=FALSE]
+    if(length(gene) > 0 )   
+    {
+      if(class(gene) == "character") data_reads <- data_reads[,gene, drop=FALSE]
+      if(class(gene) == "list")      
+      {
+        data_reads <- ISS_sumstat (data = data_reads, gene = gene, stat = "sum")
+        data_reads$total_reads <- NULL # Extra column added by ISS_sumstat function 
+      }
+    }
     if(length(nogene) > 0 ) data_reads <- data_reads[ , -which(colnames(data_reads) %in% nogene), drop=FALSE]
     
     ## Filter by reads per cell (rpc) and reads per gene (rpg)

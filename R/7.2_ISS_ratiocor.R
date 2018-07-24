@@ -7,8 +7,8 @@
 #' @description Calculate and plot correlation and ratio of total reads between genes or group of genes.
 #' 
 #' @param data Data in list of groups with group name.   Individual data is in class MolDiaISS. Output of \link[MolDia]{readISS} 
-#' @param gene Gene names to be consider. Object in vector or list formate. In list formated input every list element is a group of
-#'              interested genes.
+#' @param gene Gene names to be consider. Object in vector or list class. In list formated input, every list element is a group of
+#'             interested genes. Every list element should have a name.
 #' @param select_gene Select gene of interest, Default is NULL i.e. all genes in gene list.
 #' @param errorbar Show error bar or not. Default is TRUE
 #' @param plty Show plot type. Available balue is "corr", "ratio" and "both". Default is "both".
@@ -207,13 +207,15 @@ ISS_ratiocor_1 <- function(data, gene = marker_gene, stat = stat, logratio = log
 #' 
 #' @description Calculate summary statstics (Total reads, Total number of gene present and Gene present in group) of data
 #'  
-#' @param data Data in dataframe class
+#' @param data Data in dataframe class.
 #' @param gene Object in vector or list formate. In list formated input every list element is a group of
-#'             interested genes
-#' @param stat Mode of operation. Possible value is "sum", "gene" and "present". Default is "sum"
+#'             interested genes.
+#' @param stat Mode of operation. Possible value is "sum", "gene" and "present". Default is "sum".
+#' 
+#' @return Output will be in dataframe class with a extra column names "total_reads" wish is the total numbe rof reads in each cells.
 #' 
 #' @keywords internal
-#' @export
+#' 
 ISS_sumstat <- function(data, gene, stat = "sum")
   {
   ##Create empty result data frame

@@ -9,7 +9,7 @@ readISS(file, cellid = "CellID", centX = NULL, centY = NULL,
   nogene = NULL)
 }
 \arguments{
-\item{file}{File name in CSV formate, data in "data.frame" class and data in "MolDiaISS" class (Output of \link[MolDia]{readISS}).}
+\item{file}{File name in CSV formate.Also data formate in "data.frame" class and "MolDiaISS" class (Output of \link[MolDia]{readISS}).}
 
 \item{cellid}{String to naming cell. Default is "CellID".}
 
@@ -25,7 +25,8 @@ readISS(file, cellid = "CellID", centX = NULL, centY = NULL,
 
 \item{rpg}{Total reads per gene to be consider. Default is 1.}
 
-\item{gene}{Gene name to include in data. Default is NULL.}
+\item{gene}{Gene names to be consider. Object in vector or list class. In list formated input, every list element is a group of
+interested genes. Every list element should have a name. Default is NULL.}
 
 \item{nogene}{Gene name to exclude from data. Default is NULL.}
 }
@@ -45,6 +46,12 @@ data_3 <- readISS(file = system.file("extdata", "Hypocampus_left.csv", package="
                   cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
 data_4 <- readISS(file = system.file("extdata", "Hypocampus_right.csv", package="MolDia"),
                   cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
+
+###### Merge genes of interest into groups and plot
+data(marker_gene)
+data_5 <- readISS(file = data_4, gene = marker_gene)
+result <- ISS_map(data = data_5, what = "cell", gene = data_5@gene[1:8]) 
+
 
 ## Not RUN
 ## Read RCA data in dataframe formate

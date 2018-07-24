@@ -98,5 +98,4 @@ res       <- ISS_map(data = left_hypo, what = "cluster", cluster_id = 1:2)
 ############################# Plot violin plot
 res       <- ISS_map(data = left_hypo_clust, what = "vlnplot", gene = left_hypo@gene[4:7], same.y.lims = F, adjust.use = 1)
 
-
 }

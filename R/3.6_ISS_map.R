@@ -78,7 +78,6 @@
 #' ############################# Plot violin plot
 #' res       <- ISS_map(data = left_hypo_clust, what = "vlnplot", gene = left_hypo@gene[4:7], same.y.lims = F, adjust.use = 1)
 #' 
-#' 
 #' @export
 ISS_map <- function(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y", main = "Plot title", ptsize = 1,pchuse = 16,
                     image = TRUE, live = FALSE, label.topgene = NULL, gene = NULL, cluster_id = NULL, same.y.lims = FALSE,
@@ -96,7 +95,7 @@ ISS_map <- function(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y
     ## Gene name
     gene <- gene
     ## Check if all Gene is present in data
-    if(all(gene %in% colnames(data@data)) == FALSE ) stop("Gene of interesert not present in data", call. = FALSE)
+    if(all(gene %in% colnames(data@data)) == FALSE ) stop("Gene of interest not present in data", call. = FALSE)
     data@data <- data@data[,gene,drop = FALSE]
     if(length(data@norm.data) !=0) data@norm.data  <- data@norm.data[,gene,drop = FALSE]
     if(length(data@scale.data)!=0) data@scale.data <- data@scale.data[,gene,drop = FALSE]

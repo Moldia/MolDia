@@ -11,8 +11,8 @@ ISS_ratiocor(data, gene = marker_gene, select_gene = NULL,
 \arguments{
 \item{data}{Data in list of groups with group name.   Individual data is in class MolDiaISS. Output of \link[MolDia]{readISS}}
 
-\item{gene}{Gene names to be consider. Object in vector or list formate. In list formated input every list element is a group of
-interested genes.}
+\item{gene}{Gene names to be consider. Object in vector or list class. In list formated input, every list element is a group of
+interested genes. Every list element should have a name.}
 
 \item{select_gene}{Select gene of interest, Default is NULL i.e. all genes in gene list.}
 

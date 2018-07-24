@@ -8,9 +8,11 @@
 #' @param gridtype type of grid to plot. Default is "rect". See details.
 #' @param grid_id Grid to select. Default id NULL.
 #' @param nx,ny Numbers of rectangular quadrats in the x and y directions
-#' @param roifile Name of the file that contain ROI. csv formate
+#' @param roifile Name of the file that contain ROI. csv formate. Most important is, data points should be in clockwise or
+#'                anti-clockwise order. The order of points should define at `clockwise` parameter.
 #' @param roi.id Column name in roifile file that contain ROI id
 #' @param roi.x,roi.y X and Y axis name in roifile file.
+#' @param clockwise Order of data points in supplied roifile. 
 #' @param main Main title.
 #' 
 #' @details gridtype parameter can have 4 values :  "hexa", "rect", "roifile" and "roi"
@@ -40,13 +42,14 @@
 #' mygrid  <- ISS_roi(data = ex_data, nx = 6, gridtype = "roifile",
 #'                             roifile = system.file("extdata", "polygon_coordinates.csv", package="MolDia"),
 #'                             roi.id = "Polygon_id", roi.x ="x_coordiates" , roi.y = "y_coordinates", grid_id = c(1,2,5,6),
-#'                             main = "Selected ROI on tissue")
+#'                             main = "Selected ROI on tissue", clockwise = FALSE)
 #' # Select ROI interactively by user
 #' mygrid  <- ISS_roi(data = ex_data, gridtype = "roi")
 #' 
 #' @export
 ISS_roi <- function(data, gridtype = "rect", nx = 6, ny = nx, grid_id = NULL, 
-                           roifile = NULL, roi.id = NULL, roi.x = NULL, roi.y = NULL, main = "ROI on tissue")
+                    roifile = NULL, roi.id = NULL, roi.x = NULL, roi.y = NULL, clockwise=TRUE,  
+                    main = "ROI on tissue")
 {
   ## Save main data
   main_data <- data
@@ -96,11 +99,17 @@ ISS_roi <- function(data, gridtype = "rect", nx = 6, ny = nx, grid_id = NULL,
     { 
       hpts <- i #subset(i, select=-c(Polygon.id))
       hpts[,roi.id] <- NULL
-      anti_hpts <- contoureR::orderPoints(x = hpts[,roi.x], y = hpts[,roi.y], clockwise = FALSE)
-      hpts <- hpts[anti_hpts,]
+      #anti_hpts <- contoureR::orderPoints(x = hpts[,roi.x], y = hpts[,roi.y], clockwise = FALSE)
+      #hpts <- hpts[anti_hpts,]
+      
+      if(clockwise == TRUE){ hpts <- hpts[rev(1:nrow(hpts)),] }
+      if(clockwise == FALSE){ hpts <- hpts }
+      
+      hpts <- as.matrix(hpts)
       hpts <- apply(hpts,2,list)
       hpts <- lapply(hpts, unlist)
       hpts <- spatstat::owin(poly =  list(x = hpts[[roi.x]],y = hpts[[roi.y]] ))
+      #hpts <- spatstat::owin (poly = hpts)
       hpts
     }
     )
@@ -112,7 +121,7 @@ ISS_roi <- function(data, gridtype = "rect", nx = 6, ny = nx, grid_id = NULL,
     for (i in 1: length(roi)) {xy<-spatstat::centroid.owin((poly = roi[[i]]));
     text(xy$x,xy$y, labels = labs[i], col = "red")}
     ## Convert window object to Tessellation
-    myspa1 <-spatstat::as.tess(myspa1)
+    myspa1 <-spatstat::as.tess(roi)
   }
   
   if(gridtype == "roi")
@@ -123,7 +132,8 @@ ISS_roi <- function(data, gridtype = "rect", nx = 6, ny = nx, grid_id = NULL,
   
   
   ## Select grid of interest
-  if(length(grid_id) > 0 | gridtype == "roi"){ 
+  if(length(grid_id) > 0 | gridtype == "roi")
+    { 
     
     if(gridtype != "roi")
     {
@@ -156,7 +166,5 @@ ISS_roi <- function(data, gridtype = "rect", nx = 6, ny = nx, grid_id = NULL,
     
     ISS_map(main_data, main = main)
   }
-  
   return(main_data)
 }
-
