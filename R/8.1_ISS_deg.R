@@ -7,7 +7,7 @@
 #' @param data Input data matrix. Column is gene and row is cells.
 #' @param DEGmethod Methods to find DE genes.
 #' 
-#' @note This function in-complete and needs further development by adding 
+#' @note This function is in-complete and needs further development by adding 
 #'       different methods of finding DE optimized for ISS data.
 #' 
 #' @examples 

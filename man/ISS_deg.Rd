@@ -15,7 +15,7 @@ ISS_deg(data, DEGmethod = "seurat")
 Find differentially express (DE) gene by different methods
 }
 \note{
-This function in-complete and needs further development by adding 
+This function is in-complete and needs further development by adding 
       different methods of finding DE optimized for ISS data.
 }
 \examples{
