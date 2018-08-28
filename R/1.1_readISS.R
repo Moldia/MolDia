@@ -1,9 +1,9 @@
 ######################################################################
-##                           Read RCA data                          ##
+##                       Read RCA ISS  data                         ##
 ######################################################################
 "readISS"
-#' Read RCA data
-#' @description Read RCA data
+#' Read ISS data
+#' @description Read ISS data
 #'
 #' @param file File name in CSV formate.Also data formate in "data.frame" class and "MolDiaISS" class (Output of \link[MolDia]{readISS}). 
 #' @param cellid String to naming cell. Default is "CellID".
@@ -22,7 +22,7 @@
 #' @return Output will be a object in class MolDiaISS. See detail \link[MolDia]{MolDiaISS}
 #'
 #' @examples
-#' ##### Reading ISS data in CSV formate
+#' ##### Reading ISS data from CSV formate
 #' data_1 <- readISS(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
 #'                   cellid = "CellID", centX = "centroidX", centY = "centroidY")
 #' data_2 <- readISS(file = system.file("extdata", "CellBlobs_QT_0.40.csv", package="MolDia"),

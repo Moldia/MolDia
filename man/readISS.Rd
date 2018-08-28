@@ -2,7 +2,7 @@
 % Please edit documentation in R/1.1_readISS.R
 \name{readISS}
 \alias{readISS}
-\title{Read RCA data}
+\title{Read ISS data}
 \usage{
 readISS(file, cellid = "CellID", centX = NULL, centY = NULL,
   genepos = NULL, geneposOPT = "OR", rpc = 1, rpg = 1, gene = NULL,
@@ -34,10 +34,10 @@ interested genes. Every list element should have a name. Default is NULL.}
 Output will be a object in class MolDiaISS. See detail \link[MolDia]{MolDiaISS}
 }
 \description{
-Read RCA data
+Read ISS data
 }
 \examples{
-##### Reading ISS data in CSV formate
+##### Reading ISS data from CSV formate
 data_1 <- readISS(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package="MolDia"),
                   cellid = "CellID", centX = "centroidX", centY = "centroidY")
 data_2 <- readISS(file = system.file("extdata", "CellBlobs_QT_0.40.csv", package="MolDia"),
