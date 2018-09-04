@@ -4,7 +4,9 @@
 \alias{writeISS}
 \title{Write ISS data in CSV formate}
 \usage{
-writeISS(file, output = "", expr = TRUE, location = TRUE)
+writeISS(file, output = "", expr = TRUE, location = TRUE,
+  cellid = "CellID", centX = "centroidX", centY = "centroidY",
+  scientific = FALSE)
 }
 \arguments{
 \item{file}{File name in "MolDiaISS" class (Output of \link[MolDia]{readISS}).}
@@ -14,6 +16,15 @@ writeISS(file, output = "", expr = TRUE, location = TRUE)
 \item{expr}{Write expression data. TRUE or FALSE needed. Default is TRUE.}
 
 \item{location}{Write location data. TRUE or FALSE needed. Default is TRUE.}
+
+\item{cellid}{String to naming cell. Default is "CellID".}
+
+\item{centX}{Name of X co-ordinate in file. Default is "centroidX".}
+
+\item{centY}{Name of Y co-ordinate in file  Default is "centroidY".}
+
+\item{scientific}{Fomate of location data. Either a logical specifying 
+whether elements of a real or complex vector should be encoded in scientific format, or an integer. Default is FALSE.}
 }
 \value{
 Output will be a CSV formated file.
