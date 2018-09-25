@@ -4,10 +4,11 @@
 \alias{ISS_map}
 \title{Plot function for MolDiaISS data.}
 \usage{
-ISS_map(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y",
-  main = "Plot title", ptsize = 1, pchuse = 16, image = TRUE,
-  live = FALSE, label.topgene = NULL, gene = NULL, cluster_id = NULL,
-  same.y.lims = FALSE, adjust.use = 0.5)
+ISS_map(data, what = "cell", xlab = "centroid_x",
+  ylab = "centroid_y", main = "Plot title", ptsize = 1,
+  pchuse = 16, image = TRUE, live = FALSE, label.topgene = NULL,
+  gene = NULL, cluster_id = NULL, same.y.lims = FALSE,
+  adjust.use = 0.5)
 }
 \arguments{
 \item{data}{Input data in class MolDiaISS. Output of \link[MolDia]{readISS}.}
@@ -97,5 +98,11 @@ res       <- ISS_map(data = left_hypo, what = "cluster", cluster_id = 1:2)
 
 ############################# Plot violin plot
 res       <- ISS_map(data = left_hypo_clust, what = "vlnplot", gene = left_hypo@gene[4:7], same.y.lims = F, adjust.use = 1)
+
+
+###### Reading non-segmentated file
+data_nonsegment  <- readISS(file = system.file("extdata", "nonSeg_QT_0.35_0_details.csv", package="MolDia"), segment = FALSE,
+                            centX = "PosX", centY = "PosY", rmNAgene = "NNNN", gene= c("Gdf7","WNT1","Pak3","Tfap2a"))
+res   <- ISS_map(data = data_nonsegment, what = "gene")
 
 }

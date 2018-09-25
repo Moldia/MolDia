@@ -5,8 +5,8 @@
 \title{Calculate and plot correlation and ratio of total reads between genes or group of genes.}
 \usage{
 ISS_ratiocor(data, gene = marker_gene, select_gene = NULL,
-  errorbar = TRUE, plty = "both", logratio = TRUE, sig.level = 0.05,
-  main = "", stat = "sum")
+  errorbar = TRUE, plty = "both", logratio = TRUE,
+  sig.level = 0.05, main = "", stat = "sum")
 }
 \arguments{
 \item{data}{Data in list of groups with group name.   Individual data is in class MolDiaISS. Output of \link[MolDia]{readISS}}

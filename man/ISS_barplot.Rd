@@ -5,9 +5,10 @@
 \title{Plot barplot on ISS data bsed on different condition}
 \usage{
 ISS_barplot(data, gene, total.expr = 10000, gene.target = NULL,
-  gene.show = NULL, target.min.count.cell = 1, rest.min.count.cell = 1,
-  min.count = 1, at.least.gene = 0, at.most.gene = ncol(data),
-  show.same.gene = FALSE, str.same.gene = c(".C", ".L"), main = "")
+  gene.show = NULL, target.min.count.cell = 1,
+  rest.min.count.cell = 1, min.count = 1, at.least.gene = 0,
+  at.most.gene = ncol(data), show.same.gene = FALSE,
+  str.same.gene = c(".C", ".L"), main = "")
 }
 \arguments{
 \item{data}{Input data in class MolDiaISS. Output of \link[MolDia]{readISS}.}

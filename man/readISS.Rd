@@ -4,12 +4,14 @@
 \alias{readISS}
 \title{Read ISS data}
 \usage{
-readISS(file, cellid = "CellID", centX = NULL, centY = NULL,
-  genepos = NULL, geneposOPT = "OR", rpc = 1, rpg = 1, gene = NULL,
-  nogene = NULL)
+readISS(file, segment = TRUE, cellid = "CellID", centX = NULL,
+  centY = NULL, genepos = NULL, geneposOPT = "OR", rpc = 1,
+  rpg = 1, gene = NULL, nogene = NULL, rmNAgene = NULL)
 }
 \arguments{
 \item{file}{File name in CSV formate.Also data formate in "data.frame" class and "MolDiaISS" class (Output of \link[MolDia]{readISS}).}
+
+\item{segment}{If the file is segmentated or not. TRUE/FALSE needed. Default if TRUE. See details for file structure,}
 
 \item{cellid}{String to naming cell. Default is "CellID".}
 
@@ -29,12 +31,22 @@ readISS(file, cellid = "CellID", centX = NULL, centY = NULL,
 interested genes. Every list element should have a name. Default is NULL.}
 
 \item{nogene}{Gene name to exclude from data. Default is NULL.}
+
+\item{rmNAgene}{Remove NA gene. String that indicate NA gene. Default in NULL which means dont remove. Only when segment = TRUE.}
 }
 \value{
-Output will be a object in class MolDiaISS. See detail \link[MolDia]{MolDiaISS}
+Output will be a object in class MolDiaISS or MolDiaISS_nonsegment. See detail \link[MolDia]{MolDiaISS} 
+        and \link[MolDia]{MolDiaISS_nonsegment}
 }
 \description{
 Read ISS data
+}
+\details{
+File structure of non-segmentated input: 
+         
+         For non-segmentated file input, there should be 9 column. 7 column names are "Read", "Gene", "ParentCell",
+         "Tile",  "MinAnchor",  "MinQuality" and  "MinAlign". Rest 2 column are x and y axix position and defined by 
+         'centX' and 'centY' parameter.
 }
 \examples{
 ##### Reading ISS data from CSV formate
@@ -42,7 +54,7 @@ data_1 <- readISS(file = system.file("extdata", "CellBlobs_QT_0.35.csv", package
                   cellid = "CellID", centX = "centroidX", centY = "centroidY")
 data_2 <- readISS(file = system.file("extdata", "CellBlobs_QT_0.40.csv", package="MolDia"),
                   cellid = "CellID",centX = "centroidX", centY = "centroidY")
-data_3 <- readISS(file = system.file("extdata", "Hypocampus_left.csv", package="MolDia"),
+data_3 <- readISS(file = system.file("extdMinQualityata", "Hypocampus_left.csv", package="MolDia"),
                   cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
 data_4 <- readISS(file = system.file("extdata", "Hypocampus_right.csv", package="MolDia"),
                   cellid = "CellId",centX = "centroid_x", centY = "centroid_y")
@@ -60,6 +72,10 @@ result <- ISS_map(data = data_5, what = "cell", gene = data_5@gene[1:8])
 #single_cell$CellID <- rownames(single_cell)
 #Note: Big data. Take long time to load without selected gene
 #data_sc <- readISS(file = single_cell, cellid = "CellID",gene= gene) 
+
+###### Reading non-segmentated file
+data_6 <- readISS(file = system.file("extdata", "nonSeg_QT_0.35_0_details.csv", package="MolDia"), segment = FALSE,
+                  centX = "PosX", centY = "PosY", rmNAgene = "NNNN", gene= c("Gdf7","WNT1","Pak3","Tfap2a"))
 
 
 }

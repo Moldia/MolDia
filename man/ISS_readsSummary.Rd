@@ -4,8 +4,8 @@
 \alias{ISS_readsSummary}
 \title{Summary of ISS data and expression}
 \usage{
-ISS_readsSummary(data, readlimit = 10, text.size = 6, intervel.dep = NULL,
-  coexp = FALSE)
+ISS_readsSummary(data, readlimit = 10, text.size = 6,
+  intervel.dep = NULL, coexp = FALSE)
 }
 \arguments{
 \item{data}{Input data in class MolDiaISS. Output of \link[MolDia]{readISS}}

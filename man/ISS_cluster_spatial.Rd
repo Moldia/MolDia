@@ -4,7 +4,8 @@
 \alias{ISS_cluster_spatial}
 \title{Spatial clustering for ISS by Markov random field model.}
 \usage{
-ISS_cluster_spatial(data, neighbor.points = 4, spatial.info = "phisical")
+ISS_cluster_spatial(data, neighbor.points = 4,
+  spatial.info = "phisical")
 }
 \arguments{
 \item{data}{Input data in class MolDiaISS. Output of \link[MolDia]{readISS}.}

@@ -5,8 +5,9 @@
 \title{"ISS_cluster_seruat"
 Cluster ISS data by SEURAT.}
 \usage{
-ISS_cluster_seruat(data, pc = NULL, cluster_id = NULL, resolution = 0.3,
-  algorithm = 1, DEGmethod = "seurat", k.param = 30)
+ISS_cluster_seruat(data, pc = NULL, cluster_id = NULL,
+  resolution = 0.3, algorithm = 1, DEGmethod = "seurat",
+  k.param = 30)
 }
 \arguments{
 \item{data}{Input data in class MolDiaISS. Output of \link[MolDia]{readISS}.}

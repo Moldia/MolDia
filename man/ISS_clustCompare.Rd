@@ -4,7 +4,8 @@
 \alias{ISS_clustCompare}
 \title{Compare among ISS clusters based on Random Forest algorithm}
 \usage{
-ISS_clustCompare(preditorData, prediction, ntree = 100, method = "prob")
+ISS_clustCompare(preditorData, prediction, ntree = 100,
+  method = "prob")
 }
 \arguments{
 \item{preditorData}{Data to be used to compare. Input data in class MolDiaISS. Output of \link[MolDia]{readISS}

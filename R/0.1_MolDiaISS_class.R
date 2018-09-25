@@ -1,4 +1,4 @@
-#' The ISS data class
+#' The ISS data class for segmentated file
 #' 
 #' @description The MolDiaISS class is a main object for all ISS based analysis. 
 #'              A MolDiaISS class object has the following slot
@@ -41,3 +41,29 @@ methods::setMethod( f = "show", signature = "MolDiaISS",
                       }
                     )
 MolDiaISS <- methods::new("MolDiaISS")
+
+
+#' The ISS data class for non-segmentated file
+#' @description  The MolDiaISS_nonsegment class is the non segmentated data class.
+#' 
+#' @slot reads Reads name of the data.
+#' @slot tile ParentCell and tile of the data.
+#' @slot quality Quality information of the data.
+#' @slot location In-situ location of the gene in the data
+#' 
+#' @name MolDiaISS_nonsegment
+MolDiaISS_nonsegment <- methods::setClass(Class = "MolDiaISS_nonsegment",
+                                          slots = c(reads     = "data.frame",
+                                                    tile      = "data.frame",
+                                                    quality   = "data.frame",
+                                                    location  = "data.frame"))
+methods::setMethod( f = "show", signature = "MolDiaISS_nonsegment",
+                    definition = function(object)
+                    {
+                      cat( "An object of class", class(object),
+                           "\nNumber of genes:", length(unique(object@reads$genes)),
+                           "\nNumber of reads:", nrow(object@reads))
+                           invisible(x = NULL)
+                    }
+                      )
+MolDiaISS_nonsegment <- methods::new("MolDiaISS_nonsegment")

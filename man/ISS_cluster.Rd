@@ -5,8 +5,8 @@
 \title{Cluster ISS data based on different methods.}
 \usage{
 ISS_cluster(data, method = "seurat", DEGmethod = "seurat", pc = 1,
-  cluster_id = NULL, resolution = 0.3, algorithm = 1, do.norm = TRUE,
-  do.scale = TRUE, k.param = 30)
+  cluster_id = NULL, resolution = 0.3, algorithm = 1,
+  do.norm = TRUE, do.scale = TRUE, k.param = 30)
 }
 \arguments{
 \item{data}{Input data in class MolDiaISS. Output of \link[MolDia]{readISS}.}
