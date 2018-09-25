@@ -3,7 +3,7 @@
 \docType{data}
 \name{MolDiaISS}
 \alias{MolDiaISS}
-\title{The ISS data class}
+\title{The ISS data class for segmentated file}
 \format{An object of class \code{MolDiaISS} of length 1.}
 \usage{
 MolDiaISS

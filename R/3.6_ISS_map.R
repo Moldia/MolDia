@@ -78,11 +78,49 @@
 #' ############################# Plot violin plot
 #' res       <- ISS_map(data = left_hypo_clust, what = "vlnplot", gene = left_hypo@gene[4:7], same.y.lims = F, adjust.use = 1)
 #' 
+#' 
+#' ###### Reading non-segmentated file
+#' data_nonsegment  <- readISS(file = system.file("extdata", "nonSeg_QT_0.35_0_details.csv", package="MolDia"), segment = FALSE,
+#'                             centX = "PosX", centY = "PosY", rmNAgene = "NNNN", gene= c("Gdf7","WNT1","Pak3","Tfap2a"))
+#' res   <- ISS_map(data = data_nonsegment, what = "gene")
+#' 
 #' @export
 ISS_map <- function(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y", main = "Plot title", ptsize = 1,pchuse = 16,
                     image = TRUE, live = FALSE, label.topgene = NULL, gene = NULL, cluster_id = NULL, same.y.lims = FALSE,
                     adjust.use = 0.5)
 {
+  ## Check if data is in correct class
+  if(class(data)%in%c("MolDiaISS","MolDiaISS_nonsegment") == FALSE ) stop("Please check input data is in class MolDiaISS or MolDiaISS_nonsegment", call. = FALSE)
+  
+  ## If data is in class MolDiaISS_nonsegment
+  if(class(data) == "MolDiaISS_nonsegment")
+   {
+    
+    ## Check what in category
+    what_type <- c("gene")
+    if(what %in% what_type == FALSE ) stop("Please check available plot type in `what` argument", call. = FALSE)
+    
+    if(what == "gene")
+    {
+      data <- data@location
+      
+      ## Create ggplot object
+      p <- ggplot2::ggplot(data, ggplot2::aes_string(x= "centroid_x", y= "centroid_y")) +
+           ggplot2::geom_point(ggplot2::aes(colour= genes)) +
+           ggplot2::guides(colour = ggplot2::guide_legend(override.aes = list(size=3)), fill=ggplot2::guide_legend(nrow = 10)) +
+           ggplot2::labs(x = "", y = "", title= main) +
+           ggplot2::scale_x_continuous(limits = c(min(data$centroid_x),max(data$centroid_x)))+ #,expand=c(0,0)) +
+           ggplot2::scale_y_continuous(limits = c(min(data$centroid_y),max(data$centroid_y)))+ #,expand=c(0,0)) +
+           ggplot2::theme_void()
+       
+       print(p)
+    }
+   }
+  
+  ## If data is in class MolDiaISS
+  if(class(data) == "MolDiaISS")
+  {
+  
   ## Save main data
   mainData <- data
   
@@ -474,4 +512,5 @@ ISS_map <- function(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y
   ## Print Image
   print(q)
   #return(data)
+  }
 }

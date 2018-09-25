@@ -4,8 +4,8 @@
 \alias{ISS_clustMarker}
 \title{Find Cluster marker of ISS data.}
 \usage{
-ISS_clustMarker(data, topgene = 5, test.use = "bimod", marker.sig = 0.005,
-  only.pos = TRUE, main = "")
+ISS_clustMarker(data, topgene = 5, test.use = "bimod",
+  marker.sig = 0.005, only.pos = TRUE, main = "")
 }
 \arguments{
 \item{data}{Input data in class MolDiaISS. Output of \link[MolDia]{readISS}.}
