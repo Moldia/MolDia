@@ -212,7 +212,7 @@ ISS_ratiocor_1 <- function(data, gene = marker_gene, stat = stat, logratio = log
 #'             interested genes.
 #' @param stat Mode of operation. Possible value is "sum", "gene" and "present". Default is "sum".
 #' 
-#' @return Output will be in dataframe class with a extra column names "total_reads" wish is the total numbe rof reads in each cells.
+#' @return Output will be in dataframe class with a extra column names "total_reads" which is the total number of reads in each cells.
 #' 
 #' @keywords internal
 #' 

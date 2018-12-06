@@ -15,7 +15,7 @@ interested genes.}
 \item{stat}{Mode of operation. Possible value is "sum", "gene" and "present". Default is "sum".}
 }
 \value{
-Output will be in dataframe class with a extra column names "total_reads" wish is the total numbe rof reads in each cells.
+Output will be in dataframe class with a extra column names "total_reads" which is the total number of reads in each cells.
 }
 \description{
 Calculate summary statstics (Total reads, Total number of gene present and Gene present in group) of data
