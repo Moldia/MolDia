@@ -6,7 +6,7 @@
 \usage{
 ISS_roi(data, gridtype = "rect", nx = 6, ny = nx, grid_id = NULL,
   roifile = NULL, roi.id = NULL, roi.x = NULL, roi.y = NULL,
-  clockwise = TRUE, main = "ROI on tissue")
+  main = "ROI on tissue")
 }
 \arguments{
 \item{data}{Input data in class MolDiaISS. Output of \link[MolDia]{readISS}.}
@@ -18,13 +18,11 @@ ISS_roi(data, gridtype = "rect", nx = 6, ny = nx, grid_id = NULL,
 \item{grid_id}{Grid to select. Default id NULL.}
 
 \item{roifile}{Name of the file that contain ROI. csv formate. Most important is, data points should be in clockwise or
-anti-clockwise order. The order of points should define at `clockwise` parameter.}
+anti-clockwise order.}
 
 \item{roi.id}{Column name in roifile file that contain ROI id}
 
 \item{roi.x, roi.y}{X and Y axis name in roifile file.}
-
-\item{clockwise}{Order of data points in supplied roifile.}
 
 \item{main}{Main title.}
 }
@@ -59,7 +57,7 @@ ex_data <- readISS(file = system.file("extdata", "CellBlobs_ROI.csv", package="M
 mygrid  <- ISS_roi(data = ex_data, nx = 6, gridtype = "roifile",
                             roifile = system.file("extdata", "polygon_coordinates.csv", package="MolDia"),
                             roi.id = "Polygon_id", roi.x ="x_coordiates" , roi.y = "y_coordinates", grid_id = c(1,2,5,6),
-                            main = "Selected ROI on tissue", clockwise = FALSE)
+                            main = "Selected ROI on tissue")
 # Select ROI interactively by user
 mygrid  <- ISS_roi(data = ex_data, gridtype = "roi")
 

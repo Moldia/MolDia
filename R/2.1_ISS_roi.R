@@ -9,10 +9,10 @@
 #' @param grid_id Grid to select. Default id NULL.
 #' @param nx,ny Numbers of rectangular quadrats in the x and y directions
 #' @param roifile Name of the file that contain ROI. csv formate. Most important is, data points should be in clockwise or
-#'                anti-clockwise order. The order of points should define at `clockwise` parameter.
+#'                anti-clockwise order.
 #' @param roi.id Column name in roifile file that contain ROI id
 #' @param roi.x,roi.y X and Y axis name in roifile file.
-#' @param clockwise Order of data points in supplied roifile. 
+#  @param clockwise Order of data points in supplied roifile. 
 #' @param main Main title.
 #' 
 #' @details gridtype parameter can have 4 values :  "hexa", "rect", "roifile" and "roi"
@@ -42,13 +42,13 @@
 #' mygrid  <- ISS_roi(data = ex_data, nx = 6, gridtype = "roifile",
 #'                             roifile = system.file("extdata", "polygon_coordinates.csv", package="MolDia"),
 #'                             roi.id = "Polygon_id", roi.x ="x_coordiates" , roi.y = "y_coordinates", grid_id = c(1,2,5,6),
-#'                             main = "Selected ROI on tissue", clockwise = FALSE)
+#'                             main = "Selected ROI on tissue")
 #' # Select ROI interactively by user
 #' mygrid  <- ISS_roi(data = ex_data, gridtype = "roi")
 #' 
 #' @export
 ISS_roi <- function(data, gridtype = "rect", nx = 6, ny = nx, grid_id = NULL, 
-                    roifile = NULL, roi.id = NULL, roi.x = NULL, roi.y = NULL, clockwise=TRUE,  
+                    roifile = NULL, roi.id = NULL, roi.x = NULL, roi.y = NULL, # clockwise=TRUE,  
                     main = "ROI on tissue")
 {
   ## Save main data
@@ -95,6 +95,25 @@ ISS_roi <- function(data, gridtype = "rect", nx = 6, ny = nx, grid_id = NULL,
     
     ## Split ROI file by region id 
     roi <- split(roi, roi[,roi.id])
+    
+    ## Define clockwise and anto clockwise rotation
+    anticlock <- function(x,y) 
+      {
+        N<- length(x)
+        ts <- 0
+        for(i in 1: (N-1))
+          { ts<- ts + ((x[i]-x[i+1])*(y[i]+y[i+1])) }
+        return(ts)
+      }
+    
+    roi <- lapply(roi, function(i)
+    {
+      mm  <- anticlock(i[,roi.x],i[,roi.y])
+      if(sign(mm)==-1) i <- i[seq(dim(i)[1],1),]
+      i
+    })
+    
+    
     roi <- lapply(roi, function(i)
     { 
       hpts <- i #subset(i, select=-c(Polygon.id))
@@ -102,8 +121,8 @@ ISS_roi <- function(data, gridtype = "rect", nx = 6, ny = nx, grid_id = NULL,
       #anti_hpts <- contoureR::orderPoints(x = hpts[,roi.x], y = hpts[,roi.y], clockwise = FALSE)
       #hpts <- hpts[anti_hpts,]
       
-      if(clockwise == TRUE){ hpts <- hpts[rev(1:nrow(hpts)),] }
-      if(clockwise == FALSE){ hpts <- hpts }
+      #if(clockwise == TRUE){ hpts <- hpts[rev(1:nrow(hpts)),] }
+      #if(clockwise == FALSE){ hpts <- hpts }
       
       hpts <- as.matrix(hpts)
       hpts <- apply(hpts,2,list)
@@ -115,11 +134,19 @@ ISS_roi <- function(data, gridtype = "rect", nx = 6, ny = nx, grid_id = NULL,
     )
     
     ## Ploting selected region
-    myspa1 <-lapply(roi, plot, add=T, border = "red", lwd = 2)
+    # myspa1 <-lapply(roi, plot, add=T, border = "red", lwd = 2)
+    mycol  <- palette(rainbow(length(roi)))
+    myspa1 <- lapply(seq_along(roi), function (i){plot(roi[[i]], add=T, border = mycol[i], lwd = 3)} )
+    
     ## label each polygon
     labs<-names(roi)
     for (i in 1: length(roi)) {xy<-spatstat::centroid.owin((poly = roi[[i]]));
-    text(xy$x,xy$y, labels = labs[i], col = "red")}
+    text(xy$x,xy$y, labels = labs[i], col = mycol[i], cex = 1.5)}
+    
+    ## Add legend
+    legend("topleft", legend= paste0("ROI ", 1:length(roi)), #text.col = mycol,
+           col= mycol, lty=1, lwd = 4, cex=1)
+    
     ## Convert window object to Tessellation
     myspa1 <-spatstat::as.tess(roi)
   }
