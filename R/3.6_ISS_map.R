@@ -22,6 +22,8 @@
 #' @param same.y.lims Set all the y-axis limits to the same values.
 #' @param adjust.use A multiplicate bandwidth adjustment. This makes it possible to adjust the 
 #'        bandwidth while still using the a bandwidth estimator. For exampe, adjust = 1/2 means use half of the default bandwidth.
+#' @param log a character string which contains "x" if the x axis is to be logarithmic, "y" if the y axis is to be logarithmic and
+#'        "xy" or "yx" if both axes are to be logarithmic.
 #' 
 #' @details what parameter can have the value "cell", "gene", "cluster", "tsne", "tsneAll" and "vlnplot".
 #'          
@@ -87,7 +89,7 @@
 #' @export
 ISS_map <- function(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y", main = "Plot title", ptsize = 1,pchuse = 16,
                     image = TRUE, live = FALSE, label.topgene = NULL, gene = NULL, cluster_id = NULL, same.y.lims = FALSE,
-                    adjust.use = 0.5)
+                    adjust.use = 0.5, log = "")
 {
   ## Check if data is in correct class
   if(class(data)%in%c("MolDiaISS","MolDiaISS_nonsegment") == FALSE ) stop("Please check input data is in class MolDiaISS or MolDiaISS_nonsegment", call. = FALSE)
@@ -102,15 +104,22 @@ ISS_map <- function(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y
     
     if(what == "gene")
     {
-      data <- data@location
+      genes <- data@gene
+      data  <- data@location
       
       ## Create ggplot object
       p <- ggplot2::ggplot(data, ggplot2::aes_string(x= "centroid_x", y= "centroid_y")) +
            ggplot2::geom_point(ggplot2::aes(colour= genes)) +
            ggplot2::guides(colour = ggplot2::guide_legend(override.aes = list(size=3)), fill=ggplot2::guide_legend(nrow = 10)) +
            ggplot2::labs(x = "", y = "", title= main) +
-           ggplot2::scale_x_continuous(limits = c(min(data$centroid_x),max(data$centroid_x)))+ #,expand=c(0,0)) +
-           ggplot2::scale_y_continuous(limits = c(min(data$centroid_y),max(data$centroid_y)))+ #,expand=c(0,0)) +
+           { if(log == "y")  ggplot2::scale_y_continuous(limits = c(min(data$centroid_y),max(data$centroid_y)), trans = "log10") } +
+           { if(log == "x")  ggplot2::scale_x_continuous(limits = c(min(data$centroid_x),max(data$centroid_x)), trans = "log10") } +
+           { if(log == "xy") ggplot2::scale_y_continuous(limits = c(min(data$centroid_y),max(data$centroid_y)), trans = "log10") } +
+           { if(log == "xy") ggplot2::scale_x_continuous(limits = c(min(data$centroid_x),max(data$centroid_x)), trans = "log10") } +
+           { if(log == "" )  ggplot2::scale_x_continuous(limits = c(min(data$centroid_x),max(data$centroid_x))) } + 
+           { if(log == "" )  ggplot2::scale_y_continuous(limits = c(min(data$centroid_y),max(data$centroid_y))) } +
+           #ggplot2::scale_x_continuous(limits = c(min(data$centroid_x),max(data$centroid_x)))+ #,expand=c(0,0)) +
+           #ggplot2::scale_y_continuous(limits = c(min(data$centroid_y),max(data$centroid_y)))+ #,expand=c(0,0)) +
            ggplot2::theme_void()
        
        print(p)
@@ -184,14 +193,14 @@ ISS_map <- function(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y
     
     ## Create gggplot object
     p <- ggplot2::ggplot(data, ggplot2::aes_string(x= "centroid_x", y= "centroid_y")) +
-      ggplot2::geom_point(ggplot2::aes(colour= Genes, size = Expression), alpha=0.75) +
-      ggplot2::theme(legend.title=ggplot2::element_blank(), legend.position="right") +
-      ggplot2::guides(colour = ggplot2::guide_legend(override.aes = list(size=3)),
-                      fill=ggplot2::guide_legend(nrow = 10)) +
-      ggplot2::labs(x = "", y = "", title= main) +
-      ggplot2::scale_x_continuous(limits = c(min(data$centroid_x),max(data$centroid_x)),expand=c(0,0)) +
-      ggplot2::scale_y_continuous(limits = c(min(data$centroid_y),max(data$centroid_y)),expand=c(0,0)) +
-      ggplot2::theme_void()
+         ggplot2::geom_point(ggplot2::aes(colour= Genes, size = Expression), alpha=0.75) +
+         ggplot2::theme(legend.title=ggplot2::element_blank(), legend.position="right") +
+         ggplot2::guides(colour = ggplot2::guide_legend(override.aes = list(size=3)),
+                         fill=ggplot2::guide_legend(nrow = 10)) +
+         ggplot2::labs(x = "", y = "", title= main) +
+         ggplot2::scale_x_continuous(limits = c(min(data$centroid_x),max(data$centroid_x)),expand=c(0,0)) +
+         ggplot2::scale_y_continuous(limits = c(min(data$centroid_y),max(data$centroid_y)),expand=c(0,0)) +
+         ggplot2::theme_void()
     
     ## Select which plot to show
     if(live)  q <- plotly::ggplotly(p)

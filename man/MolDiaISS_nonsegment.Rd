@@ -16,6 +16,8 @@ The MolDiaISS_nonsegment class is the non segmentated data class.
 \describe{
 \item{\code{reads}}{Reads name of the data.}
 
+\item{\code{gene}}{Name of genes in the data.}
+
 \item{\code{tile}}{ParentCell and tile of the data.}
 
 \item{\code{quality}}{Quality information of the data.}

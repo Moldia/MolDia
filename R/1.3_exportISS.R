@@ -11,7 +11,7 @@
 #' @details At present only non-segmentated file (file class \link[MolDia]{MolDiaISS_nonsegment})is supported for 
 #'          exporting file formate compitible with R package wholebrainsoftware.
 #'          
-#'          toexport only support "WB" argument at this moment , which is compitible with  wholebrainsoftware.
+#'          toexport only support "WB" argument at this moment, which is compitible with  wholebrainsoftware.
 #'          
 #' @examples 
 #' ###### Reading non-segmentated file

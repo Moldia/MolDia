@@ -47,6 +47,7 @@ MolDiaISS <- methods::new("MolDiaISS")
 #' @description  The MolDiaISS_nonsegment class is the non segmentated data class.
 #' 
 #' @slot reads Reads name of the data.
+#' @slot gene Name of genes in the data.
 #' @slot tile ParentCell and tile of the data.
 #' @slot quality Quality information of the data.
 #' @slot location In-situ location of the gene in the data
@@ -54,6 +55,7 @@ MolDiaISS <- methods::new("MolDiaISS")
 #' @name MolDiaISS_nonsegment
 MolDiaISS_nonsegment <- methods::setClass(Class = "MolDiaISS_nonsegment",
                                           slots = c(reads     = "data.frame",
+                                                    gene      = "vector",
                                                     tile      = "data.frame",
                                                     quality   = "data.frame",
                                                     location  = "data.frame"))

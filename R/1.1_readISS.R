@@ -64,6 +64,7 @@
 readISS <- function(file, segment = TRUE, cellid = "CellID", centX = NULL, centY = NULL, genepos= NULL, geneposOPT = "OR",
                     rpc = 1, rpg = 1, gene = NULL, nogene = NULL, rmNAgene = NULL)
 {
+
   ## Data type : Reading data from a specific location
   if(class(file)=="character")
   {
@@ -97,25 +98,35 @@ readISS <- function(file, segment = TRUE, cellid = "CellID", centX = NULL, centY
        ## Final data
        res <- my_file
        
+       ## Gene data
+       gene <- res[, c("Gene")]
+       names(gene) <- paste0("gene_", 1:length(gene))
+       
        ## Reads data
-       reads_data <- res[, c( "Gene","Read"), drop = FALSE]
-       colnames(reads_data) <- c( "genes","Read")
+       reads_data <- res[, c( "Reads"), drop = FALSE]
+       colnames(reads_data) <- c("Read")
+       rownames(reads_data) <- names(gene)
        
        ## Tile data
-       tile_data <- res[, c( "Gene","ParentCell","Tile"), drop = FALSE]
-       colnames(tile_data) <- c( "genes","ParentCell","Tile")
+       tile_data <- res[, c( "ParentCell","Tile"), drop = FALSE]
+       colnames(tile_data) <- c( "ParentCell","Tile")
+       rownames(tile_data) <- names(gene)
        
        ## Quality data
-       quality_data <- res[, c( "Gene","MinAnchor","MinQuality","MinAlign"), drop = FALSE]
-       colnames(quality_data) <- c( "genes","MinAnchor","MinQuality","MinAlign")
+       quality_data <- res[, c( "MinAnchor","MinQuality","MinAlign"), drop = FALSE]
+       colnames(quality_data) <- c( "MinAnchor","MinQuality","MinAlign")
+       rownames(quality_data) <- names(gene)
        
        ## Location data
-       loca_data <- res[, c( "Gene","PosX","PosY"), drop = FALSE]
-       colnames(loca_data) <- c( "genes","centroid_x", "centroid_y")
+       options(scipen = 999)
+       loca_data <- res[, c("PosX","PosY"), drop = FALSE]
+       colnames(loca_data) <- c( "centroid_x", "centroid_y")
+       rownames(loca_data) <- names(gene)
        
        ## Return ISS object
        res <- methods::new("MolDiaISS_nonsegment",
                            reads    = reads_data,
+                           gene     = gene,
                            tile     = tile_data,
                            quality  = quality_data,
                            location = loca_data)
@@ -368,6 +379,5 @@ readISS <- function(file, segment = TRUE, cellid = "CellID", centX = NULL, centY
                         cluster.marker = list(),
                         tsne.data = data.frame(matrix(, nrow = 0, ncol = 0)))
   }
-  
   return(res)
 }

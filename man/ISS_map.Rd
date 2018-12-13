@@ -8,7 +8,7 @@ ISS_map(data, what = "cell", xlab = "centroid_x",
   ylab = "centroid_y", main = "Plot title", ptsize = 1,
   pchuse = 16, image = TRUE, live = FALSE, label.topgene = NULL,
   gene = NULL, cluster_id = NULL, same.y.lims = FALSE,
-  adjust.use = 0.5)
+  adjust.use = 0.5, log = "")
 }
 \arguments{
 \item{data}{Input data in class MolDiaISS. Output of \link[MolDia]{readISS}.}
@@ -40,6 +40,9 @@ Only work when data is clustered and clusted marker has identified in cluster.ma
 
 \item{adjust.use}{A multiplicate bandwidth adjustment. This makes it possible to adjust the 
 bandwidth while still using the a bandwidth estimator. For exampe, adjust = 1/2 means use half of the default bandwidth.}
+
+\item{log}{a character string which contains "x" if the x axis is to be logarithmic, "y" if the y axis is to be logarithmic and
+"xy" or "yx" if both axes are to be logarithmic.}
 }
 \description{
 Map RCA data based on cell, cluster or tSNE
