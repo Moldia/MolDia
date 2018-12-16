@@ -32,7 +32,7 @@ ISS_map(data, what = "cell", xlab = "centroid_x",
 \item{label.topgene}{Active only when "what = cluster or tsne". Number of genes to label each cluster.
 Only work when data is clustered and clusted marker has identified in cluster.marker slot of input data.}
 
-\item{gene}{Gene of interest, Now limited to max 20 genes.}
+\item{gene}{Gene of interest. When live= TRUE, limited to max 20 genes.}
 
 \item{cluster_id}{Which cluster to plot. Only work when what = "cluster".}
 
@@ -105,7 +105,8 @@ res       <- ISS_map(data = left_hypo_clust, what = "vlnplot", gene = left_hypo@
 
 ###### Reading non-segmentated file
 data_nonsegment  <- readISS(file = system.file("extdata", "nonSeg_QT_0.35_0_details.csv", package="MolDia"), segment = FALSE,
-                            centX = "PosX", centY = "PosY", rmNAgene = "NNNN", gene= c("Gdf7","WNT1","Pak3","Tfap2a"))
+                            centX = "PosX", centY = "PosY", nogene = "NNNN")
 res   <- ISS_map(data = data_nonsegment, what = "gene")
+res   <- ISS_map(data = data_nonsegment, what = "gene", gene= c("Gdf7","WNT1","Pak3","Tfap2a"))
 
 }

@@ -5,7 +5,8 @@
 #' Read ISS data
 #' @description Read ISS data
 #'
-#' @param file File name in CSV formate.Also data formate in "data.frame" class and "MolDiaISS" class (Output of \link[MolDia]{readISS}).
+#' @param file File name in CSV format.Also data formate in "data.frame" class and "MolDiaISS"(Segment) & 'MolDiaISS_nonsegment'(Non-segment) 
+#'             class (Output of \link[MolDia]{readISS}).
 #' @param segment If the file is segmentated or not. TRUE/FALSE needed. Default if TRUE. See details for file structure,
 #' @param cellid String to naming cell. Default is "CellID".
 #' @param centX Name of X co-ordinate in file. Default is "centroidX"
@@ -17,7 +18,6 @@
 #' @param gene Gene names to be consider. Object in vector or list class. In list formated input, every list element is a group of
 #'             interested genes. Every list element should have a name. Default is NULL.
 #' @param nogene Gene name to exclude from data. Default is NULL.
-#' @param rmNAgene Remove NA gene. String that indicate NA gene. Default in NULL which means dont remove. Only when segment = TRUE.
 #' 
 #' @details File structure of non-segmentated input: 
 #'          
@@ -57,14 +57,16 @@
 #' 
 #' ###### Reading non-segmentated file
 #' data_6 <- readISS(file = system.file("extdata", "nonSeg_QT_0.35_0_details.csv", package="MolDia"), segment = FALSE,
-#'                   centX = "PosX", centY = "PosY", rmNAgene = "NNNN", gene= c("Gdf7","WNT1","Pak3","Tfap2a"))
+#'                   centX = "PosX", centY = "PosY", nogene = "NNNN")
+#' data_7 <- readISS(file = data_6, gene= c("Gdf7","WNT1","Pak3","Tfap2a"))
+#' data_8 <- readISS(file = data_7, nogene = c("Gdf7","WNT1"))
 #'
 #'
 #' @export
 readISS <- function(file, segment = TRUE, cellid = "CellID", centX = NULL, centY = NULL, genepos= NULL, geneposOPT = "OR",
-                    rpc = 1, rpg = 1, gene = NULL, nogene = NULL, rmNAgene = NULL)
+                    rpc = 1, rpg = 1, gene = NULL, nogene = NULL)
 {
-
+  
   ## Data type : Reading data from a specific location
   if(class(file)=="character")
   {
@@ -74,26 +76,20 @@ readISS <- function(file, segment = TRUE, cellid = "CellID", centX = NULL, centY
        ## Reading data
        my_file <- data.frame(data.table::fread(input = file , showProgress = TRUE))
        my_file <- my_file[,c("Read", "Gene", "ParentCell", "Tile", "MinAnchor", "MinQuality", "MinAlign", centX, centY)]
-       
-       ## Remove NA gene 
-       if(length(rmNAgene) > 0) 
-         {
-           if(any(my_file$Gene==rmNAgene)==FALSE) stop("Supplied NA string for gene does not match. Please check NA string.", call. = TRUE)
-           my_file <- my_file[-which(my_file$Gene == rmNAgene),]
-         }
-       ## Data of with selected gene
-       if(length(gene) > 0 )
-         {
-         if(all(gene%in%my_file$Gene)==FALSE) stop("Selected gene not present. Check gene name.", call. = FALSE)
-         my_file <- my_file[which(my_file$Gene%in%gene),]
-         }
-      
-       ## Data of without selected gene
+
+       ## Data without selected gene
        if(length(nogene) > 0 )
-         {
-         if(all(nogene%in%my_file$Gene)==FALSE) stop("Selected gene not present. Check gene name.", call. = FALSE)
-         my_file <- my_file[-which(my_file$Gene%in%nogene),]
-         }
+        {
+        if(all(nogene%in%my_file$Gene)==FALSE) stop("Selected gene not present. Check gene name in 'nogene'.", call. = FALSE)
+        my_file <- my_file[-which(my_file$Gene%in%nogene),]
+        }
+       
+       ## Data with selected gene
+       if(length(gene) > 0 )
+        {
+        if(all(gene%in%my_file$Gene)==FALSE) stop("Selected gene not present. Check gene name in 'gene'.", call. = FALSE)
+        my_file <- my_file[which(my_file$Gene%in%gene),]
+        }
        
        ## Final data
        res <- my_file
@@ -103,8 +99,8 @@ readISS <- function(file, segment = TRUE, cellid = "CellID", centX = NULL, centY
        names(gene) <- paste0("gene_", 1:length(gene))
        
        ## Reads data
-       reads_data <- res[, c( "Reads"), drop = FALSE]
-       colnames(reads_data) <- c("Read")
+       reads_data <- res[, c( "Read"), drop = FALSE]
+       colnames(reads_data) <- c("Reads")
        rownames(reads_data) <- names(gene)
        
        ## Tile data
@@ -379,5 +375,47 @@ readISS <- function(file, segment = TRUE, cellid = "CellID", centX = NULL, centY
                         cluster.marker = list(),
                         tsne.data = data.frame(matrix(, nrow = 0, ncol = 0)))
   }
+  
+  ## Data type : MolDiaISS_nonsegment class
+  if(class(file)=="MolDiaISS_nonsegment")
+  {
+    
+    ## Data without selected gene
+    if(length(nogene) > 0 )
+    {
+      if(all(nogene%in%file@gene)==FALSE) stop("Selected gene not present. Check gene name in 'nogene'.", call. = FALSE)
+      gene <- file@gene[-which(file@gene%in%nogene)]
+    }
+    
+    ## Data with selected gene
+    if(length(gene) > 0 )
+    {
+      if(all(gene%in%file@gene)==FALSE) stop("Selected gene not present. Check gene name in 'gene'.", call. = FALSE)
+      gene <- file@gene[which(file@gene%in%gene)]
+    }
+    
+    ## Data with same gene
+    if(length(gene) == 0 )
+    {
+      gene <- file@gene
+    }
+    
+    ## Data
+    reads    <- file@reads[names(gene), ,drop = FALSE] 
+    gene     <- file@gene[names(gene)]
+    tile     <- file@tile[names(gene), ,drop = FALSE]
+    quality  <- file@quality[names(gene), ,drop = FALSE]
+    location <- file@location[names(gene), ,drop = FALSE]
+      
+    ## Return ISS object
+    res <- methods::new("MolDiaISS_nonsegment",
+                        reads    = reads ,
+                        gene     = gene ,    # gene,
+                        tile     = tile  ,    # tile_data,
+                        quality  = quality ,  # quality_data,
+                        location = location ) # loca_data)
+  }
+  
   return(res)
+  #return(gene)
 }

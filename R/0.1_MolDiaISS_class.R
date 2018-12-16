@@ -63,7 +63,7 @@ methods::setMethod( f = "show", signature = "MolDiaISS_nonsegment",
                     definition = function(object)
                     {
                       cat( "An object of class", class(object),
-                           "\nNumber of genes:", length(unique(object@reads$genes)),
+                           "\nNumber of genes:", length(unique(object@gene)),
                            "\nNumber of reads:", nrow(object@reads))
                            invisible(x = NULL)
                     }

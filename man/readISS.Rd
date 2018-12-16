@@ -6,10 +6,11 @@
 \usage{
 readISS(file, segment = TRUE, cellid = "CellID", centX = NULL,
   centY = NULL, genepos = NULL, geneposOPT = "OR", rpc = 1,
-  rpg = 1, gene = NULL, nogene = NULL, rmNAgene = NULL)
+  rpg = 1, gene = NULL, nogene = NULL)
 }
 \arguments{
-\item{file}{File name in CSV formate.Also data formate in "data.frame" class and "MolDiaISS" class (Output of \link[MolDia]{readISS}).}
+\item{file}{File name in CSV format.Also data formate in "data.frame" class and "MolDiaISS"(Segment) & 'MolDiaISS_nonsegment'(Non-segment) 
+class (Output of \link[MolDia]{readISS}).}
 
 \item{segment}{If the file is segmentated or not. TRUE/FALSE needed. Default if TRUE. See details for file structure,}
 
@@ -31,8 +32,6 @@ readISS(file, segment = TRUE, cellid = "CellID", centX = NULL,
 interested genes. Every list element should have a name. Default is NULL.}
 
 \item{nogene}{Gene name to exclude from data. Default is NULL.}
-
-\item{rmNAgene}{Remove NA gene. String that indicate NA gene. Default in NULL which means dont remove. Only when segment = TRUE.}
 }
 \value{
 Output will be a object in class MolDiaISS or MolDiaISS_nonsegment. See detail \link[MolDia]{MolDiaISS} 
@@ -75,7 +74,9 @@ result <- ISS_map(data = data_5, what = "cell", gene = data_5@gene[1:8])
 
 ###### Reading non-segmentated file
 data_6 <- readISS(file = system.file("extdata", "nonSeg_QT_0.35_0_details.csv", package="MolDia"), segment = FALSE,
-                  centX = "PosX", centY = "PosY", rmNAgene = "NNNN", gene= c("Gdf7","WNT1","Pak3","Tfap2a"))
+                  centX = "PosX", centY = "PosY", nogene = "NNNN")
+data_7 <- readISS(file = data_6, gene= c("Gdf7","WNT1","Pak3","Tfap2a"))
+data_8 <- readISS(file = data_7, nogene = c("Gdf7","WNT1"))
 
 
 }

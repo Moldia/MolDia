@@ -15,14 +15,23 @@
 #'          
 #' @examples 
 #' ###### Reading non-segmentated file
-#' mdata <- readISS(file = system.file("extdata", "nonSeg_QT_0.35_0_details.csv", package="MolDia"), segment = FALSE,
-#'                  centX = "PosX", centY = "PosY", rmNAgene = "NNNN", gene= c("Gdf7","WNT1","Pak3","Tfap2a"))
-#' mywb  <- exportISS(file = mdata, toexport= "WB")
+#' mdata   <- readISS(file = system.file("extdata", "nonSeg_QT_0.35_0_details.csv", package="MolDia"), segment = FALSE,
+#'                  centX = "PosX", centY = "PosY", nogene = "NNNN", gene= c("Gdf7","WNT1","Pak3","Tfap2a"))
+#' 
+#' mdata_1 <- readISS(file = mdata, gene= c("Gdf7","WNT1","Pak3","Tfap2a"))
+#' mdata_2 <- readISS(file = mdata, nogene = c("Gdf7","WNT1"))
+#' 
+#' mywb_1  <- exportISS(file = mdata_1, toexport= "WB")
+#' mywb_2  <- exportISS(file = mdata_2, toexport= "WB")
+#' 
 #' @export
  exportISS <- function(file, toexport= "WB")
  {
    if(toexport == "WB")
    {
+     ## Check if data is in correct class
+     if(class(file)%in%c("MolDiaISS_nonsegment") == FALSE ) stop("Please check input data is in class MolDiaISS_nonsegment", call. = FALSE)
+     
      ## Define x and y
      x <- file@location$centroid_x
      y <- file@location$centroid_y

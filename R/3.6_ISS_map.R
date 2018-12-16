@@ -17,7 +17,7 @@
 #' @param live Plot interactive image. Default is FALSE.
 #' @param label.topgene Active only when "what = cluster or tsne". Number of genes to label each cluster.
 #'        Only work when data is clustered and clusted marker has identified in cluster.marker slot of input data.
-#' @param gene Gene of interest, Now limited to max 20 genes.
+#' @param gene Gene of interest. When live= TRUE, limited to max 20 genes.
 #' @param cluster_id Which cluster to plot. Only work when what = "cluster".
 #' @param same.y.lims Set all the y-axis limits to the same values.
 #' @param adjust.use A multiplicate bandwidth adjustment. This makes it possible to adjust the 
@@ -83,8 +83,9 @@
 #' 
 #' ###### Reading non-segmentated file
 #' data_nonsegment  <- readISS(file = system.file("extdata", "nonSeg_QT_0.35_0_details.csv", package="MolDia"), segment = FALSE,
-#'                             centX = "PosX", centY = "PosY", rmNAgene = "NNNN", gene= c("Gdf7","WNT1","Pak3","Tfap2a"))
+#'                             centX = "PosX", centY = "PosY", nogene = "NNNN")
 #' res   <- ISS_map(data = data_nonsegment, what = "gene")
+#' res   <- ISS_map(data = data_nonsegment, what = "gene", gene= c("Gdf7","WNT1","Pak3","Tfap2a"))
 #' 
 #' @export
 ISS_map <- function(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y", main = "Plot title", ptsize = 1,pchuse = 16,
@@ -104,8 +105,23 @@ ISS_map <- function(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y
     
     if(what == "gene")
     {
-      genes <- data@gene
-      data  <- data@location
+      ## Data with all gene
+      if(length(gene) == 0 )
+      {
+       genes <- data@gene
+       data  <- data@location
+      }
+      
+      ## Data with selected gene
+      if(length(gene) > 0 )
+      {
+        if(all(gene%in%data@gene)==FALSE) stop("Selected gene not present. Check gene name in 'gene'.", call. = FALSE)
+        genes <- data@gene[which(data@gene%in%gene)]
+        data  <- data@location[names(genes),] # my_file[which(my_file$Gene%in%gene),]
+      }
+      
+      ## Check image and live has same value
+      if (image == live ) stop("Argument value of `live` or `image should be different", call. = FALSE)
       
       ## Create ggplot object
       p <- ggplot2::ggplot(data, ggplot2::aes_string(x= "centroid_x", y= "centroid_y")) +
@@ -120,10 +136,25 @@ ISS_map <- function(data, what = "cell", xlab = "centroid_x", ylab = "centroid_y
            { if(log == "" )  ggplot2::scale_y_continuous(limits = c(min(data$centroid_y),max(data$centroid_y))) } +
            #ggplot2::scale_x_continuous(limits = c(min(data$centroid_x),max(data$centroid_x)))+ #,expand=c(0,0)) +
            #ggplot2::scale_y_continuous(limits = c(min(data$centroid_y),max(data$centroid_y)))+ #,expand=c(0,0)) +
-           ggplot2::theme_void()
+           ggplot2::theme_void() + 
+           ggplot2::theme(legend.title=ggplot2::element_blank(), legend.position="right")
        
-       print(p)
+      ## Select which plot to show
+      if(live)  
+      {
+        if(length(unique(genes)) > 20) stop("Gene number more than 20 is too slow for interactive vizualization. So inactive at this moment", call. = FALSE)
+        q <- plotly::ggplotly(p)
+      }
+      
+      if(image) 
+      {
+        q <- p
+      }
+      #print(p)
     }
+    
+    ## Print Image
+    print(q)
    }
   
   ## If data is in class MolDiaISS
